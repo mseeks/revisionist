@@ -3,11 +3,6 @@
 ## Goal
 Basic Nuxt app with single game interface and comprehensive test coverage.
 
-## Prerequisites
-- [ ] Node.js 18+ installed
-- [ ] Git repository initialized
-- [ ] Code editor ready
-
 ## Project Initialization
 
 ### 1. Initialize Nuxt 3 in Current Repository
