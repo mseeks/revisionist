@@ -92,3 +92,25 @@ test('Send Button - User can find and access send button', async ({ page, goto }
   await sendButton.focus()
   await expect(sendButton).toBeFocused()
 })
+
+test('Message History - User sees empty message history area', async ({ page, goto }) => {
+  // Given a user is on the game page
+  await goto('/', { waitUntil: 'hydration' })
+
+  // When they look for message history
+  // Then they should see an empty message history area
+  const messageHistory = page.locator('[data-testid="message-history"]')
+  await expect(messageHistory).toBeVisible()
+
+  // And it should be ready to display future messages
+  await expect(messageHistory).toHaveAttribute('aria-label', 'Message history')
+  await expect(messageHistory).toHaveAttribute('role', 'log')
+
+  // And it should show empty state
+  const emptyState = page.locator('[data-testid="empty-state"]')
+  await expect(emptyState).toBeVisible()
+  await expect(emptyState).toContainText('No messages yet')
+
+  // And the container should be scrollable
+  await expect(messageHistory).toHaveClass(/overflow-y-auto/)
+})

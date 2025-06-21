@@ -27,27 +27,11 @@
           </UCard>
 
           <!-- Message History -->
-          <UCard data-testid="message-history">
+          <UCard>
             <template #header>
               <h3 class="text-lg font-medium">Message History</h3>
             </template>
-            <div class="space-y-2 min-h-[200px] max-h-[400px] overflow-y-auto">
-              <div v-if="messages.length === 0" class="text-center text-slate-500 dark:text-slate-400 py-8">
-                No messages sent yet. Start by typing your first message above.
-              </div>
-              <div
-                v-for="(message, index) in messages"
-                :key="index"
-                class="p-3 bg-slate-50 dark:bg-slate-800 rounded-lg border"
-              >
-                <div class="text-sm text-slate-600 dark:text-slate-400 mb-1">
-                  Message {{ index + 1 }}
-                </div>
-                <div class="text-slate-800 dark:text-slate-200">
-                  {{ message }}
-                </div>
-              </div>
-            </div>
+            <MessageHistory data-testid="message-history" :messages="messages" />
           </UCard>
         </div>
 

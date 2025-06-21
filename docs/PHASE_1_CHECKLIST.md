@@ -140,23 +140,23 @@ Basic Nuxt app with single game interface and comprehensive test coverage.
 - [x] Verify all tests pass (button non-functional at this stage)
 
 ### 12. Message History Component (TDD First)
-- [ ] Write failing unit tests in `tests/unit/components/MessageHistory.spec.ts`:
-  - [ ] Should render scrollable container
-  - [ ] Should show empty state when no messages
-  - [ ] Should have proper ARIA labels for accessibility
-  - [ ] Should accept messages array prop (empty for now)
-- [ ] Write failing E2E test:
+- [x] Write failing unit tests in `tests/unit/components/MessageHistory.spec.ts`:
+  - [x] Should render scrollable container
+  - [x] Should show empty state when no messages
+  - [x] Should have proper ARIA labels for accessibility
+  - [x] Should accept messages array prop (empty for now)
+- [x] Write failing E2E test:
   ```
   // Given a user is on the game page
   // When they look for message history
   // Then they should see an empty message history area
   // And it should be ready to display future messages
   ```
-- [ ] Create `components/MessageHistory.vue` with minimal implementation
-- [ ] Add scrollable container to pass unit tests
-- [ ] Style empty state with Nuxt UI list/card components
-- [ ] Add accessibility features to pass E2E tests
-- [ ] Verify all tests pass
+- [x] Create `components/MessageHistory.vue` with minimal implementation
+- [x] Add scrollable container to pass unit tests
+- [x] Style empty state with Nuxt UI list/card components
+- [x] Add accessibility features to pass E2E tests
+- [x] Verify all tests pass
 
 ### 13. Messages Counter (TDD First)
 - [ ] Write failing unit tests in `tests/unit/components/MessagesCounter.spec.ts`:
