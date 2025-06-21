@@ -11,13 +11,13 @@ Implement basic game logic and state management - minimal viable game flow.
 - [x] Restart dev server to verify Pinia module loads
 
 ### 2. Create Basic Game Store (TDD First)
-- [ ] Write failing unit tests in `tests/unit/stores/game.spec.ts`:
-  - [ ] Should track remaining messages (starts at 5)
-  - [ ] Should track message history array (starts empty)
-  - [ ] Should track game status (playing/gameOver)
-- [ ] Create `stores/game.ts` with minimal state to pass tests
-- [ ] Define basic Message interface (text, sender, timestamp)
-- [ ] Verify all tests pass
+- [x] Write failing unit tests in `tests/unit/stores/game.spec.ts`:
+  - [x] Should track remaining messages (starts at 5)
+  - [x] Should track message history array (starts empty)
+  - [x] Should track game status (playing/gameOver)
+- [x] Create `stores/game.ts` with minimal state to pass tests
+- [x] Define basic Message interface (text, sender, timestamp)
+- [x] Verify all tests pass
 
 ### 3. Message Counter Logic (TDD First)
 - [ ] Write failing unit tests for message counter:
