@@ -38,19 +38,12 @@
         <!-- Right Column: Messages Counter and Game Status -->
         <div class="space-y-4">
           <!-- Messages Counter -->
-          <UCard data-testid="messages-counter">
+          <UCard>
             <template #header>
               <h3 class="text-lg font-medium text-center">Status</h3>
             </template>
             <div class="text-center space-y-4">
-              <div>
-                <div class="text-2xl font-bold text-primary-600 dark:text-primary-400">
-                  {{ remainingMessages }}
-                </div>
-                <div class="text-sm text-slate-600 dark:text-slate-400">
-                  Messages Remaining
-                </div>
-              </div>
+              <MessagesCounter :remaining-messages="remainingMessages" />
               <UBadge 
                 v-if="remainingMessages > 0" 
                 color="success" 

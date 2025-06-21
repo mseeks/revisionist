@@ -158,23 +158,23 @@ Basic Nuxt app with single game interface and comprehensive test coverage.
 - [x] Add accessibility features to pass E2E tests
 - [x] Verify all tests pass
 
-### 13. Messages Counter (TDD First)
-- [ ] Write failing unit tests in `tests/unit/components/MessagesCounter.spec.ts`:
-  - [ ] Should render counter display
-  - [ ] Should show "Messages Remaining: 5" initially
-  - [ ] Should accept remainingMessages prop
-  - [ ] Should update display when prop changes
-- [ ] Write failing E2E test:
+### 13. Messages Counter (TDD First) ✅
+- [x] Write failing unit tests in `tests/unit/components/MessagesCounter.spec.ts`:
+  - [x] Should render counter display
+  - [x] Should show "Messages Remaining: 5" initially
+  - [x] Should accept remainingMessages prop
+  - [x] Should update display when prop changes
+- [x] Write failing E2E test:
   ```
   // Given a user starts a new game
   // When they view the interface
   // Then they should see "Messages Remaining: 5"
   // And it should be prominently displayed
   ```
-- [ ] Add messages counter with hardcoded "5" value
-- [ ] Style with Nuxt UI badge/indicator to pass tests
-- [ ] Position prominently in UI as required by E2E tests
-- [ ] Verify all tests pass
+- [x] Add messages counter with hardcoded "5" value
+- [x] Style with Nuxt UI badge/indicator to pass tests
+- [x] Position prominently in UI as required by E2E tests
+- [x] Verify all tests pass
 
 ### 14. Layout Integration (BDD First)
 - [ ] Write comprehensive E2E test for complete layout:

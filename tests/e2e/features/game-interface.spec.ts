@@ -114,3 +114,17 @@ test('Message History - User sees empty message history area', async ({ page, go
   // And the container should be scrollable
   await expect(messageHistory).toHaveClass(/overflow-y-auto/)
 })
+
+test('Messages Counter - User sees remaining message count', async ({ page, goto }) => {
+  // Given a user starts a new game
+  await goto('/', { waitUntil: 'hydration' })
+
+  // When they view the interface
+  // Then they should see "Messages Remaining: 5"
+  const messagesCounter = page.locator('[data-testid="messages-counter"]')
+  await expect(messagesCounter).toBeVisible()
+  await expect(messagesCounter).toContainText('Messages Remaining: 5')
+
+  // And it should be prominently displayed
+  await expect(messagesCounter).toHaveClass(/badge|indicator|prominent/)
+})
