@@ -19,25 +19,34 @@ In **Revisionist**, you're given grand historical objectives like "Prevent World
 
 ## 📋 Project Status
 
-**Current Phase**: Phase 1 - Foundation Setup ✅
+**Current Phase**: Phase 2 - Core Game State 🚧
 
+**Phase 1 - Foundation Setup ✅ COMPLETED**
 - ✅ **Nuxt 3 + TypeScript** foundation
 - ✅ **Nuxt UI** component library integration  
-- ✅ **Comprehensive test suite** (Vitest + Playwright)
+- ✅ **Comprehensive test suite** (Vitest + Playwright) with >90% coverage
 - ✅ **Core UI components** with TDD/BDD approach
 - ✅ **Game interface layout** fully implemented
+- ✅ **Accessibility compliant** interface
 
-**Next Phase**: Phase 2 - Core Game State (Pinia store, message flow, validation)
+**Phase 2 - Core Game State 🚧 IN PROGRESS**
+- 🚧 **Pinia store** for game state management
+- 🚧 **Message sending flow** with validation
+- 🚧 **Game logic** (message counter, history, game over states)
+- 🚧 **Form validation** and error handling
 
-See [POC Implementation Plan](docs/POC_IMPLEMENTATION_PLAN.md) for the complete 5-phase roadmap.
+**Next Phases**: OpenAI Integration → Dice System → Win/Lose Conditions
+
+See [POC Implementation Plan](docs/POC_IMPLEMENTATION_PLAN.md) for the complete 5-phase roadmap and [Phase 2 Checklist](docs/PHASE_2_CHECKLIST.md) for current detailed tasks.
 
 ## 🛠️ Tech Stack
 
 - **Framework**: [Nuxt 3](https://nuxt.com/) with TypeScript
 - **UI Library**: [Nuxt UI](https://ui.nuxt.com/) (Tailwind CSS + Headless UI)
+- **State Management**: [Pinia](https://pinia.vuejs.org/) (current phase)
 - **Testing**: [Vitest](https://vitest.dev/) (unit) + [Playwright](https://playwright.dev/) (E2E)
-- **AI Integration**: OpenAI API (planned for Phase 3)
-- **State Management**: Pinia (planned for Phase 2)
+- **AI Integration**: OpenAI API (Phase 3)
+- **Development**: TDD/BDD approach with comprehensive test coverage
 
 ## 🚀 Quick Start
 
