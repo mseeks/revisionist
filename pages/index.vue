@@ -2,9 +2,7 @@
   <div class="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-900 dark:to-slate-800">
     <div class="container mx-auto px-4 py-8 max-w-4xl">
       <!-- Game Title -->
-      <h1 class="text-4xl font-bold text-center mb-8 text-slate-800 dark:text-slate-100">
-        Revisionist
-      </h1>
+      <GameTitle />
 
       <!-- Objective Display -->
       <UCard data-testid="objective-display" class="mb-8">

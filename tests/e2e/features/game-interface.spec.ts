@@ -13,3 +13,19 @@ test('BDD Setup - Game interface structure', async ({ page, goto }) => {
   await expect(page.locator('[data-testid="message-history"]')).toBeVisible()
   await expect(page.locator('[data-testid="messages-counter"]')).toBeVisible()
 })
+
+test('Game Title Section - User sees main title', async ({ page, goto }) => {
+  // Given a user is on the game page
+  await goto('/', { waitUntil: 'hydration' })
+
+  // When the page loads
+  // Then they should see "Revisionist" as the main title
+  const mainTitle = page.locator('h1')
+  await expect(mainTitle).toBeVisible()
+  await expect(mainTitle).toHaveText('Revisionist')
+
+  // And it should be styled appropriately
+  await expect(mainTitle).toHaveClass(/text-4xl/)
+  await expect(mainTitle).toHaveClass(/font-bold/)
+  await expect(mainTitle).toHaveClass(/text-center/)
+})

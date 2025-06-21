@@ -71,19 +71,19 @@ Basic Nuxt app with single game interface and comprehensive test coverage.
 - [x] Verify E2E test passes
 
 ### 8. Game Title Section (TDD First)
-- [ ] Write failing unit test in `tests/unit/components/GameTitle.spec.ts`:
-  - [ ] Should render "Revisionist" title
-  - [ ] Should use appropriate heading level (h1)
-  - [ ] Should apply correct CSS classes
-- [ ] Write failing E2E test:
+- [x] Write failing unit test in `tests/unit/components/GameTitle.nuxt.test.ts`:
+  - [x] Should render "Revisionist" title
+  - [x] Should use appropriate heading level (h1)
+  - [x] Should apply correct CSS classes
+- [x] Write failing E2E test:
   ```
   // Given a user is on the game page
   // When the page loads
   // Then they should see "Revisionist" as the main title
   ```
-- [ ] Create minimal title implementation to pass unit tests
-- [ ] Style with Nuxt UI typography classes to pass E2E tests
-- [ ] Verify all tests pass
+- [x] Create minimal title implementation to pass unit tests
+- [x] Style with Nuxt UI typography classes to pass E2E tests
+- [x] Verify all tests pass
 
 ### 9. Objective Display (TDD First)
 - [ ] Write failing unit tests in `tests/unit/components/ObjectiveDisplay.spec.ts`:
