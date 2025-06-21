@@ -15,11 +15,13 @@ describe('ObjectiveDisplay', () => {
 
     it('should style as prominent card/panel', () => {
         const wrapper = mount(ObjectiveDisplay)
-        // Check for card-like classes or structure
-        expect(wrapper.classes()).toContain('card')
-        expect(wrapper.classes()).toContain('bg-blue-50')
-        expect(wrapper.classes()).toContain('border')
-        expect(wrapper.classes()).toContain('rounded-lg')
+        // Check the root div element for card-like classes
+        const rootDiv = wrapper.find('div[data-testid="objective-display"]')
+        expect(rootDiv.exists()).toBe(true)
+        expect(rootDiv.classes()).toContain('card')
+        expect(rootDiv.classes()).toContain('bg-blue-50')
+        expect(rootDiv.classes()).toContain('border')
+        expect(rootDiv.classes()).toContain('rounded-lg')
     })
 
     it('should have proper accessibility attributes', () => {
@@ -31,6 +33,8 @@ describe('ObjectiveDisplay', () => {
 
     it('should have proper test id for E2E testing', () => {
         const wrapper = mount(ObjectiveDisplay)
-        expect(wrapper.attributes('data-testid')).toBe('objective-display')
+        const rootDiv = wrapper.find('div[data-testid="objective-display"]')
+        expect(rootDiv.exists()).toBe(true)
+        expect(rootDiv.attributes('data-testid')).toBe('objective-display')
     })
 })

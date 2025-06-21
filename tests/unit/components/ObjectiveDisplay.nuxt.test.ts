@@ -15,7 +15,9 @@ describe('ObjectiveDisplay', () => {
 
   it('should style as prominent card/panel', () => {
     const wrapper = mount(ObjectiveDisplay)
-    // Check for card-like classes or structure
-    expect(wrapper.classes()).toContain('card')
+    // Check the root div element for card-like classes
+    const rootDiv = wrapper.find('div[data-testid="objective-display"]')
+    expect(rootDiv.exists()).toBe(true)
+    expect(rootDiv.classes()).toContain('card')
   })
 })
