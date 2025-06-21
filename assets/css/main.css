@@ -1,2 +1,9 @@
+/**
+ * Main CSS file for Revisionist game
+ * Imports Tailwind CSS and Nuxt UI for styling
+ */
+
+/* Import Tailwind CSS utilities */
 @import "tailwindcss";
+/* Import Nuxt UI component styles */
 @import "@nuxt/ui";

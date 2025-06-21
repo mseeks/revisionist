@@ -1,5 +1,6 @@
 <template>
-  <UButton 
+  <!-- Send button with accessibility attributes -->
+  <UButton
     type="button"
     aria-label="Send message"
     role="button"
@@ -9,5 +10,13 @@
 </template>
 
 <script setup lang="ts">
-// Minimal implementation to pass unit tests
+/**
+ * SendButton component - renders the message send button
+ * 
+ * Simple button component for sending messages. Currently non-functional
+ * as per Phase 1 requirements - functionality will be added in Phase 2
+ * when state management is implemented.
+ * 
+ * Includes proper accessibility attributes for keyboard navigation.
+ */
 </script>

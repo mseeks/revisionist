@@ -1,14 +1,16 @@
 <template>
   <div data-testid="message-input" class="space-y-2">
+    <!-- Message input textarea with character limit -->
     <UTextarea
       v-model="message"
-      :maxlength="160"
+      :maxlength="MAX_CHARACTERS"
       placeholder="Type your message here..."
       :rows="3"
       class="w-full"
       aria-label="Message to send"
       aria-describedby="character-counter"
     />
+    <!-- Real-time character counter with accessibility support -->
     <div
       id="character-counter"
       data-testid="character-counter"
@@ -21,16 +23,29 @@
 </template>
 
 <script setup lang="ts">
-const message = ref('')
+/**
+ * MessageInput component - handles user message input with character limiting
+ * 
+ * Provides a textarea for user input with real-time character counting and
+ * automatic enforcement of the 160-character limit for game messages.
+ * Includes accessibility features for screen readers.
+ */
 
-const remainingCharacters = computed(() => {
-  return 160 - message.value.length
+// Character limit constant for the game's message system
+const MAX_CHARACTERS = 160
+
+// Reactive message state
+const message = ref<string>('')
+
+// Computed property for remaining characters with proper typing
+const remainingCharacters = computed((): number => {
+  return MAX_CHARACTERS - message.value.length
 })
 
-// Watch for changes and enforce 160 character limit
-watch(message, (newValue) => {
-  if (newValue.length > 160) {
-    message.value = newValue.slice(0, 160)
+// Watch for changes and enforce character limit
+watch(message, (newValue: string) => {
+  if (newValue.length > MAX_CHARACTERS) {
+    message.value = newValue.slice(0, MAX_CHARACTERS)
   }
 })
 </script>
