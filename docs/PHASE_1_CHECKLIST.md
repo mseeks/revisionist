@@ -86,19 +86,19 @@ Basic Nuxt app with single game interface and comprehensive test coverage.
 - [x] Verify all tests pass
 
 ### 9. Objective Display (TDD First)
-- [ ] Write failing unit tests in `tests/unit/components/ObjectiveDisplay.spec.ts`:
-  - [ ] Should render hardcoded objective text
-  - [ ] Should display "Prevent World War I"
-  - [ ] Should style as prominent card/panel
-- [ ] Write failing E2E test:
+- [x] Write failing unit tests in `tests/unit/components/ObjectiveDisplay.spec.ts`:
+  - [x] Should render hardcoded objective text
+  - [x] Should display "Prevent World War I"
+  - [x] Should style as prominent card/panel
+- [x] Write failing E2E test:
   ```
   // Given a user is on the game page
   // When they look for the objective
   // Then they should see "Prevent World War I" prominently displayed
   ```
-- [ ] Implement minimal objective display to pass unit tests
-- [ ] Style as prominent card/panel using Nuxt UI to pass E2E tests
-- [ ] Verify all tests pass
+- [x] Implement minimal objective display to pass unit tests
+- [x] Style as prominent card/panel using Nuxt UI to pass E2E tests
+- [x] Verify all tests pass
 
 ### 10. Message Input Component (TDD First)
 - [ ] Write failing unit tests in `tests/unit/components/MessageInput.spec.ts`:

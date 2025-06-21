@@ -5,18 +5,9 @@
       <GameTitle />
 
       <!-- Objective Display -->
-      <UCard data-testid="objective-display" class="mb-8">
-        <template #header>
-          <div class="text-center">
-            <h2 class="text-xl font-semibold text-red-600 dark:text-red-400">
-              Mission Objective
-            </h2>
-          </div>
-        </template>
-        <div class="text-center text-lg font-medium text-slate-700 dark:text-slate-300">
-          Prevent World War I
-        </div>
-      </UCard>
+      <div class="mb-8">
+        <ObjectiveDisplay data-testid="objective-display" />
+      </div>
 
       <!-- Game Interface Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">

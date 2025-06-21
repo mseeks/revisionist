@@ -29,3 +29,17 @@ test('Game Title Section - User sees main title', async ({ page, goto }) => {
   await expect(mainTitle).toHaveClass(/font-bold/)
   await expect(mainTitle).toHaveClass(/text-center/)
 })
+
+test('Objective Display - User sees game objective prominently', async ({ page, goto }) => {
+  // Given a user is on the game page
+  await goto('/', { waitUntil: 'hydration' })
+
+  // When they look for the objective
+  // Then they should see "Prevent World War I" prominently displayed
+  const objectiveDisplay = page.locator('[data-testid="objective-display"]')
+  await expect(objectiveDisplay).toBeVisible()
+  await expect(objectiveDisplay).toContainText('Prevent World War I')
+
+  // And it should be styled as a prominent card/panel
+  await expect(objectiveDisplay).toHaveClass(/card|panel|border|shadow/)
+})
