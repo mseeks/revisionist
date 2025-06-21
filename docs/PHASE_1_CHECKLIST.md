@@ -122,22 +122,22 @@ Basic Nuxt app with single game interface and comprehensive test coverage.
 - [x] Verify all tests pass
 
 ### 11. Send Button (TDD First)
-- [ ] Write failing unit tests in `tests/unit/components/SendButton.spec.ts`:
-  - [ ] Should render button element
-  - [ ] Should display "Send" text
-  - [ ] Should have button type
-  - [ ] Should be accessible (proper aria attributes)
-- [ ] Write failing E2E test:
+- [x] Write failing unit tests in `tests/unit/components/SendButton.spec.ts`:
+  - [x] Should render button element
+  - [x] Should display "Send" text
+  - [x] Should have button type
+  - [x] Should be accessible (proper aria attributes)
+- [x] Write failing E2E test:
   ```
   // Given a user has typed a message
   // When they look for how to send it
   // Then they should see a clearly labeled Send button
   // And the button should be keyboard accessible
   ```
-- [ ] Add send button with minimal implementation
-- [ ] Use Nuxt UI button component to pass styling tests
-- [ ] Add accessibility attributes to pass E2E tests
-- [ ] Verify all tests pass (button non-functional at this stage)
+- [x] Add send button with minimal implementation
+- [x] Use Nuxt UI button component to pass styling tests
+- [x] Add accessibility attributes to pass E2E tests
+- [x] Verify all tests pass (button non-functional at this stage)
 
 ### 12. Message History Component (TDD First)
 - [ ] Write failing unit tests in `tests/unit/components/MessageHistory.spec.ts`:

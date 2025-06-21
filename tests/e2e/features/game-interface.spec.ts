@@ -70,3 +70,25 @@ test('Message Input - User can type message with character counter', async ({ pa
   const textareaValue = await textarea.inputValue()
   expect(textareaValue.length).toBeLessThanOrEqual(160)
 })
+
+test('Send Button - User can find and access send button', async ({ page, goto }) => {
+  // Given a user has typed a message
+  await goto('/', { waitUntil: 'hydration' })
+
+  const messageInput = page.locator('[data-testid="message-input"] textarea')
+  await messageInput.fill('Test message')
+
+  // When they look for how to send it
+  // Then they should see a clearly labeled Send button
+  const sendButton = page.locator('[data-testid="send-button"]')
+  await expect(sendButton).toBeVisible()
+  await expect(sendButton).toContainText('Send')
+
+  // And the button should be keyboard accessible
+  await expect(sendButton).toHaveAttribute('type', 'button')
+  await expect(sendButton).toHaveAttribute('aria-label')
+
+  // Button should be focusable with keyboard
+  await sendButton.focus()
+  await expect(sendButton).toBeFocused()
+})

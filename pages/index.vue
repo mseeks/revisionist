@@ -21,14 +21,7 @@
             <div class="space-y-4">
               <MessageInput />
               <div class="flex justify-end">
-                <UButton
-                  data-testid="send-button"
-                  color="primary"
-                  size="lg"
-                  :disabled="!messageText.trim() || messageText.length > 160"
-                >
-                  Send
-                </UButton>
+                <SendButton data-testid="send-button" />
               </div>
             </div>
           </UCard>
