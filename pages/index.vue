@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-900 dark:to-slate-800">
-    <div class="container mx-auto px-4 py-8 max-w-4xl">
+    <main class="container mx-auto px-4 py-8 max-w-4xl">
       <!-- Game Title -->
       <GameTitle />
 
@@ -64,7 +64,7 @@
           </UCard>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </template>
 

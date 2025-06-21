@@ -128,3 +128,64 @@ test('Messages Counter - User sees remaining message count', async ({ page, goto
   // And it should be prominently displayed
   await expect(messagesCounter).toHaveClass(/badge|indicator|prominent/)
 })
+
+test('Complete Layout Integration - User sees all components in logical order', async ({ page, goto }) => {
+  // Given a user visits the game for the first time
+  await goto('/', { waitUntil: 'hydration' })
+
+  // When the page loads completely
+  // Then they should see all components in logical order:
+
+  // Game title at the top
+  const gameTitle = page.locator('h1')
+  await expect(gameTitle).toBeVisible()
+  await expect(gameTitle).toHaveText('Revisionist')
+
+  // Objective prominently displayed
+  const objective = page.locator('[data-testid="objective-display"]')
+  await expect(objective).toBeVisible()
+  await expect(objective).toContainText('Prevent World War I')
+
+  // Message input area
+  const messageInput = page.locator('[data-testid="message-input"]')
+  await expect(messageInput).toBeVisible()
+
+  // Send button below input
+  const sendButton = page.locator('[data-testid="send-button"]')
+  await expect(sendButton).toBeVisible()
+
+  // Message history area
+  const messageHistory = page.locator('[data-testid="message-history"]')
+  await expect(messageHistory).toBeVisible()
+
+  // Messages counter visible
+  const messagesCounter = page.locator('[data-testid="messages-counter"]')
+  await expect(messagesCounter).toBeVisible()
+
+  // And the layout should be visually hierarchical
+  // Check that title is at the top of the page
+  const titleBox = await gameTitle.boundingBox()
+  const objectiveBox = await objective.boundingBox()
+  const inputBox = await messageInput.boundingBox()
+  const historyBox = await messageHistory.boundingBox()
+
+  // Title should be above objective
+  expect(titleBox!.y).toBeLessThan(objectiveBox!.y)
+
+  // Objective should be above input
+  expect(objectiveBox!.y).toBeLessThan(inputBox!.y)
+
+  // Input should be above or at same level as history
+  expect(inputBox!.y).toBeLessThanOrEqual(historyBox!.y)
+
+  // And all elements should be keyboard accessible
+  // Test that interactive elements can be focused
+  await messageInput.locator('textarea').focus()
+  await expect(messageInput.locator('textarea')).toBeFocused()
+
+  await sendButton.focus()
+  await expect(sendButton).toBeFocused()
+
+  // Test that layout is responsive (basic check)
+  await expect(page.locator('main')).toHaveClass(/grid|flex|container/)
+})

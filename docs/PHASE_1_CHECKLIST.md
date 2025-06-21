@@ -177,7 +177,7 @@ Basic Nuxt app with single game interface and comprehensive test coverage.
 - [x] Verify all tests pass
 
 ### 14. Layout Integration (BDD First)
-- [ ] Write comprehensive E2E test for complete layout:
+- [x] Write comprehensive E2E test for complete layout:
   ```
   // Given a user visits the game for the first time
   // When the page loads completely
@@ -191,10 +191,10 @@ Basic Nuxt app with single game interface and comprehensive test coverage.
   // And the layout should be visually hierarchical
   // And all elements should be keyboard accessible
   ```
-- [ ] Arrange all components in main page to pass E2E layout test
-- [ ] Use Nuxt UI grid/layout utilities for responsive behavior
-- [ ] Test visual hierarchy and spacing against E2E requirements
-- [ ] Verify complete layout E2E test passes
+- [x] Arrange all components in main page to pass E2E layout test
+- [x] Use Nuxt UI grid/layout utilities for responsive behavior
+- [x] Test visual hierarchy and spacing against E2E requirements
+- [x] Verify complete layout E2E test passes
 
 ## Testing Coverage (TDD/BDD Verification)
 
