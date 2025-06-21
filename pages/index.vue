@@ -19,18 +19,8 @@
               <h3 class="text-lg font-medium">Send Message</h3>
             </template>
             <div class="space-y-4">
-              <UTextarea
-                data-testid="message-input"
-                v-model="messageText"
-                placeholder="Type your message here..."
-                :maxlength="160"
-                :rows="4"
-                class="resize-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400"
-              />
-              <div class="flex justify-between items-center">
-                <div class="text-sm text-slate-500 dark:text-slate-400">
-                  {{ remainingCharacters }} characters remaining
-                </div>
+              <MessageInput />
+              <div class="flex justify-end">
                 <UButton
                   data-testid="send-button"
                   color="primary"

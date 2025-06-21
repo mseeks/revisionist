@@ -43,3 +43,30 @@ test('Objective Display - User sees game objective prominently', async ({ page, 
   // And it should be styled as a prominent card/panel
   await expect(objectiveDisplay).toHaveClass(/card|panel|border|shadow/)
 })
+
+test('Message Input - User can type message with character counter', async ({ page, goto }) => {
+  // Given a user wants to send a message
+  await goto('/', { waitUntil: 'hydration' })
+
+  // When they type in the message input
+  const messageInput = page.locator('[data-testid="message-input"]')
+  await expect(messageInput).toBeVisible()
+
+  const textarea = messageInput.locator('textarea')
+  await expect(textarea).toBeVisible()
+
+  // Type a test message
+  await textarea.fill('Hello, this is a test message')
+
+  // Then they should see a real-time character counter
+  const characterCounter = page.locator('[data-testid="character-counter"]')
+  await expect(characterCounter).toBeVisible()
+  await expect(characterCounter).toContainText('131') // 160 - 29 = 131 remaining
+
+  // And the input should stop accepting text at 160 characters
+  const longText = 'a'.repeat(200)
+  await textarea.fill(longText)
+
+  const textareaValue = await textarea.inputValue()
+  expect(textareaValue.length).toBeLessThanOrEqual(160)
+})

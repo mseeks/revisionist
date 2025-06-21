@@ -101,25 +101,25 @@ Basic Nuxt app with single game interface and comprehensive test coverage.
 - [x] Verify all tests pass
 
 ### 10. Message Input Component (TDD First)
-- [ ] Write failing unit tests in `tests/unit/components/MessageInput.spec.ts`:
-  - [ ] Should render textarea element
-  - [ ] Should have 160 character limit attribute
-  - [ ] Should display character counter
-  - [ ] Should update counter on input
-  - [ ] Should show remaining characters correctly
-  - [ ] Should prevent input beyond 160 characters
-- [ ] Write failing E2E tests:
+- [x] Write failing unit tests in `tests/unit/components/MessageInput.spec.ts`:
+  - [x] Should render textarea element
+  - [x] Should have 160 character limit attribute
+  - [x] Should display character counter
+  - [x] Should update counter on input
+  - [x] Should show remaining characters correctly
+  - [x] Should prevent input beyond 160 characters
+- [x] Write failing E2E tests:
   ```
   // Given a user wants to send a message
   // When they type in the message input
   // Then they should see a real-time character counter
   // And the input should stop accepting text at 160 characters
   ```
-- [ ] Create `components/MessageInput.vue` with minimal implementation
-- [ ] Add textarea with character limit to pass unit tests
-- [ ] Add real-time character counter logic to pass all tests
-- [ ] Style with Nuxt UI form components
-- [ ] Verify all tests pass
+- [x] Create `components/MessageInput.vue` with minimal implementation
+- [x] Add textarea with character limit to pass unit tests
+- [x] Add real-time character counter logic to pass all tests
+- [x] Style with Nuxt UI form components
+- [x] Verify all tests pass
 
 ### 11. Send Button (TDD First)
 - [ ] Write failing unit tests in `tests/unit/components/SendButton.spec.ts`:
