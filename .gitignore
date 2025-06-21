@@ -25,3 +25,6 @@ logs
 # Test reports and results
 test-results/
 playwright-report/
+coverage/
+.nyc_output
+*.lcov

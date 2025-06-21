@@ -26,4 +26,18 @@ describe('SendButton', () => {
         expect(button.attributes('aria-label')).toBeDefined()
         expect(button.attributes('role')).toBe('button')
     })
+
+    it('should be keyboard focusable', () => {
+        const wrapper = mount(SendButton)
+        const button = wrapper.find('button')
+        expect(button.attributes('tabindex')).not.toBe('-1')
+    })
+
+    it('should emit click event when clicked', async () => {
+        const wrapper = mount(SendButton)
+        const button = wrapper.find('button')
+
+        await button.trigger('click')
+        expect(wrapper.emitted().click).toBeTruthy()
+    })
 })

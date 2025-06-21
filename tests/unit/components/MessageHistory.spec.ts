@@ -36,4 +36,24 @@ describe('MessageHistory', () => {
         })
         expect(wrapper.props('messages')).toEqual([])
     })
+
+    it('should handle undefined messages prop gracefully', () => {
+        const wrapper = mount(MessageHistory)
+        expect(() => wrapper.vm).not.toThrow()
+    })
+
+    it('should have proper styling for empty state', () => {
+        const wrapper = mount(MessageHistory, {
+            props: {
+                messages: []
+            }
+        })
+        const emptyState = wrapper.find('[data-testid="empty-state"]')
+        expect(emptyState.classes()).toContain('text-gray-500')
+        expect(emptyState.classes()).toContain('flex')
+        expect(emptyState.classes()).toContain('flex-col')
+
+        const textCenter = emptyState.find('.text-center')
+        expect(textCenter.exists()).toBe(true)
+    })
 })

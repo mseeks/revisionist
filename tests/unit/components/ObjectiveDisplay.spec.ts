@@ -17,5 +17,20 @@ describe('ObjectiveDisplay', () => {
         const wrapper = mount(ObjectiveDisplay)
         // Check for card-like classes or structure
         expect(wrapper.classes()).toContain('card')
+        expect(wrapper.classes()).toContain('bg-blue-50')
+        expect(wrapper.classes()).toContain('border')
+        expect(wrapper.classes()).toContain('rounded-lg')
+    })
+
+    it('should have proper accessibility attributes', () => {
+        const wrapper = mount(ObjectiveDisplay)
+        const heading = wrapper.find('h2')
+        expect(heading.exists()).toBe(true)
+        expect(heading.text()).toBe('Prevent World War I')
+    })
+
+    it('should have proper test id for E2E testing', () => {
+        const wrapper = mount(ObjectiveDisplay)
+        expect(wrapper.attributes('data-testid')).toBe('objective-display')
     })
 })

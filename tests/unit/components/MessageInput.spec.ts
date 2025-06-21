@@ -48,4 +48,20 @@ describe('MessageInput', () => {
 
         expect(textarea.element.value.length).toBeLessThanOrEqual(160)
     })
+
+    it('should show 160 characters remaining when empty', () => {
+        const wrapper = mount(MessageInput)
+        const counter = wrapper.find('[data-testid="character-counter"]')
+        expect(counter.text()).toContain('160')
+    })
+
+    it('should show 0 characters remaining when at limit', async () => {
+        const wrapper = mount(MessageInput)
+        const textarea = wrapper.find('textarea')
+        const counter = wrapper.find('[data-testid="character-counter"]')
+
+        const maxText = 'a'.repeat(160)
+        await textarea.setValue(maxText)
+        expect(counter.text()).toContain('0')
+    })
 })
