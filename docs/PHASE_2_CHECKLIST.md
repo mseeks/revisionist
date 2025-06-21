@@ -6,9 +6,9 @@ Implement basic game logic and state management - minimal viable game flow.
 ## Core State Management
 
 ### 1. Install and Configure Pinia
-- [ ] Install Pinia: `npm install pinia @pinia/nuxt`
-- [ ] Add `@pinia/nuxt` to modules in `nuxt.config.ts`
-- [ ] Restart dev server to verify Pinia module loads
+- [x] Install Pinia: `npm install pinia @pinia/nuxt`
+- [x] Add `@pinia/nuxt` to modules in `nuxt.config.ts`
+- [x] Restart dev server to verify Pinia module loads
 
 ### 2. Create Basic Game Store (TDD First)
 - [ ] Write failing unit tests in `tests/unit/stores/game.spec.ts`:

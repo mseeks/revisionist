@@ -10,7 +10,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   // Register required modules
-  modules: ['@nuxt/ui'],
+  modules: ['@nuxt/ui', '@pinia/nuxt'],
 
   // Global CSS imports
   css: ['~/assets/css/main.css']
