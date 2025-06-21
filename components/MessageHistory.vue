@@ -3,6 +3,7 @@
     data-testid="message-history"
     class="message-history-container overflow-y-auto border border-gray-200 rounded-lg bg-white shadow-sm"
     aria-label="Message history"
+    aria-live="polite"
     role="log"
   >
     <div 

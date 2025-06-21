@@ -6,10 +6,14 @@
       placeholder="Type your message here..."
       :rows="3"
       class="w-full"
+      aria-label="Message to send"
+      aria-describedby="character-counter"
     />
     <div
+      id="character-counter"
       data-testid="character-counter"
       class="text-sm text-gray-500 text-right"
+      aria-live="polite"
     >
       {{ remainingCharacters }} characters remaining
     </div>
