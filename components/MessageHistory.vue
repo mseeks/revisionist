@@ -9,7 +9,7 @@
   >
     <!-- Empty state display when no messages exist -->
     <div
-      v-if="!messages || messages.length === 0"
+      v-if="gameStore.messageHistory.length === 0"
       data-testid="empty-state"
       class="flex flex-col items-center justify-center p-8 text-gray-500"
     >
@@ -17,6 +17,30 @@
         <div class="text-4xl mb-3">💬</div>
         <p class="text-lg font-medium text-gray-600 mb-1">No messages yet</p>
         <p class="text-sm text-gray-500">Messages will appear here as the story unfolds</p>
+      </div>
+    </div>
+
+    <!-- Message list display -->
+    <div v-else class="p-4 space-y-3">
+      <div
+        v-for="(message, index) in gameStore.messageHistory"
+        :key="index"
+        data-testid="message-item"
+        class="message-item"
+      >
+        <div class="bg-blue-50 border-l-4 border-blue-400 p-3 rounded-r-lg">
+          <div class="flex items-start">
+            <div class="flex-1">
+              <p class="text-sm font-medium text-blue-800 mb-1">
+                {{ formatSender(message.sender) }}
+              </p>
+              <p class="text-gray-800">{{ message.text }}</p>
+              <p class="text-xs text-gray-500 mt-2">
+                {{ formatTimestamp(message.timestamp) }}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -29,25 +53,40 @@
  * Renders a scrollable container for message history with empty state
  * when no messages exist. Includes accessibility features for screen readers.
  * 
- * Currently shows empty state only as per Phase 1 requirements.
- * Message display functionality will be added in Phase 2.
+ * Connected to the game store to display actual message history.
  */
 
-// Define the structure of a message for future use
-interface Message {
-  id: string
-  text: string
-  timestamp: Date
-  character?: string
+import { useGameStore } from '~/stores/game'
+
+// Initialize the game store
+const gameStore = useGameStore()
+
+/**
+ * Format sender name for display
+ */
+const formatSender = (sender: string): string => {
+  switch (sender) {
+    case 'user':
+      return 'You'
+    case 'ai':
+      return 'AI Response'
+    case 'system':
+      return 'System'
+    default:
+      return sender
+  }
 }
 
-interface Props {
-  messages?: Message[]
+/**
+ * Format timestamp for display
+ */
+const formatTimestamp = (timestamp: Date): string => {
+  return new Intl.DateTimeFormat('en-US', {
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  }).format(timestamp)
 }
-
-const props = withDefaults(defineProps<Props>(), {
-  messages: () => []
-})
 </script>
 
 <style scoped>

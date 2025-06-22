@@ -46,11 +46,11 @@ Implement basic game logic and state management - minimal viable game flow.
 - [x] Verify all tests pass
 
 ### 6. Connect MessageHistory Component (TDD First)
-- [ ] Write failing unit tests for MessageHistory integration:
-  - [ ] Should display messages from store history
-  - [ ] Should show empty state when no messages
-- [ ] Update `MessageHistory.vue` to use game store
-- [ ] Verify all history display tests pass
+- [x] Write failing unit tests for MessageHistory integration:
+  - [x] Should display messages from store history
+  - [x] Should show empty state when no messages
+- [x] Update `MessageHistory.vue` to use game store
+- [x] Verify all history display tests pass
 
 ### 7. Basic Message Input Validation (TDD First)
 - [ ] Write failing unit tests for MessageInput validation:
