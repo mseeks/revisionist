@@ -25,4 +25,39 @@ describe('Game Store', () => {
             expect(gameStore.gameStatus).toBe('playing')
         })
     })
+
+    describe('Message Counter Logic', () => {
+        it('should decrement remaining messages when user sends', () => {
+            const gameStore = useGameStore()
+            const initialCount = gameStore.remainingMessages
+
+            gameStore.decrementMessages()
+
+            expect(gameStore.remainingMessages).toBe(initialCount - 1)
+        })
+
+        it('should not allow sending when 0 messages remain', () => {
+            const gameStore = useGameStore()
+            // Set messages to 0
+            gameStore.remainingMessages = 0
+
+            gameStore.decrementMessages()
+
+            // Should not go below 0
+            expect(gameStore.remainingMessages).toBe(0)
+        })
+
+        it('should return boolean for canSendMessage computed', () => {
+            const gameStore = useGameStore()
+
+            // Should be able to send when messages > 0
+            expect(gameStore.canSendMessage).toBe(true)
+
+            // Set to 0 messages
+            gameStore.remainingMessages = 0
+
+            // Should not be able to send when messages = 0
+            expect(gameStore.canSendMessage).toBe(false)
+        })
+    })
 })

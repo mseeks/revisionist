@@ -25,5 +25,27 @@ export const useGameStore = defineStore('game', {
         remainingMessages: 5,
         messageHistory: [] as Message[],
         gameStatus: 'playing' as GameStatus
-    })
+    }),
+
+    getters: {
+        /**
+         * Computed property to check if user can send messages
+         * Returns false when no messages remain
+         */
+        canSendMessage(): boolean {
+            return this.remainingMessages > 0
+        }
+    },
+
+    actions: {
+        /**
+         * Decrements the remaining message count
+         * Will not go below 0
+         */
+        decrementMessages() {
+            if (this.remainingMessages > 0) {
+                this.remainingMessages--
+            }
+        }
+    }
 })

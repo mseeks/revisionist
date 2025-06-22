@@ -20,13 +20,13 @@ Implement basic game logic and state management - minimal viable game flow.
 - [x] Verify all tests pass
 
 ### 3. Message Counter Logic (TDD First)
-- [ ] Write failing unit tests for message counter:
-  - [ ] Should decrement remaining messages when user sends
-  - [ ] Should not allow sending when 0 messages remain
-  - [ ] Should return boolean for canSendMessage computed
-- [ ] Implement `decrementMessages()` action to pass tests
-- [ ] Implement `canSendMessage` computed property to pass tests
-- [ ] Verify all counter logic tests pass
+- [x] Write failing unit tests for message counter:
+  - [x] Should decrement remaining messages when user sends
+  - [x] Should not allow sending when 0 messages remain
+  - [x] Should return boolean for canSendMessage computed
+- [x] Implement `decrementMessages()` action to pass tests
+- [x] Implement `canSendMessage` computed property to pass tests
+- [x] Verify all counter logic tests pass
 
 ### 4. Message History Logic (TDD First)
 - [ ] Write failing unit tests for message history:
