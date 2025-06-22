@@ -45,13 +45,13 @@ Connect real AI responses to game mechanics - minimal viable AI integration.
 - [x] Verify prompt builder tests pass
 
 ### 6. API Response Handler (TDD First)
-- [ ] Write failing unit tests for API response:
-  - [ ] Should return AI response text
-  - [ ] Should return success status
-  - [ ] Should handle API errors gracefully
-- [ ] Implement OpenAI chat completion call
-- [ ] Add basic error handling (return generic error message)
-- [ ] Verify response handler tests pass
+- [x] Write failing unit tests for API response:
+  - [x] Should return AI response text
+  - [x] Should return success status
+  - [x] Should handle API errors gracefully
+- [x] Implement OpenAI chat completion call
+- [x] Add basic error handling (return generic error message)
+- [x] Verify response handler tests pass
 
 ### 7. Connect Frontend to API (BDD First)
 - [ ] Write E2E test for AI message flow:

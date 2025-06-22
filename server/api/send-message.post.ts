@@ -19,20 +19,22 @@ export default defineEventHandler(async (event) => {
     }
 
     try {
-        // Get OpenAI client
-        const openai = getOpenAIClient()
+        // Call OpenAI API with the user's message
+        const { callOpenAI } = await import('~/server/utils/openai')
+        const aiResponse = await callOpenAI(body.message)
 
-        // For now, return a simple response structure
-        // We'll implement the actual AI call in the next phase
+        // Return structured response for frontend
         return {
-            success: true,
-            message: 'Message received',
+            success: aiResponse.success,
+            message: aiResponse.success ? 'AI response generated successfully' : 'Failed to generate AI response',
             data: {
                 userMessage: body.message,
-                aiResponse: 'OpenAI client is configured and ready'
+                aiResponse: aiResponse.aiResponse || null,
+                error: aiResponse.error || null
             }
         }
     } catch (error) {
+        console.error('API endpoint error:', error)
         throw createError({
             statusCode: 500,
             statusMessage: 'Internal Server Error: ' + (error as Error).message
