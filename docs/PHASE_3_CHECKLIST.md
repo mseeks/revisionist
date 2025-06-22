@@ -36,13 +36,13 @@ Connect real AI responses to game mechanics - minimal viable AI integration.
 ## Basic AI Integration
 
 ### 5. Simple Prompt System (TDD First)
-- [ ] Write failing unit tests for prompt builder:
-  - [ ] Should create basic system prompt
-  - [ ] Should include Franz Ferdinand persona
-  - [ ] Should include "Prevent World War I" objective
-- [ ] Create minimal prompt builder function
-- [ ] Hardcode Franz Ferdinand as only figure for POC
-- [ ] Verify prompt builder tests pass
+- [x] Write failing unit tests for prompt builder:
+  - [x] Should create basic system prompt
+  - [x] Should include Franz Ferdinand persona
+  - [x] Should include "Prevent World War I" objective
+- [x] Create minimal prompt builder function
+- [x] Hardcode Franz Ferdinand as only figure for POC
+- [x] Verify prompt builder tests pass
 
 ### 6. API Response Handler (TDD First)
 - [ ] Write failing unit tests for API response:
