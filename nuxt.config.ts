@@ -13,5 +13,13 @@ export default defineNuxtConfig({
   modules: ['@nuxt/ui', '@pinia/nuxt'],
 
   // Global CSS imports
-  css: ['~/assets/css/main.css']
+  css: ['~/assets/css/main.css'],
+
+  // Runtime configuration
+  runtimeConfig: {
+    // Private keys (only available on server-side)
+    openaiApiKey: process.env.OPENAI_API_KEY,
+    // Public keys (exposed to client-side)
+    public: {}
+  }
 })

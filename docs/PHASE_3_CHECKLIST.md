@@ -6,32 +6,32 @@ Connect real AI responses to game mechanics - minimal viable AI integration.
 ## Server API Setup
 
 ### 1. Install OpenAI SDK
-- [ ] Install OpenAI package: `npm install openai`
-- [ ] Add OpenAI to dependencies in `package.json`
-- [ ] Verify installation with `npm list openai`
+- [x] Install OpenAI package: `npm install openai`
+- [x] Add OpenAI to dependencies in `package.json`
+- [x] Verify installation with `npm list openai`
 
 ### 2. Environment Configuration
-- [ ] Create `.env` file in project root
-- [ ] Add `OPENAI_API_KEY=your_openai_key_here`
-- [ ] Add `.env` to `.gitignore`
-- [ ] Create `.env.example` with placeholder
+- [x] Create `.env` file in project root
+- [x] Add `OPENAI_API_KEY=your_openai_key_here`
+- [x] Add `.env` to `.gitignore`
+- [x] Create `.env.example` with placeholder
 
 ### 3. Create API Endpoint (TDD First)
-- [ ] Write failing unit test for API endpoint:
-  - [ ] Should exist at `/api/send-message`
-  - [ ] Should accept POST requests only
-  - [ ] Should require message body parameter
-- [ ] Create `server/api/send-message.post.ts` with minimal handler
-- [ ] Implement basic request validation
-- [ ] Verify unit tests pass
+- [x] Write failing unit test for API endpoint:
+  - [x] Should exist at `/api/send-message`
+  - [x] Should accept POST requests only
+  - [x] Should require message body parameter
+- [x] Create `server/api/send-message.post.ts` with minimal handler
+- [x] Implement basic request validation
+- [x] Verify unit tests pass
 
 ### 4. OpenAI Client Configuration (TDD First)
-- [ ] Write failing unit tests for OpenAI utility:
-  - [ ] Should initialize OpenAI client with API key
-  - [ ] Should handle missing API key gracefully
-- [ ] Create `server/utils/openai.ts` with client setup
-- [ ] Use runtime config for API key access
-- [ ] Verify configuration tests pass
+- [x] Write failing unit tests for OpenAI utility:
+  - [x] Should initialize OpenAI client with API key
+  - [x] Should handle missing API key gracefully
+- [x] Create `server/utils/openai.ts` with client setup
+- [x] Use runtime config for API key access
+- [x] Verify configuration tests pass
 
 ## Basic AI Integration
 
