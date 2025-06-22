@@ -46,6 +46,19 @@ export const useGameStore = defineStore('game', {
             if (this.remainingMessages > 0) {
                 this.remainingMessages--
             }
+        },
+
+        /**
+         * Adds a user message to the message history
+         * Creates a new message with current timestamp
+         */
+        addUserMessage(text: string) {
+            const message: Message = {
+                text,
+                sender: 'user',
+                timestamp: new Date()
+            }
+            this.messageHistory.push(message)
         }
     }
 })

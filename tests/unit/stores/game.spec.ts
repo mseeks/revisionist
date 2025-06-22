@@ -60,4 +60,41 @@ describe('Game Store', () => {
             expect(gameStore.canSendMessage).toBe(false)
         })
     })
+
+    describe('Message History Logic', () => {
+        it('should add user message to history', () => {
+            const gameStore = useGameStore()
+            const messageText = 'Hello, Napoleon!'
+
+            gameStore.addUserMessage(messageText)
+
+            expect(gameStore.messageHistory).toHaveLength(1)
+            expect(gameStore.messageHistory[0]).toMatchObject({
+                text: messageText,
+                sender: 'user',
+            })
+            expect(gameStore.messageHistory[0].timestamp).toBeInstanceOf(Date)
+        })
+
+        it('should maintain chronological order', () => {
+            const gameStore = useGameStore()
+            const firstMessage = 'First message'
+            const secondMessage = 'Second message'
+
+            // Add first message
+            gameStore.addUserMessage(firstMessage)
+            const firstTimestamp = gameStore.messageHistory[0].timestamp
+
+            // Add second message
+            gameStore.addUserMessage(secondMessage)
+
+            expect(gameStore.messageHistory).toHaveLength(2)
+            expect(gameStore.messageHistory[0].text).toBe(firstMessage)
+            expect(gameStore.messageHistory[1].text).toBe(secondMessage)
+
+            // Second message should have later or equal timestamp
+            expect(gameStore.messageHistory[1].timestamp.getTime())
+                .toBeGreaterThanOrEqual(firstTimestamp.getTime())
+        })
+    })
 })

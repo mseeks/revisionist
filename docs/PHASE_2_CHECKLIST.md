@@ -29,11 +29,11 @@ Implement basic game logic and state management - minimal viable game flow.
 - [x] Verify all counter logic tests pass
 
 ### 4. Message History Logic (TDD First)
-- [ ] Write failing unit tests for message history:
-  - [ ] Should add user message to history
-  - [ ] Should maintain chronological order
-- [ ] Implement `addUserMessage()` action to pass tests
-- [ ] Verify all message history tests pass
+- [x] Write failing unit tests for message history:
+  - [x] Should add user message to history
+  - [x] Should maintain chronological order
+- [x] Implement `addUserMessage()` action to pass tests
+- [x] Verify all message history tests pass
 
 ## UI Integration
 
