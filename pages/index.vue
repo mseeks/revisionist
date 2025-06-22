@@ -42,10 +42,11 @@
               <!-- Error display -->
               <UAlert
                 v-if="gameStore.error"
+                data-testid="error-alert"
                 color="error"
                 variant="soft"
                 :title="gameStore.error"
-                :close-button="{ icon: 'i-heroicons-x-mark-20-solid', color: 'gray', variant: 'link', padded: false }"
+                :close-button="{ icon: 'i-heroicons-x-mark-20-solid', color: 'gray', variant: 'link', padded: false, 'data-testid': 'error-close' }"
                 @close="gameStore.setError(null)"
               />
             </div>

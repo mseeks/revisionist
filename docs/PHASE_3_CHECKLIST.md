@@ -99,14 +99,14 @@ Connect real AI responses to game mechanics - minimal viable AI integration.
 ## Error Handling
 
 ### 11. API Error States (TDD First)
-- [ ] Write failing unit tests for error handling:
-  - [ ] Should show error message on API failure
-  - [ ] Should allow retry after error
-  - [ ] Should not decrement messages on error
-- [ ] Implement error display in UI
-- [ ] Add simple error message component
-- [ ] Ensure message count unchanged on error
-- [ ] Verify error handling tests pass
+- [x] Write failing unit tests for error handling:
+  - [x] Should show error message on API failure
+  - [x] Should allow retry after error
+  - [x] Should not decrement messages on error
+- [x] Implement error display in UI
+- [x] Add simple error message component
+- [x] Ensure message count unchanged on error
+- [x] Verify error handling tests pass
 
 ### 12. Rate Limiting Protection
 - [ ] Add simple delay between API calls (1 second)
