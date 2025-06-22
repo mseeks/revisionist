@@ -66,6 +66,18 @@
               >
                 Mission Complete
               </UBadge>
+              
+              <!-- Reset button for testing -->
+              <UButton
+                color="neutral"
+                variant="soft"
+                size="md"
+                data-testid="reset-button"
+                icon="i-heroicons-arrow-path"
+                @click="handleResetGame"
+              >
+                Reset Game
+              </UButton>
             </div>
           </UCard>
         </div>
@@ -115,6 +127,15 @@ const handleSendMessage = () => {
   
   // Clear the input
   messageInputRef.value.message = ''
+}
+
+// Reset game handler
+const handleResetGame = () => {
+  gameStore.resetGame()
+  // Also clear the input if it exists
+  if (messageInputRef.value) {
+    messageInputRef.value.message = ''
+  }
 }
 
 // Meta tags for SEO and social sharing

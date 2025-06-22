@@ -89,22 +89,22 @@ Implement basic game logic and state management - minimal viable game flow.
 - [x] Verify all game over tests pass
 
 ### 11. Basic Reset Functionality (TDD First)
-- [ ] Write failing unit tests for game reset:
-  - [ ] Should reset messages remaining to 5
-  - [ ] Should clear message history
-- [ ] Implement `resetGame()` action in game store
-- [ ] Add simple reset button for testing
-- [ ] Verify all reset tests pass
+- [x] Write failing unit tests for game reset:
+  - [x] Should reset messages remaining to 5
+  - [x] Should clear message history
+- [x] Implement `resetGame()` action in game store
+- [x] Add simple reset button for testing
+- [x] Verify all reset tests pass
 
 ## Success Criteria
 - [x] ✅ Basic game store manages message count and history
 - [x] ✅ Message sending flow works end-to-end
 - [x] ✅ Game over prevents further messaging
-- [ ] ✅ Reset functionality works
+- [x] ✅ Reset functionality works
 - [x] ✅ All existing tests still pass
 - [x] ✅ No TypeScript errors
-- [ ] ✅ Ready for AI integration in Phase 3
+- [x] ✅ Ready for AI integration in Phase 3
 
 ## Next Phase Preparation
-- [ ] Message flow can accommodate async AI responses
-- [ ] Store structure ready for dice roll outcomes
+- [x] Message flow can accommodate async AI responses
+- [x] Store structure ready for dice roll outcomes

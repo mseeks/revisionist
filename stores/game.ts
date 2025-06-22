@@ -76,6 +76,16 @@ export const useGameStore = defineStore('game', {
                 timestamp: new Date()
             }
             this.messageHistory.push(message)
+        },
+
+        /**
+         * Resets the game to initial state
+         * Clears message history and resets message count
+         */
+        resetGame() {
+            this.remainingMessages = 5
+            this.messageHistory = []
+            this.gameStatus = 'playing'
         }
     }
 })

@@ -132,4 +132,67 @@ describe('Game Store', () => {
             expect(gameStore.messageHistory.length).toBe(initialMessageCount)
         })
     })
+
+    describe('Reset Functionality', () => {
+        it('should reset messages remaining to 5', () => {
+            const gameStore = useGameStore()
+
+            // Use some messages first
+            gameStore.decrementMessages()
+            gameStore.decrementMessages()
+            expect(gameStore.remainingMessages).toBe(3)
+
+            // Reset the game
+            gameStore.resetGame()
+
+            expect(gameStore.remainingMessages).toBe(5)
+        })
+
+        it('should clear message history', () => {
+            const gameStore = useGameStore()
+
+            // Add some messages first
+            gameStore.addUserMessage('Message 1')
+            gameStore.addUserMessage('Message 2')
+            expect(gameStore.messageHistory).toHaveLength(2)
+
+            // Reset the game
+            gameStore.resetGame()
+
+            expect(gameStore.messageHistory).toEqual([])
+            expect(gameStore.messageHistory).toHaveLength(0)
+        })
+
+        it('should reset game status to playing', () => {
+            const gameStore = useGameStore()
+
+            // Trigger game over
+            for (let i = 0; i < 5; i++) {
+                gameStore.addUserMessage(`Message ${i + 1}`)
+                gameStore.decrementMessages()
+            }
+            expect(gameStore.gameStatus).toBe('gameOver')
+
+            // Reset the game
+            gameStore.resetGame()
+
+            expect(gameStore.gameStatus).toBe('playing')
+        })
+
+        it('should allow sending messages after reset', () => {
+            const gameStore = useGameStore()
+
+            // Trigger game over
+            for (let i = 0; i < 5; i++) {
+                gameStore.addUserMessage(`Message ${i + 1}`)
+                gameStore.decrementMessages()
+            }
+            expect(gameStore.canSendMessage).toBe(false)
+
+            // Reset the game
+            gameStore.resetGame()
+
+            expect(gameStore.canSendMessage).toBe(true)
+        })
+    })
 })
