@@ -38,12 +38,12 @@ Implement basic game logic and state management - minimal viable game flow.
 ## UI Integration
 
 ### 5. Connect MessagesCounter Component (TDD First)
-- [ ] Write failing unit tests for MessagesCounter integration:
-  - [ ] Should display current remaining messages from store
-  - [ ] Should use Pinia store instead of hardcoded value
-- [ ] Update `MessagesCounter.vue` to use game store
-- [ ] Remove hardcoded "5" value, use store state
-- [ ] Verify all tests pass
+- [x] Write failing unit tests for MessagesCounter integration:
+  - [x] Should display current remaining messages from store
+  - [x] Should use Pinia store instead of hardcoded value
+- [x] Update `MessagesCounter.vue` to use game store
+- [x] Remove hardcoded "5" value, use store state
+- [x] Verify all tests pass
 
 ### 6. Connect MessageHistory Component (TDD First)
 - [ ] Write failing unit tests for MessageHistory integration:
