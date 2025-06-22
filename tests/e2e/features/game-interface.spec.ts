@@ -1,5 +1,76 @@
 import { test, expect } from '@nuxt/test-utils/playwright'
 
+// AI Integration Tests - BDD Style
+test.describe('AI Message Flow (BDD)', () => {
+  test('User sends message and receives AI response', async ({ page, goto }) => {
+    // Given a user has typed a message
+    await goto('/', { waitUntil: 'hydration' })
+
+    const messageInputContainer = page.locator('[data-testid="message-input"]')
+    const messageTextarea = messageInputContainer.locator('textarea')
+    const sendButton = page.locator('[data-testid="send-button"]')
+    const messageHistory = page.locator('[data-testid="message-history"]')
+
+    // Type a message to Franz Ferdinand
+    await messageTextarea.fill('Avoid Sarajevo in June 1914')
+
+    // When they click send
+    await sendButton.click()
+
+    // Then they should see a loading state
+    await expect(page.locator('[data-testid="loading-indicator"]')).toBeVisible()
+
+    // And the send button should be disabled during loading
+    await expect(sendButton).toBeDisabled()
+
+    // Then they should see their message in history
+    await expect(messageHistory).toContainText('Avoid Sarajevo in June 1914')
+    await expect(messageHistory).toContainText('You:')
+
+    // And they should see AI response in history (wait for API call)
+    await expect(messageHistory).toContainText('Franz Ferdinand:', { timeout: 10000 })
+
+    // And the loading indicator should disappear
+    await expect(page.locator('[data-testid="loading-indicator"]')).not.toBeVisible()
+
+    // And the send button should be disabled (since input is cleared)
+    await expect(sendButton).toBeDisabled()
+
+    // And the message counter should decrease to 4
+    await expect(page.locator('[data-testid="messages-counter"]')).toContainText('4')
+
+    // When user types a new message, send button should be enabled again
+    await messageTextarea.fill('Another message')
+    await expect(sendButton).toBeEnabled()
+  })
+
+  test('AI response appears with proper styling and timestamp', async ({ page, goto }) => {
+    // Given a user sends a message
+    await goto('/', { waitUntil: 'hydration' })
+
+    const messageInputContainer = page.locator('[data-testid="message-input"]')
+    const messageTextarea = messageInputContainer.locator('textarea')
+    const sendButton = page.locator('[data-testid="send-button"]')
+    const messageHistory = page.locator('[data-testid="message-history"]')
+
+    await messageTextarea.fill('Your advice would be valued')
+    await sendButton.click()
+
+    // When the AI responds
+    await expect(messageHistory).toContainText('Franz Ferdinand:', { timeout: 10000 })
+
+    // Then the AI message should be styled differently from user messages
+    const aiMessage = messageHistory.locator('[data-sender="ai"]').first()
+    await expect(aiMessage).toBeVisible()
+
+    // And it should have a timestamp
+    await expect(aiMessage.locator('[data-testid="message-timestamp"]')).toBeVisible()
+
+    // And it should show the sender name
+    await expect(aiMessage).toContainText('Franz Ferdinand:')
+  })
+})
+
 test('BDD Setup - Game interface structure', async ({ page, goto }) => {
   // Given a user visits the game page
   await goto('/', { waitUntil: 'hydration' })

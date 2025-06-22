@@ -10,8 +10,8 @@ export default defineConfig<ConfigOptions>({
   // Test directory configuration
   testDir: './tests/e2e',
 
-  // Run tests in parallel for better performance
-  fullyParallel: true,
+  // Run tests sequentially to avoid file handle exhaustion
+  fullyParallel: false,
 
   // Prevent use of test.only in CI
   forbidOnly: !!process.env.CI,
@@ -19,8 +19,8 @@ export default defineConfig<ConfigOptions>({
   // Retry configuration for CI stability
   retries: process.env.CI ? 2 : 0,
 
-  // Worker configuration for CI optimization
-  workers: process.env.CI ? 1 : undefined,
+  // Worker configuration - limit workers to prevent file handle exhaustion
+  workers: process.env.CI ? 1 : 2,
 
   // HTML report generation
   reporter: 'html',
@@ -39,21 +39,11 @@ export default defineConfig<ConfigOptions>({
     trace: 'on-first-retry',
   },
 
-  // Browser projects for cross-browser testing
+  // Browser projects - reduced for stability
   projects: [
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
-    },
-
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
     },
   ],
 

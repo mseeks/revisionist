@@ -36,7 +36,29 @@
             <template #header>
               <h3 class="text-lg font-medium">Message History</h3>
             </template>
-            <MessageHistory data-testid="message-history" />
+            <div class="space-y-4">
+              <MessageHistory data-testid="message-history" />
+              
+              <!-- Loading indicator -->
+              <div 
+                v-if="gameStore.isLoading" 
+                data-testid="loading-indicator"
+                class="flex items-center justify-center py-4"
+              >
+                <UIcon name="i-heroicons-arrow-path" class="animate-spin w-5 h-5 mr-2" />
+                <span class="text-sm text-gray-600">Franz Ferdinand is responding...</span>
+              </div>
+              
+              <!-- Error display -->
+              <UAlert
+                v-if="gameStore.error"
+                color="error"
+                variant="soft"
+                :title="gameStore.error"
+                :close-button="{ icon: 'i-heroicons-x-mark-20-solid', color: 'gray', variant: 'link', padded: false }"
+                @close="gameStore.setError(null)"
+              />
+            </div>
           </UCard>
         </div>
 
@@ -110,8 +132,8 @@ const messageInputValid = computed(() => {
   return messageInputRef.value?.isValid ?? false
 })
 
-// Message sending handler
-const handleSendMessage = () => {
+// Message sending handler - now async with AI integration
+const handleSendMessage = async () => {
   if (!messageInputRef.value) return
   
   const messageText = messageInputRef.value.message?.trim()
@@ -121,9 +143,8 @@ const handleSendMessage = () => {
     return
   }
   
-  // Send message through game store
-  gameStore.addUserMessage(messageText)
-  gameStore.decrementMessages()
+  // Send message through game store (includes API call)
+  await gameStore.sendMessage(messageText)
   
   // Clear the input
   messageInputRef.value.message = ''

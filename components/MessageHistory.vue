@@ -26,16 +26,57 @@
         v-for="(message, index) in gameStore.messageHistory"
         :key="index"
         data-testid="message-item"
+        :data-sender="message.sender"
         class="message-item"
       >
-        <div class="bg-blue-50 border-l-4 border-blue-400 p-3 rounded-r-lg">
+        <!-- User message styling -->
+        <div
+          v-if="message.sender === 'user'"
+          class="bg-blue-50 border-l-4 border-blue-400 p-3 rounded-r-lg"
+        >
           <div class="flex items-start">
             <div class="flex-1">
               <p class="text-sm font-medium text-blue-800 mb-1">
                 {{ formatSender(message.sender) }}
               </p>
               <p class="text-gray-800">{{ message.text }}</p>
-              <p class="text-xs text-gray-500 mt-2">
+              <p class="text-xs text-gray-500 mt-2" data-testid="message-timestamp">
+                {{ formatTimestamp(message.timestamp) }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI message styling -->
+        <div
+          v-else-if="message.sender === 'ai'"
+          class="bg-green-50 border-l-4 border-green-400 p-3 rounded-r-lg"
+        >
+          <div class="flex items-start">
+            <div class="flex-1">
+              <p class="text-sm font-medium text-green-800 mb-1">
+                {{ formatSender(message.sender) }}
+              </p>
+              <p class="text-gray-800">{{ message.text }}</p>
+              <p class="text-xs text-gray-500 mt-2" data-testid="message-timestamp">
+                {{ formatTimestamp(message.timestamp) }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- System/other message styling -->
+        <div
+          v-else
+          class="bg-gray-50 border-l-4 border-gray-400 p-3 rounded-r-lg"
+        >
+          <div class="flex items-start">
+            <div class="flex-1">
+              <p class="text-sm font-medium text-gray-800 mb-1">
+                {{ formatSender(message.sender) }}
+              </p>
+              <p class="text-gray-800">{{ message.text }}</p>
+              <p class="text-xs text-gray-500 mt-2" data-testid="message-timestamp">
                 {{ formatTimestamp(message.timestamp) }}
               </p>
             </div>
@@ -67,11 +108,11 @@ const gameStore = useGameStore()
 const formatSender = (sender: string): string => {
   switch (sender) {
     case 'user':
-      return 'You'
+      return 'You:'
     case 'ai':
-      return 'AI Response'
+      return 'Franz Ferdinand:'
     case 'system':
-      return 'System'
+      return 'System:'
     default:
       return sender
   }

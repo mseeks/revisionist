@@ -54,16 +54,16 @@ Connect real AI responses to game mechanics - minimal viable AI integration.
 - [x] Verify response handler tests pass
 
 ### 7. Connect Frontend to API (BDD First)
-- [ ] Write E2E test for AI message flow:
+- [x] Write E2E test for AI message flow:
   ```
   // Given a user has typed a message
   // When they click send
   // Then they should see AI response in history
   ```
-- [ ] Update game store to handle async responses
-- [ ] Add loading state while waiting for AI
-- [ ] Display AI response when received
-- [ ] Verify E2E test passes
+- [x] Update game store to handle async responses
+- [x] Add loading state while waiting for AI
+- [x] Display AI response when received
+- [x] Verify E2E test passes
 
 ## Game Store Updates
 
