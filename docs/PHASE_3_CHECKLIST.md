@@ -68,14 +68,14 @@ Connect real AI responses to game mechanics - minimal viable AI integration.
 ## Game Store Updates
 
 ### 8. Async Message Handling (TDD First)
-- [ ] Write failing unit tests for async flow:
-  - [ ] Should set loading state during API call
-  - [ ] Should add AI response to history
-  - [ ] Should handle API failures
-- [ ] Update `sendMessage` action to be async
-- [ ] Add loading state to store
-- [ ] Implement error state handling
-- [ ] Verify all async tests pass
+- [x] Write failing unit tests for async flow:
+  - [x] Should set loading state during API call
+  - [x] Should add AI response to history
+  - [x] Should handle API failures
+- [x] Update `sendMessage` action to be async
+- [x] Add loading state to store
+- [x] Implement error state handling
+- [x] Verify all async tests pass
 
 ### 9. AI Message Display (TDD First)
 - [ ] Write failing unit tests for AI messages:

@@ -1,11 +1,17 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useGameStore } from '~/stores/game'
+
+// Mock $fetch globally
+const mockFetch = vi.fn()
+vi.stubGlobal('$fetch', mockFetch)
 
 describe('Game Store', () => {
     beforeEach(() => {
         // Create a fresh Pinia instance for each test
         setActivePinia(createPinia())
+        // Clear all mocks before each test
+        vi.clearAllMocks()
     })
 
     describe('Initial State', () => {
@@ -193,6 +199,151 @@ describe('Game Store', () => {
             gameStore.resetGame()
 
             expect(gameStore.canSendMessage).toBe(true)
+        })
+    })
+
+    describe('Async Message Handling', () => {
+        it('should set loading state during API call', async () => {
+            const gameStore = useGameStore()
+
+            // Mock a delayed API response
+            mockFetch.mockImplementation(() =>
+                new Promise(resolve =>
+                    setTimeout(() => resolve({
+                        success: true,
+                        data: { aiResponse: 'Test AI response' }
+                    }), 100)
+                )
+            )
+
+            // Start the async operation
+            const sendPromise = gameStore.sendMessage('Test message')
+
+            // Check that loading state is set immediately
+            expect(gameStore.isLoading).toBe(true)
+
+            // Wait for completion
+            await sendPromise
+
+            // Check that loading state is cleared
+            expect(gameStore.isLoading).toBe(false)
+        })
+
+        it('should add AI response to history', async () => {
+            const gameStore = useGameStore()
+            const userMessage = 'Test user message'
+            const aiResponse = 'Test AI response'
+
+            // Mock successful API response
+            mockFetch.mockResolvedValue({
+                success: true,
+                data: { aiResponse }
+            })
+
+            await gameStore.sendMessage(userMessage)
+
+            // Should have both user and AI messages
+            expect(gameStore.messageHistory).toHaveLength(2)
+            expect(gameStore.messageHistory[0]).toMatchObject({
+                text: userMessage,
+                sender: 'user'
+            })
+            expect(gameStore.messageHistory[1]).toMatchObject({
+                text: aiResponse,
+                sender: 'ai'
+            })
+        })
+
+        it('should handle API failures', async () => {
+            const gameStore = useGameStore()
+            const userMessage = 'Test message'
+
+            // Mock API failure
+            mockFetch.mockRejectedValue(new Error('Network error'))
+
+            await gameStore.sendMessage(userMessage)
+
+            // Should have error set
+            expect(gameStore.error).toBe('Failed to send message. Please try again.')
+
+            // Should not be loading
+            expect(gameStore.isLoading).toBe(false)
+
+            // Should only have user message, no AI response
+            expect(gameStore.messageHistory).toHaveLength(1)
+            expect(gameStore.messageHistory[0].sender).toBe('user')
+        })
+
+        it('should handle API error responses', async () => {
+            const gameStore = useGameStore()
+            const userMessage = 'Test message'
+            const errorMessage = 'API error message'
+
+            // Mock API error response
+            mockFetch.mockResolvedValue({
+                success: false,
+                data: { error: errorMessage }
+            })
+
+            await gameStore.sendMessage(userMessage)
+
+            // Should have error set
+            expect(gameStore.error).toBe(errorMessage)
+
+            // Should not be loading
+            expect(gameStore.isLoading).toBe(false)
+
+            // Should only have user message, no AI response
+            expect(gameStore.messageHistory).toHaveLength(1)
+            expect(gameStore.messageHistory[0].sender).toBe('user')
+        })
+
+        it('should restore message count on network errors', async () => {
+            const gameStore = useGameStore()
+            const initialCount = gameStore.remainingMessages
+
+            // Mock network error
+            mockFetch.mockRejectedValue(new Error('Network error'))
+
+            await gameStore.sendMessage('Test message')
+
+            // Message count should be restored on network error
+            expect(gameStore.remainingMessages).toBe(initialCount)
+        })
+
+        it('should not restore message count on API errors', async () => {
+            const gameStore = useGameStore()
+            const initialCount = gameStore.remainingMessages
+
+            // Mock API error response
+            mockFetch.mockResolvedValue({
+                success: false,
+                data: { error: 'API error' }
+            })
+
+            await gameStore.sendMessage('Test message')
+
+            // Message count should not be restored on API errors
+            expect(gameStore.remainingMessages).toBe(initialCount - 1)
+        })
+
+        it('should clear error on successful message', async () => {
+            const gameStore = useGameStore()
+
+            // Set an initial error
+            gameStore.setError('Previous error')
+            expect(gameStore.error).toBe('Previous error')
+
+            // Mock successful API response
+            mockFetch.mockResolvedValue({
+                success: true,
+                data: { aiResponse: 'Test response' }
+            })
+
+            await gameStore.sendMessage('Test message')
+
+            // Error should be cleared
+            expect(gameStore.error).toBe(null)
         })
     })
 })
