@@ -85,4 +85,89 @@ describe('MessageHistory', () => {
             expect(emptyState.text()).toContain('No messages yet')
         })
     })
+
+    describe('AI Message Display', () => {
+        beforeEach(() => {
+            // Clear any existing messages
+            gameStore.resetGame()
+        })
+
+        it('should differentiate user vs AI messages', () => {
+            // Add both user and AI messages
+            gameStore.addUserMessage('Hello Franz Ferdinand!')
+            gameStore.addAIMessage('Greetings! How may I assist you in preventing the Great War?')
+
+            const wrapper = mount(MessageHistory)
+            const messages = wrapper.findAll('[data-testid="message-item"]')
+
+            expect(messages).toHaveLength(2)
+
+            // Check user message styling
+            const userMessage = messages[0]
+            expect(userMessage.attributes('data-sender')).toBe('user')
+            expect(userMessage.find('.bg-blue-50').exists()).toBe(true)
+            expect(userMessage.find('.border-blue-400').exists()).toBe(true)
+
+            // Check AI message styling  
+            const aiMessage = messages[1]
+            expect(aiMessage.attributes('data-sender')).toBe('ai')
+            expect(aiMessage.find('.bg-green-50').exists()).toBe(true)
+            expect(aiMessage.find('.border-green-400').exists()).toBe(true)
+        })
+
+        it('should show sender name (Franz Ferdinand) for AI messages', () => {
+            gameStore.addAIMessage('I must avoid Sarajevo this June!')
+
+            const wrapper = mount(MessageHistory)
+            const aiMessage = wrapper.find('[data-sender="ai"]')
+
+            expect(aiMessage.exists()).toBe(true)
+            expect(aiMessage.text()).toContain('Franz Ferdinand:')
+            expect(aiMessage.find('.text-green-800').text()).toBe('Franz Ferdinand:')
+        })
+
+        it('should display timestamp for AI messages', () => {
+            const testTime = new Date('2023-06-28T10:30:00')
+
+            // Manually create AI message with specific timestamp
+            const aiMessage = {
+                text: 'I shall change history!',
+                sender: 'ai' as const,
+                timestamp: testTime
+            }
+            gameStore.messageHistory.push(aiMessage)
+
+            const wrapper = mount(MessageHistory)
+            const messageElement = wrapper.find('[data-sender="ai"]')
+            const timestamp = messageElement.find('[data-testid="message-timestamp"]')
+
+            expect(timestamp.exists()).toBe(true)
+            expect(timestamp.text()).toBe('10:30:00 AM')
+        })
+
+        it('should show user message with correct sender name', () => {
+            gameStore.addUserMessage('Please avoid the assassination attempt!')
+
+            const wrapper = mount(MessageHistory)
+            const userMessage = wrapper.find('[data-sender="user"]')
+
+            expect(userMessage.exists()).toBe(true)
+            expect(userMessage.text()).toContain('You:')
+            expect(userMessage.find('.text-blue-800').text()).toBe('You:')
+        })
+
+        it('should display messages in chronological order', () => {
+            gameStore.addUserMessage('First message')
+            gameStore.addAIMessage('AI response')
+            gameStore.addUserMessage('Second message')
+
+            const wrapper = mount(MessageHistory)
+            const messages = wrapper.findAll('[data-testid="message-item"]')
+
+            expect(messages).toHaveLength(3)
+            expect(messages[0].text()).toContain('First message')
+            expect(messages[1].text()).toContain('AI response')
+            expect(messages[2].text()).toContain('Second message')
+        })
+    })
 })

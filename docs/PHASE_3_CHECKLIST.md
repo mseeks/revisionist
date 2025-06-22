@@ -78,14 +78,14 @@ Connect real AI responses to game mechanics - minimal viable AI integration.
 - [x] Verify all async tests pass
 
 ### 9. AI Message Display (TDD First)
-- [ ] Write failing unit tests for AI messages:
-  - [ ] Should differentiate user vs AI messages
-  - [ ] Should show sender name (Franz Ferdinand)
-  - [ ] Should display timestamp
-- [ ] Update Message interface to include sender type
-- [ ] Update MessageHistory component for AI messages
-- [ ] Style AI messages differently from user messages
-- [ ] Verify display tests pass
+- [x] Write failing unit tests for AI messages:
+  - [x] Should differentiate user vs AI messages
+  - [x] Should show sender name (Franz Ferdinand)
+  - [x] Should display timestamp
+- [x] Update Message interface to include sender type
+- [x] Update MessageHistory component for AI messages
+- [x] Style AI messages differently from user messages
+- [x] Verify display tests pass
 
 ### 10. Loading States (TDD First)
 - [ ] Write failing unit tests for loading UI:
