@@ -170,4 +170,42 @@ describe('MessageHistory', () => {
             expect(messages[2].text()).toContain('Second message')
         })
     })
+
+    describe('Loading State', () => {
+        it('should show loading indicator when isLoading is true', () => {
+            gameStore.setLoading(true)
+            const wrapper = mount(MessageHistory)
+            const loadingIndicator = wrapper.find('[data-testid="loading-indicator"]')
+
+            expect(loadingIndicator.exists()).toBe(true)
+        })
+
+        it('should not show loading indicator when isLoading is false', () => {
+            gameStore.setLoading(false)
+            const wrapper = mount(MessageHistory)
+            const loadingIndicator = wrapper.find('[data-testid="loading-indicator"]')
+
+            expect(loadingIndicator.exists()).toBe(false)
+        })
+
+        it('should show loading indicator even when messages exist', () => {
+            gameStore.addUserMessage('Test message')
+            gameStore.setLoading(true)
+
+            const wrapper = mount(MessageHistory)
+            const loadingIndicator = wrapper.find('[data-testid="loading-indicator"]')
+            const messages = wrapper.findAll('[data-testid="message-item"]')
+
+            expect(loadingIndicator.exists()).toBe(true)
+            expect(messages).toHaveLength(1) // Message still shows
+        })
+
+        it('should clear loading indicator when response received', () => {
+            gameStore.setLoading(false)
+            const wrapper = mount(MessageHistory)
+            const loadingIndicator = wrapper.find('[data-testid="loading-indicator"]')
+
+            expect(loadingIndicator.exists()).toBe(false)
+        })
+    })
 })

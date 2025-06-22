@@ -33,7 +33,8 @@ describe('SendButton', () => {
         const wrapper = mount(SendButton)
         const button = wrapper.find('button')
         expect(button.attributes('aria-label')).toBeDefined()
-        expect(button.attributes('role')).toBe('button')
+        expect(button.attributes('role')).toBe('button'
+        )
     })
 
     it('should be keyboard focusable', () => {
@@ -112,6 +113,36 @@ describe('SendButton', () => {
 
             // Button should be disabled
             expect(button.attributes('disabled')).toBeDefined()
+        })
+    })
+
+    describe('Loading State', () => {
+        it('should be disabled when game store is loading', () => {
+            gameStore.setLoading(true)
+            const wrapper = mount(SendButton)
+            const button = wrapper.find('button')
+
+            expect(button.attributes('disabled')).toBeDefined()
+        })
+
+        it('should not emit click event when disabled due to loading', async () => {
+            gameStore.setLoading(true)
+            const wrapper = mount(SendButton)
+            const button = wrapper.find('button')
+
+            await button.trigger('click')
+            expect(wrapper.emitted().click).toBeFalsy()
+        })
+
+        it('should be enabled when loading is false and other conditions are met', () => {
+            gameStore.setLoading(false)
+            gameStore.remainingMessages = 3
+            const wrapper = mount(SendButton, {
+                props: { inputValid: true }
+            })
+            const button = wrapper.find('button')
+
+            expect(button.attributes('disabled')).toBeUndefined()
         })
     })
 })

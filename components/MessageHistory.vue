@@ -7,9 +7,9 @@
     aria-live="polite"
     role="log"
   >
-    <!-- Empty state display when no messages exist -->
+    <!-- Empty state display when no messages exist and not loading -->
     <div
-      v-if="gameStore.messageHistory.length === 0"
+      v-if="gameStore.messageHistory.length === 0 && !gameStore.isLoading"
       data-testid="empty-state"
       class="flex flex-col items-center justify-center p-8 text-gray-500"
     >
@@ -20,7 +20,7 @@
       </div>
     </div>
 
-    <!-- Message list display -->
+    <!-- Message list display (shows when there are messages OR when loading) -->
     <div v-else class="p-4 space-y-3">
       <div
         v-for="(message, index) in gameStore.messageHistory"
@@ -81,6 +81,18 @@
               </p>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- Loading indicator -->
+      <div
+        v-if="gameStore.isLoading"
+        data-testid="loading-indicator"
+        class="flex items-center justify-center p-3 bg-blue-50 border-l-4 border-blue-300 rounded-r-lg"
+      >
+        <div class="flex items-center space-x-2">
+          <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600"></div>
+          <span class="text-sm text-blue-600 font-medium">Franz Ferdinand is thinking...</span>
         </div>
       </div>
     </div>

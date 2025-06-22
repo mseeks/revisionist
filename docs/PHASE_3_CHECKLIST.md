@@ -88,13 +88,13 @@ Connect real AI responses to game mechanics - minimal viable AI integration.
 - [x] Verify display tests pass
 
 ### 10. Loading States (TDD First)
-- [ ] Write failing unit tests for loading UI:
-  - [ ] Should disable send button during API call
-  - [ ] Should show loading indicator
-  - [ ] Should clear loading on response
-- [ ] Update SendButton to respect loading state
-- [ ] Add simple loading spinner to MessageHistory
-- [ ] Verify loading state tests pass
+- [x] Write failing unit tests for loading UI:
+  - [x] Should disable send button during API call
+  - [x] Should show loading indicator
+  - [x] Should clear loading on response
+- [x] Update SendButton to respect loading state
+- [x] Add simple loading spinner to MessageHistory
+- [x] Verify loading state tests pass
 
 ## Error Handling
 
