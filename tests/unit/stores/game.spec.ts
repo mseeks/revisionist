@@ -97,4 +97,39 @@ describe('Game Store', () => {
                 .toBeGreaterThanOrEqual(firstTimestamp.getTime())
         })
     })
+
+    describe('Game Over Handling', () => {
+        it('should detect when 5 messages are used', () => {
+            const gameStore = useGameStore()
+
+            // Send 5 messages to use them all up
+            for (let i = 0; i < 5; i++) {
+                gameStore.addUserMessage(`Message ${i + 1}`)
+                gameStore.decrementMessages()
+            }
+
+            expect(gameStore.remainingMessages).toBe(0)
+            expect(gameStore.gameStatus).toBe('gameOver')
+        })
+
+        it('should prevent further message sending', () => {
+            const gameStore = useGameStore()
+
+            // Use all 5 messages
+            for (let i = 0; i < 5; i++) {
+                gameStore.addUserMessage(`Message ${i + 1}`)
+                gameStore.decrementMessages()
+            }
+
+            // Should be in game over state
+            expect(gameStore.gameStatus).toBe('gameOver')
+            expect(gameStore.canSendMessage).toBe(false)
+
+            // Try to send another message - should be prevented
+            const initialMessageCount = gameStore.messageHistory.length
+            gameStore.addUserMessage('This should not be added')
+
+            expect(gameStore.messageHistory.length).toBe(initialMessageCount)
+        })
+    })
 })

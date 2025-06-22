@@ -81,12 +81,12 @@ Implement basic game logic and state management - minimal viable game flow.
 - [x] Verify complete flow E2E test passes
 
 ### 10. Game Over Handling (TDD First)
-- [ ] Write failing unit tests for game over:
-  - [ ] Should detect when 5 messages are used
-  - [ ] Should prevent further message sending
-- [ ] Implement game over detection in game store
-- [ ] Update UI components to handle game over state
-- [ ] Verify all game over tests pass
+- [x] Write failing unit tests for game over:
+  - [x] Should detect when 5 messages are used
+  - [x] Should prevent further message sending
+- [x] Implement game over detection in game store
+- [x] Update UI components to handle game over state
+- [x] Verify all game over tests pass
 
 ### 11. Basic Reset Functionality (TDD First)
 - [ ] Write failing unit tests for game reset:
@@ -99,7 +99,7 @@ Implement basic game logic and state management - minimal viable game flow.
 ## Success Criteria
 - [x] ✅ Basic game store manages message count and history
 - [x] ✅ Message sending flow works end-to-end
-- [ ] ✅ Game over prevents further messaging
+- [x] ✅ Game over prevents further messaging
 - [ ] ✅ Reset functionality works
 - [x] ✅ All existing tests still pass
 - [x] ✅ No TypeScript errors

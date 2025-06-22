@@ -30,29 +30,46 @@ export const useGameStore = defineStore('game', {
     getters: {
         /**
          * Computed property to check if user can send messages
-         * Returns false when no messages remain
+         * Returns false when no messages remain or game is over
          */
         canSendMessage(): boolean {
-            return this.remainingMessages > 0
+            return this.remainingMessages > 0 && this.gameStatus === 'playing'
         }
     },
 
     actions: {
         /**
+         * Checks if game should be over and updates status
+         * Game ends when all 5 messages are used
+         */
+        checkGameOver() {
+            if (this.remainingMessages === 0) {
+                this.gameStatus = 'gameOver'
+            }
+        },
+
+        /**
          * Decrements the remaining message count
-         * Will not go below 0
+         * Will not go below 0 and checks for game over
          */
         decrementMessages() {
             if (this.remainingMessages > 0) {
                 this.remainingMessages--
+                this.checkGameOver()
             }
         },
 
         /**
          * Adds a user message to the message history
          * Creates a new message with current timestamp
+         * Will not add message if game is over
          */
         addUserMessage(text: string) {
+            // Prevent adding messages when game is over
+            if (this.gameStatus === 'gameOver') {
+                return
+            }
+
             const message: Message = {
                 text,
                 sender: 'user',

@@ -51,7 +51,7 @@
               <MessagesCounter data-testid="messages-counter" />
               <!-- Dynamic mission status badge -->
               <UBadge
-                v-if="gameStore.remainingMessages > 0"
+                v-if="gameStore.gameStatus === 'playing'"
                 color="success"
                 variant="soft"
                 size="lg"
