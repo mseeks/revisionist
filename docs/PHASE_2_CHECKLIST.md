@@ -53,19 +53,19 @@ Implement basic game logic and state management - minimal viable game flow.
 - [x] Verify all history display tests pass
 
 ### 7. Basic Message Input Validation (TDD First)
-- [ ] Write failing unit tests for MessageInput validation:
-  - [ ] Should prevent empty message submission
-  - [ ] Should enforce 160 character limit
-- [ ] Update `MessageInput.vue` with basic validation
-- [ ] Verify all validation tests pass
+- [x] Write failing unit tests for MessageInput validation:
+  - [x] Should prevent empty message submission
+  - [x] Should enforce 160 character limit
+- [x] Update `MessageInput.vue` with basic validation
+- [x] Verify all validation tests pass
 
 ### 8. Connect Send Button (TDD First)
-- [ ] Write failing unit tests for SendButton:
-  - [ ] Should be disabled when no messages remaining
-  - [ ] Should be disabled when input is invalid
-- [ ] Update `SendButton.vue` to connect with game store
-- [ ] Add disabled states based on game conditions
-- [ ] Verify all button state tests pass
+- [x] Write failing unit tests for SendButton:
+  - [x] Should be disabled when no messages remaining
+  - [x] Should be disabled when input is invalid
+- [x] Update `SendButton.vue` to connect with game store
+- [x] Add disabled states based on game conditions
+- [x] Verify all button state tests pass
 
 ## Complete Message Flow
 

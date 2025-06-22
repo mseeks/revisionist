@@ -4,6 +4,7 @@
     type="button"
     aria-label="Send message"
     role="button"
+    :disabled="isDisabled"
   >
     Send
   </UButton>
@@ -13,10 +14,39 @@
 /**
  * SendButton component - renders the message send button
  * 
- * Simple button component for sending messages. Currently non-functional
- * as per Phase 1 requirements - functionality will be added in Phase 2
- * when state management is implemented.
+ * Connected to game store to handle disabled states based on:
+ * - Remaining messages count
+ * - Input validation state
  * 
  * Includes proper accessibility attributes for keyboard navigation.
  */
+
+import { useGameStore } from '~/stores/game'
+
+// Props interface for input validation state
+interface Props {
+  inputValid?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  inputValid: true
+})
+
+// Connect to game store
+const gameStore = useGameStore()
+
+// Computed property to determine if button should be disabled
+const isDisabled = computed((): boolean => {
+  // Disabled if no messages remaining
+  if (!gameStore.canSendMessage) {
+    return true
+  }
+  
+  // Disabled if input is invalid
+  if (!props.inputValid) {
+    return true
+  }
+  
+  return false
+})
 </script>

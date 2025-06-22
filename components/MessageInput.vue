@@ -28,7 +28,7 @@
  * 
  * Provides a textarea for user input with real-time character counting and
  * automatic enforcement of the 160-character limit for game messages.
- * Includes accessibility features for screen readers.
+ * Includes accessibility features for screen readers and validation.
  */
 
 // Character limit constant for the game's message system
@@ -42,10 +42,38 @@ const remainingCharacters = computed((): number => {
   return MAX_CHARACTERS - message.value.length
 })
 
+// Validation computed properties
+const validationErrors = computed((): string[] => {
+  const errors: string[] = []
+  
+  // Trim whitespace for validation
+  const trimmedMessage = message.value.trim()
+  
+  // Check if message is empty
+  if (trimmedMessage.length === 0) {
+    errors.push('Message cannot be empty')
+  }
+  
+  // Note: Character limit is enforced by truncation, not validation
+  
+  return errors
+})
+
+const isValid = computed((): boolean => {
+  return validationErrors.value.length === 0
+})
+
 // Watch for changes and enforce character limit
 watch(message, (newValue: string) => {
   if (newValue.length > MAX_CHARACTERS) {
     message.value = newValue.slice(0, MAX_CHARACTERS)
   }
+})
+
+// Expose validation state and message for parent components
+defineExpose({
+  message,
+  isValid,
+  validationErrors
 })
 </script>
