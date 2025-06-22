@@ -20,9 +20,13 @@
               <h3 class="text-lg font-medium">Send Message</h3>
             </template>
             <div class="space-y-4">
-              <MessageInput />
+              <MessageInput ref="messageInputRef" />
               <div class="flex justify-end">
-                <SendButton data-testid="send-button" />
+                <SendButton 
+                  data-testid="send-button" 
+                  :input-valid="messageInputValid"
+                  @click="handleSendMessage"
+                />
               </div>
             </div>
           </UCard>
@@ -32,7 +36,7 @@
             <template #header>
               <h3 class="text-lg font-medium">Message History</h3>
             </template>
-            <MessageHistory data-testid="message-history" :messages="messages" />
+            <MessageHistory data-testid="message-history" />
           </UCard>
         </div>
 
@@ -44,10 +48,10 @@
               <h3 class="text-lg font-medium text-center">Status</h3>
             </template>
             <div class="text-center space-y-4">
-              <MessagesCounter :remaining-messages="remainingMessages" />
+              <MessagesCounter data-testid="messages-counter" />
               <!-- Dynamic mission status badge -->
               <UBadge
-                v-if="remainingMessages > 0"
+                v-if="gameStore.remainingMessages > 0"
                 color="success"
                 variant="soft"
                 size="lg"
@@ -72,30 +76,46 @@
 
 <script setup lang="ts">
 /**
- * Main game page - Revisionist game interface
+ * Main game page - Revisionist
  * 
- * This is the primary game interface that brings together all game components
- * in a responsive layout. Features include:
- * - Game title and objective display
- * - Message input with character limiting
- * - Message history (empty state for Phase 1)
- * - Messages counter and status indicators
+ * Central orchestration of the game interface including message input,
+ * message history, counter display, and objective status.
  * 
- * Currently uses hardcoded values as per Phase 1 requirements.
- * Dynamic state management will be added in Phase 2.
+ * Connected to game store for state management and implements complete
+ * message sending flow between components.
  */
 
-// Define the message structure for type safety
-interface Message {
-  id: string
-  text: string
-  timestamp: Date
-  character?: string
-}
+import { useGameStore } from '~/stores/game'
 
-// Game state - hardcoded values for Phase 1 foundation
-const messages = ref<Message[]>([])
-const remainingMessages = ref<number>(5)
+// Connect to game store
+const gameStore = useGameStore()
+
+// Component references
+const messageInputRef = ref()
+
+// Computed property for message input validation
+const messageInputValid = computed(() => {
+  return messageInputRef.value?.isValid ?? false
+})
+
+// Message sending handler
+const handleSendMessage = () => {
+  if (!messageInputRef.value) return
+  
+  const messageText = messageInputRef.value.message?.trim()
+  
+  // Validate message before sending
+  if (!messageText || !messageInputRef.value.isValid) {
+    return
+  }
+  
+  // Send message through game store
+  gameStore.addUserMessage(messageText)
+  gameStore.decrementMessages()
+  
+  // Clear the input
+  messageInputRef.value.message = ''
+}
 
 // Meta tags for SEO and social sharing
 useHead({

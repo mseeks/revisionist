@@ -70,15 +70,15 @@ Implement basic game logic and state management - minimal viable game flow.
 ## Complete Message Flow
 
 ### 9. Implement Message Sending Flow (BDD First)
-- [ ] Write E2E test for complete flow:
+- [x] Write E2E test for complete flow:
   ```
   // Given a user has typed a valid message
   // When they click send
   // Then message appears in history and counter decreases
   ```
-- [ ] Implement complete message sending in MessageInput component
-- [ ] Clear input after sending
-- [ ] Verify complete flow E2E test passes
+- [x] Implement complete message sending in MessageInput component
+- [x] Clear input after sending
+- [x] Verify complete flow E2E test passes
 
 ### 10. Game Over Handling (TDD First)
 - [ ] Write failing unit tests for game over:
@@ -97,12 +97,12 @@ Implement basic game logic and state management - minimal viable game flow.
 - [ ] Verify all reset tests pass
 
 ## Success Criteria
-- [ ] ✅ Basic game store manages message count and history
-- [ ] ✅ Message sending flow works end-to-end
+- [x] ✅ Basic game store manages message count and history
+- [x] ✅ Message sending flow works end-to-end
 - [ ] ✅ Game over prevents further messaging
 - [ ] ✅ Reset functionality works
-- [ ] ✅ All existing tests still pass
-- [ ] ✅ No TypeScript errors
+- [x] ✅ All existing tests still pass
+- [x] ✅ No TypeScript errors
 - [ ] ✅ Ready for AI integration in Phase 3
 
 ## Next Phase Preparation

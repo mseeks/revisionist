@@ -407,3 +407,86 @@ test('Accessibility - Screen reader simulation and ARIA compliance', async ({ pa
   // Test that all text content is selectable and readable
   await expect(page.locator('body')).toHaveCSS('font-family', /.+/)
 })
+
+test('BDD - Complete Message Sending Flow', async ({ page, goto }) => {
+  // Given a user has typed a valid message
+  await goto('/', { waitUntil: 'hydration' })
+
+  const messageInput = page.locator('[data-testid="message-input"] textarea')
+  const sendButton = page.locator('[data-testid="send-button"]')
+  const messageHistory = page.locator('[data-testid="message-history"]')
+  const messagesCounter = page.locator('[data-testid="messages-counter"]')
+
+  // Verify initial state
+  await expect(messagesCounter).toContainText('5') // 5 messages remaining
+  await expect(messageHistory.locator('[data-testid="empty-state"]')).toBeVisible()
+
+  // Given a user types a valid message
+  const testMessage = 'Hello, Napoleon! What are your plans for Europe?'
+  await messageInput.fill(testMessage)
+
+  // Verify button becomes enabled (not disabled)
+  await expect(sendButton).not.toBeDisabled()
+
+  // When they click send
+  await sendButton.click()
+
+  // Then message appears in history and counter decreases
+  // Check that message appears in history
+  await expect(messageHistory.locator('[data-testid="message-item"]')).toHaveCount(1)
+  await expect(messageHistory.locator('[data-testid="message-item"]').first()).toContainText(testMessage)
+
+  // Check that counter decreases to 4
+  await expect(messagesCounter).toContainText('4')
+
+  // Check that input is cleared
+  await expect(messageInput).toHaveValue('')
+
+  // Check that empty state is no longer visible
+  await expect(messageHistory.locator('[data-testid="empty-state"]')).not.toBeVisible()
+})
+
+test('BDD - Multiple Message Sending Flow', async ({ page, goto }) => {
+  // Given a user wants to send multiple messages
+  await goto('/', { waitUntil: 'hydration' })
+
+  const messageInput = page.locator('[data-testid="message-input"] textarea')
+  const sendButton = page.locator('[data-testid="send-button"]')
+  const messageHistory = page.locator('[data-testid="message-history"]')
+  const messagesCounter = page.locator('[data-testid="messages-counter"]')
+
+  // Send first message
+  await messageInput.fill('First message to Napoleon')
+  await sendButton.click()
+
+  // Send second message  
+  await messageInput.fill('Second strategic question')
+  await sendButton.click()
+
+  // Then both messages appear in chronological order
+  await expect(messageHistory.locator('[data-testid="message-item"]')).toHaveCount(2)
+  await expect(messageHistory.locator('[data-testid="message-item"]').first()).toContainText('First message to Napoleon')
+  await expect(messageHistory.locator('[data-testid="message-item"]').last()).toContainText('Second strategic question')
+
+  // And counter shows correct remaining messages
+  await expect(messagesCounter).toContainText('3')
+})
+
+test('BDD - Send Button Disabled States', async ({ page, goto }) => {
+  // Given a user is on the game page
+  await goto('/', { waitUntil: 'hydration' })
+
+  const messageInput = page.locator('[data-testid="message-input"] textarea')
+  const sendButton = page.locator('[data-testid="send-button"]')
+
+  // When input is empty, button should be disabled
+  await expect(sendButton).toBeDisabled()
+
+  // When user types valid message, button becomes enabled
+  await messageInput.fill('Valid message')
+  await expect(sendButton).not.toBeDisabled()
+
+  // When user clears input, button becomes disabled again
+  await messageInput.fill('')
+  await expect(sendButton).toBeDisabled()
+})

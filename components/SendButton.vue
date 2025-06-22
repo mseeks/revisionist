@@ -5,6 +5,7 @@
     aria-label="Send message"
     role="button"
     :disabled="isDisabled"
+    @click="handleClick"
   >
     Send
   </UButton>
@@ -34,6 +35,18 @@ const props = withDefaults(defineProps<Props>(), {
 
 // Connect to game store
 const gameStore = useGameStore()
+
+// Define emits for click events
+const emit = defineEmits<{
+  click: []
+}>()
+
+// Click handler that emits the click event
+const handleClick = () => {
+  if (!isDisabled.value) {
+    emit('click')
+  }
+}
 
 // Computed property to determine if button should be disabled
 const isDisabled = computed((): boolean => {
