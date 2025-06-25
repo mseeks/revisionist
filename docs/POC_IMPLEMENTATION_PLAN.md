@@ -36,14 +36,21 @@ A lean, iterative plan to build a working prototype of Revisionist that demonstr
 - ✅ All UI components connected to state
 - ✅ Comprehensive test coverage maintained
 
-## Phase 3: OpenAI Integration 🚧 CURRENT PHASE
+## Phase 3: OpenAI Integration ✅ COMPLETED
 **Goal**: Connect real AI responses to game mechanics
 
-**Status**: 🚧 **IN PROGRESS** - Adding AI responses to message flow
+**Status**: ✅ **COMPLETED** - AI integration with conversation history
 
 **Detailed Implementation**: See [PHASE_3_CHECKLIST.md](./PHASE_3_CHECKLIST.md) for complete TDD/BDD implementation steps.
 
-**Result**: Working AI chat with historical figures responding to messages
+**Results Achieved**:
+- ✅ Working AI chat with Franz Ferdinand responding to messages  
+- ✅ Conversation history maintained per figure (Phase 3 approach)
+- ✅ GPT-4.1 model integration with contextual responses
+- ✅ Loading states and error handling
+- ✅ All existing tests pass with conversation context support
+
+**Architecture Note**: Phase 3 implements **per-figure conversation history**. Franz Ferdinand remembers previous exchanges within a single game session. Phase 4 will explore **global timeline context** where figures can reference actions by other historical figures and timeline changes.
 
 ## Phase 4: Dice System & Outcomes
 **Goal**: Add probabilistic outcomes and progression tracking
@@ -115,6 +122,69 @@ A lean, iterative plan to build a working prototype of Revisionist that demonstr
    - Reliable API calls to OpenAI
    - Proper error states when API fails
    - Clean state management for game resets
+
+## Narrative Framework & Context Architecture
+
+### The Communication Medium Question
+**Challenge**: How does a historical figure receive a "text message" from the future?
+
+**Design Solutions** (to be refined):
+1. **Mystical Interpretation**: Messages appear as "visions," "dreams," or "divine inspiration" 
+2. **Temporal Anomaly**: Unexplained phenomenon - messages arrive via period-appropriate medium
+3. **Suspension of Disbelief**: Like sci-fi time travel, accept the premise and focus on consequences
+
+**Current Implementation**: Messages are presented as direct communication without specific explanation
+
+### Authority & Attention Problem  
+**Challenge**: What makes historical figures pay attention to these messages?
+
+**Potential Solutions**:
+- **Prophetic Accuracy**: Early messages prove their worth through accurate predictions
+- **Inside Knowledge**: Messages contain information only someone with intimate knowledge would know
+- **Compelling Urgency**: Messages address the figure's deepest concerns or ambitions
+- **Mysterious Authority**: Messages carry an inexplicable sense of importance
+
+### Context Architecture Evolution
+
+#### Phase 3 (Current): Per-Figure Context
+```
+Franz Ferdinand: [System: You are Franz Ferdinand...] + [Previous exchanges with Franz Ferdinand]
+Napoleon: [System: You are Napoleon...] + [Previous exchanges with Napoleon]
+```
+**Pros**: Simple, maintains character continuity  
+**Cons**: No cross-figure awareness, isolated conversations
+
+#### Phase 4 (Proposed): Global Timeline Context  
+```
+Global Context: 
+- Timeline State: [Key changes, cascading effects, progress toward objective]
+- Cross-Figure Awareness: [Major interventions with other figures]
+- Historical Consistency: [Logical flow of altered events]
+
+Figure-Specific Context:
+- Character: [Franz Ferdinand personality, concerns, historical position]  
+- Direct History: [Recent exchanges with this specific figure]
+```
+
+**Example Implementation**:
+*Message to Franz Ferdinand after successful intervention with Bismarck:*
+```
+System Context: "You are Franz Ferdinand in 1914. Recent timeline changes: Bismarck's alliance system has shifted toward economic cooperation rather than military pacts, creating a different European political landscape. You've been contacted by an mysterious advisor who demonstrated uncanny foresight about European affairs."
+
+Conversation History: [Previous exchanges with Franz Ferdinand]
+Current Message: "Given the changing alliance structures, perhaps your Sarajevo visit timing should be reconsidered?"
+```
+
+**Benefits**: 
+- Figures can reference broader timeline changes
+- More sophisticated narrative continuity
+- Supports "cascading effects" from game design
+- Enables cross-figure strategic gameplay
+
+**Questions for Future Phases**:
+1. Should figures be explicitly aware they're in an "altered timeline"?
+2. How much should they remember about messages from other figures?
+3. Should there be limits to their "future knowledge" to maintain historical authenticity?
 
 ## Simplified File Structure for POC
 

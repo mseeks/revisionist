@@ -18,10 +18,13 @@ export default defineEventHandler(async (event) => {
         })
     }
 
+    // Extract message and optional conversation history
+    const { message, conversationHistory = [] } = body
+
     try {
-        // Call OpenAI API with the user's message
+        // Call OpenAI API with the user's message and conversation history
         const { callOpenAI } = await import('~/server/utils/openai')
-        const aiResponse = await callOpenAI(body.message)
+        const aiResponse = await callOpenAI(message, conversationHistory)
 
         // Return structured response for frontend
         return {

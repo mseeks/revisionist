@@ -164,14 +164,15 @@ export const useGameStore = defineStore('game', {
                 this.setLoading(true)
                 this.lastMessageTime = Date.now()
                 
-                // Call the API
+                // Call the API with conversation history
                 const response = await $fetch('/api/send-message', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: {
-                        message: text
+                        message: text,
+                        conversationHistory: this.messageHistory.filter(msg => msg.sender !== 'system')
                     }
                 })
                 

@@ -164,3 +164,38 @@ Success levels range from **Complete Failure** through **Narrow Victory** to **E
 - **Emergent Storytelling**: Focus on unique, player-driven experiences over scripted scenarios
 - **Balanced Randomness**: Probability creates genuine uncertainty while maintaining strategic agency
 - **Scalable Framework**: Core mechanics support future additions like modifiers, achievements, or expanded figure databases
+
+## Narrative Framework
+
+### The Communication Medium
+The game deliberately maintains narrative ambiguity about how messages reach historical figures, allowing players to develop their own interpretation:
+
+**Possible Interpretations**:
+- **Divine/Mystical**: Messages appear as visions, dreams, or supernatural inspiration
+- **Temporal Anomaly**: Unexplained phenomenon delivering messages via period-appropriate medium (letters, whispered advice, etc.)
+- **Consciousness Interface**: Direct mental communication transcending temporal boundaries
+- **Suspension of Disbelief**: Accept the premise like time travel in science fiction
+
+### Authority and Attention
+Historical figures respond to messages because:
+
+**Demonstrated Insight**: Early messages prove their worth through accurate predictions or unknown information
+**Personal Relevance**: Messages address the figure's deepest concerns, ambitions, or fears  
+**Mysterious Authority**: Messages carry an inexplicable sense of importance or urgency
+**Prophetic Quality**: Content suggests knowledge beyond normal human capability
+
+### Conversation Context Architecture
+
+#### Current System (Phase 3): Per-Figure Memory
+Each historical figure maintains memory of previous exchanges within a single game session:
+- Franz Ferdinand remembers your past warnings about Sarajevo
+- Napoleon recalls your previous strategic advice
+- Conversations build naturally within each relationship
+
+#### Future Evolution (Phase 4): Global Timeline Awareness  
+Historical figures will gain awareness of broader timeline changes:
+- Franz Ferdinand might reference "troubling reports about shifting alliances" (from your messages to Bismarck)
+- Cross-figure strategic coordination becomes possible
+- Timeline coherence maintained through shared context
+
+**Design Philosophy**: Balance historical authenticity with narrative engagement. Figures remain true to documented personalities while allowing for growth through player intervention.

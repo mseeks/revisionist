@@ -35,19 +35,30 @@ export interface AIResponse {
  * Uses game-specific prompt for Franz Ferdinand character
  * 
  * @param userMessage - The player's message to send to the historical figure
+ * @param conversationHistory - Array of previous messages for context
  * @returns Promise<AIResponse> - Response with success status and AI reply
  */
-export async function callOpenAI(userMessage: string): Promise<AIResponse> {
+export async function callOpenAI(userMessage: string, conversationHistory: any[] = []): Promise<AIResponse> {
     try {
         const client = getOpenAIClient()
         const systemPrompt = buildPrompt()
 
+        // Build messages array: system prompt + conversation history + current user message
+        const messages = [
+            { role: 'system' as const, content: systemPrompt },
+            ...conversationHistory.map((msg: any) => {
+                const role = msg.sender === 'user' ? 'user' as const : 'assistant' as const
+                return {
+                    role,
+                    content: msg.text
+                }
+            }),
+            { role: 'user' as const, content: userMessage }
+        ]
+
         const completion = await client.chat.completions.create({
-            model: 'gpt-3.5-turbo',
-            messages: [
-                { role: 'system', content: systemPrompt },
-                { role: 'user', content: userMessage }
-            ],
+            model: 'gpt-4.1',
+            messages,
             temperature: 0.8, // Higher temperature for more creative/authentic responses
             max_tokens: 200 // Limit response length to keep it concise
         })
