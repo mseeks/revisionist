@@ -26,18 +26,21 @@ export const useGameStore = defineStore('game', {
         messageHistory: [] as Message[],
         gameStatus: 'playing' as GameStatus,
         isLoading: false,
-        error: null as string | null
+        error: null as string | null,
+        lastMessageTime: null as number | null,
+        isRateLimited: false
     }),
 
     getters: {
         /**
          * Computed property to check if user can send messages
-         * Returns false when no messages remain, game is over, or loading
+         * Returns false when no messages remain, game is over, loading, or rate limited
          */
         canSendMessage(): boolean {
             return this.remainingMessages > 0 && 
                    this.gameStatus === 'playing' && 
-                   !this.isLoading
+                   !this.isLoading &&
+                   !this.isRateLimited
         }
     },
 
@@ -110,11 +113,44 @@ export const useGameStore = defineStore('game', {
         },
 
         /**
+         * Checks if enough time has passed since last message (1 second minimum)
+         */
+        checkRateLimit(): boolean {
+            const now = Date.now()
+            if (this.lastMessageTime && (now - this.lastMessageTime) < 1000) {
+                return false // Rate limited
+            }
+            return true // OK to send
+        },
+
+        /**
+         * Sets rate limited state with auto-clear after 1 second
+         */
+        setRateLimit() {
+            this.isRateLimited = true
+            // Auto-clear rate limit after remaining time
+            const remainingTime = this.lastMessageTime ? 
+                Math.max(0, 1000 - (Date.now() - this.lastMessageTime)) : 0
+            
+            setTimeout(() => {
+                this.isRateLimited = false
+            }, remainingTime || 1000)
+        },
+
+        /**
          * Send message with async AI response handling
          * Handles the full flow: user message -> API call -> AI response
+         * Includes rate limiting protection (1 second between calls)
          */
         async sendMessage(text: string): Promise<void> {
             try {
+                // Check rate limiting
+                if (!this.checkRateLimit()) {
+                    this.setRateLimit()
+                    this.setError('Please wait before sending another message')
+                    return
+                }
+
                 // Clear any previous errors
                 this.setError(null)
                 
@@ -124,8 +160,9 @@ export const useGameStore = defineStore('game', {
                 // Decrement message count
                 this.decrementMessages()
                 
-                // Set loading state
+                // Set loading state and record timestamp
                 this.setLoading(true)
+                this.lastMessageTime = Date.now()
                 
                 // Call the API
                 const response = await $fetch('/api/send-message', {
@@ -171,6 +208,8 @@ export const useGameStore = defineStore('game', {
             this.gameStatus = 'playing'
             this.isLoading = false
             this.error = null
+            this.lastMessageTime = null
+            this.isRateLimited = false
         }
     }
 })

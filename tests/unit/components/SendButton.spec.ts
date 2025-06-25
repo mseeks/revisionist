@@ -145,4 +145,51 @@ describe('SendButton', () => {
             expect(button.attributes('disabled')).toBeUndefined()
         })
     })
+
+    describe('Rate Limiting States', () => {
+        it('should display "Please wait..." when rate limited', () => {
+            gameStore.isRateLimited = true
+            const wrapper = mount(SendButton)
+            
+            expect(wrapper.text()).toContain('Please wait...')
+        })
+
+        it('should display "Sending..." when loading', () => {
+            gameStore.setLoading(true)
+            const wrapper = mount(SendButton)
+            
+            expect(wrapper.text()).toContain('Sending...')
+        })
+
+        it('should display "Send" in normal state', () => {
+            const wrapper = mount(SendButton)
+            
+            expect(wrapper.text()).toContain('Send')
+        })
+
+        it('should be disabled when rate limited', () => {
+            gameStore.isRateLimited = true
+            const wrapper = mount(SendButton)
+            const button = wrapper.find('button')
+
+            expect(button.attributes('disabled')).toBeDefined()
+        })
+
+        it('should not emit click event when rate limited', async () => {
+            gameStore.isRateLimited = true
+            const wrapper = mount(SendButton)
+            const button = wrapper.find('button')
+
+            await button.trigger('click')
+            expect(wrapper.emitted().click).toBeFalsy()
+        })
+
+        it('should prioritize rate limited text over loading text', () => {
+            gameStore.isRateLimited = true
+            gameStore.setLoading(true)
+            const wrapper = mount(SendButton)
+            
+            expect(wrapper.text()).toContain('Please wait...')
+        })
+    })
 })

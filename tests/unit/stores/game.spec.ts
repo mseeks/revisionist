@@ -346,4 +346,92 @@ describe('Game Store', () => {
             expect(gameStore.error).toBe(null)
         })
     })
+
+    describe('Rate Limiting Protection', () => {
+        beforeEach(() => {
+            // Mock successful API response for all rate limiting tests
+            mockFetch.mockResolvedValue({
+                success: true,
+                data: { aiResponse: 'Test response' }
+            })
+        })
+
+        it('should prevent sending messages too quickly (1 second limit)', async () => {
+            const gameStore = useGameStore()
+            const initialCount = gameStore.remainingMessages
+
+            // Send first message
+            await gameStore.sendMessage('First message')
+            expect(gameStore.remainingMessages).toBe(initialCount - 1)
+
+            // Try to send second message immediately
+            await gameStore.sendMessage('Second message')
+
+            // Second message should be rate limited
+            expect(gameStore.remainingMessages).toBe(initialCount - 1) // Only one message sent
+            expect(gameStore.error).toBe('Please wait before sending another message')
+            expect(gameStore.isRateLimited).toBe(true)
+        })
+
+        it('should set canSendMessage to false when rate limited', () => {
+            const gameStore = useGameStore()
+            
+            // Initially should be able to send
+            expect(gameStore.canSendMessage).toBe(true)
+            
+            // Simulate rate limiting
+            gameStore.isRateLimited = true
+            
+            // Should not be able to send when rate limited
+            expect(gameStore.canSendMessage).toBe(false)
+        })
+
+        it('should allow sending after 1 second delay', async () => {
+            const gameStore = useGameStore()
+            
+            // Mock Date.now to control time
+            const originalDateNow = Date.now
+            let mockTime = 1000000000000 // Mock timestamp
+            vi.spyOn(Date, 'now').mockImplementation(() => mockTime)
+            
+            // Send first message
+            await gameStore.sendMessage('First message')
+            
+            // Advance time by 1 second
+            mockTime += 1000
+            
+            // Should be able to send now
+            expect(gameStore.checkRateLimit()).toBe(true)
+            
+            // Restore original Date.now
+            Date.now = originalDateNow
+        })
+
+        it('should auto-clear rate limit state after timeout', async () => {
+            const gameStore = useGameStore()
+            
+            // Set rate limit
+            gameStore.setRateLimit()
+            expect(gameStore.isRateLimited).toBe(true)
+            
+            // Wait for auto-clear
+            await new Promise(resolve => setTimeout(resolve, 1100))
+            expect(gameStore.isRateLimited).toBe(false)
+        })
+
+        it('should reset rate limiting state when game is reset', () => {
+            const gameStore = useGameStore()
+            
+            // Set rate limiting state
+            gameStore.isRateLimited = true
+            gameStore.lastMessageTime = Date.now()
+            
+            // Reset game
+            gameStore.resetGame()
+            
+            // Rate limiting state should be cleared
+            expect(gameStore.isRateLimited).toBe(false)
+            expect(gameStore.lastMessageTime).toBe(null)
+        })
+    })
 })

@@ -7,7 +7,7 @@
     :disabled="isDisabled"
     @click="handleClick"
   >
-    Send
+    {{ buttonText }}
   </UButton>
 </template>
 
@@ -61,5 +61,16 @@ const isDisabled = computed((): boolean => {
   }
   
   return false
+})
+
+// Computed property for button text based on state
+const buttonText = computed((): string => {
+  if (gameStore.isRateLimited) {
+    return 'Please wait...'
+  }
+  if (gameStore.isLoading) {
+    return 'Sending...'
+  }
+  return 'Send'
 })
 </script>

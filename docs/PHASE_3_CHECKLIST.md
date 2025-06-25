@@ -109,9 +109,9 @@ Connect real AI responses to game mechanics - minimal viable AI integration.
 - [x] Verify error handling tests pass
 
 ### 12. Rate Limiting Protection
-- [ ] Add simple delay between API calls (1 second)
-- [ ] Prevent spam clicking of send button
-- [ ] Show "Please wait..." if clicking too fast
+- [x] Add simple delay between API calls (1 second)
+- [x] Prevent spam clicking of send button
+- [x] Show "Please wait..." if clicking too fast
 
 ## Basic Integration Testing
 
