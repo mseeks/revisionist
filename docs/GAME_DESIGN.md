@@ -6,7 +6,7 @@
 
 ## Core Gameplay Loop
 
-1. **Receive Objective**: AI generates a grand historical goal requiring cross-timeline coordination (e.g., "Prevent World War I" or "Accelerate the Industrial Revolution")
+1. **AI-Generated Objective**: AI creates a unique grand historical goal requiring cross-timeline coordination (e.g., "Prevent World War I" or "Accelerate the Industrial Revolution")
 2. **Strategic Planning**: Choose which historical figures to contact and plan your initial approach
 3. **Iterative Message Cycle**: For each of your up to 5 messages:
    - **Message Dispatch**: Send one message (160 characters) to a chosen historical figure
@@ -41,20 +41,33 @@ Every message triggers a **D20 dice roll** that determines the outcome's magnitu
 - Strategic risk: catastrophic failures can derail entire plans, while critical successes can achieve objectives with fewer messages
 
 ### AI System Architecture
-Four specialized AI systems collaborate to create the game experience:
+A sophisticated dual-layer AI system creates authentic character interactions while maintaining strategic gameplay:
 
-1. **Objective Generator AI**: Creates grand historical goals requiring multi-figure coordination
-2. **Historical Figure AI**: Responds authentically based on personality, era, and dice outcome
-3. **Timeline Synthesis AI**: Tracks how conversations across different time periods interact and compound
-4. **Outcome Evaluator AI**: Judges final success based on cumulative cross-timeline effects
+**Character Layer**: 
+- **Historical Figure AI**: Responds authentically based on personality, era, and dice outcome
+- Characters remain unaware of player's ultimate objective (e.g., Franz Ferdinand doesn't know about "Prevent WWI")
+- Dice outcomes influence response magnitude and decision-making without breaking character immersion
+- Returns structured output: `{message: "what they say", action: "what they decide to do"}`
+- Maintains historical authenticity and personality consistency across all outcomes
+
+**Timeline Layer**:
+- **Timeline Evaluation AI**: Analyzes character actions and decisions for historical impact toward player's objective
+- Receives dice roll result, character message, and character action for comprehensive analysis
+- Calculates progress changes based on character decisions and their cascading effects
+- Provides narrative explanations connecting personal choices to grand historical outcomes
+- Uses natural language inputs from Character Layer for rich contextual understanding
+
+**Supporting Systems**:
+- **Objective Generator AI**: Creates unique grand historical goals for each game session requiring multi-figure coordination
+- **Timeline Synthesis AI**: Tracks how conversations across different time periods interact and compound
 
 ## Strategic Gameplay Elements
 
 ### Adaptive Strategy System
-- **Real-Time Feedback**: After each message, receive immediate updates on timeline changes and objective progress
-- **Dynamic Planning**: Adjust your approach based on results, potentially pivoting to new figures or strategies
-- **Early Victory Potential**: Achieve objectives in fewer than 5 messages through exceptional results or strategic insight
-- **Risk Mitigation**: Respond to setbacks by changing course rather than being locked into a predetermined plan
+- **Dual-Layer Feedback**: Character responses show immediate personal reactions, while timeline analysis reveals broader historical implications
+- **Dynamic Planning**: Adjust your approach based on both character relationships and timeline evaluation results
+- **Early Victory Potential**: Achieve objectives through character decisions that create unexpected historical cascades
+- **Risk Mitigation**: Respond to setbacks by changing messaging strategies or pivoting to different historical moments
 
 ### Cross-Timeline Strategy
 - **Temporal Synergy**: Actions in one era can amplify or diminish effects in another
@@ -71,10 +84,10 @@ The AI evaluates your final outcome based on:
 
 Success levels range from **Complete Failure** through **Narrow Victory** to **Extraordinary Success**, with most outcomes falling in nuanced middle categories that partially achieve objectives while creating new complications.
 
-## Sample Gameplay: Preventing World War I
+## Sample Gameplay: AI-Generated Objective
 
 ### AI-Generated Objective
-*"Prevent the outbreak of World War I through strategic interventions across multiple time periods and key figures."*
+*The Objective Generator AI creates:* **"Prevent the outbreak of World War I through strategic interventions across multiple time periods and key figures."**
 
 ### Player's Adaptive Strategy
 
@@ -89,24 +102,45 @@ Success levels range from **Complete Failure** through **Narrow Victory** to **E
 #### Message 2: Building on Success
 **Target**: Archduke Franz Ferdinand (1913)  
 *Message*: "Your future assassination sparks global war. Increase your security and avoid Sarajevo on June 28, 1914."  
-**Dice Roll**: 2 (Critical Failure) → Franz Ferdinand becomes paranoid and advocates for preemptive military action against Serbia  
-*Progress Update*: "Franz Ferdinand's newfound paranoia leads him to push Austria-Hungary toward immediate military intervention in Serbian affairs, accelerating the very conflict the message intended to prevent. **Objective Progress: -10% - Major setback threatens earlier gains**"
+**Dice Roll**: 2 (Critical Failure)
+
+*Character Response*:
+- **Message**: "These cryptic warnings... they suggest a conspiracy far darker than I imagined. If enemies plot against me, then all of Serbia must be suspect."
+- **Action**: "Becomes deeply paranoid about the warning and demands immediate military mobilization against perceived Serbian threats"
+
+*Timeline Analysis*: "Franz Ferdinand's paranoid interpretation has accelerated Austria-Hungary toward preemptive military action against Serbia, ironically bringing the very conflict closer that the message intended to prevent. His influence with the Emperor makes this development particularly dangerous for European stability."
+
+*Progress Update*: **Objective Progress: -15% - Major setback threatens earlier diplomatic gains**
 
 *Player Decision: Crisis! Need to counteract this disaster with diplomatic intervention.*
 
 #### Message 3: Damage Control
 **Target**: Kaiser Wilhelm II (1913)  
 *Message*: "Your cousin George and cousin Nicholas seek peace. Family bonds are stronger than empire. Choose cooperation."  
-**Dice Roll**: 18 (Success) → Wilhelm begins diplomatic outreach to his royal cousins  
-*Progress Update*: "Despite Franz Ferdinand's hawkish turn, Kaiser Wilhelm II initiates unprecedented diplomatic correspondence with King George V and Tsar Nicholas II, seeking to defuse growing tensions through family bonds. **Objective Progress: 40% - Diplomatic channels opening**"
+**Dice Roll**: 18 (Success)
+
+*Character Response*:
+- **Message**: "Mein friend, you speak wisdom about family bonds. Perhaps it is time to reach beyond the formalities of state."
+- **Action**: "Begins writing personal letters to King George V and Tsar Nicholas II proposing an informal family summit to discuss European tensions"
+
+*Timeline Analysis*: "Kaiser Wilhelm II's pivot toward family diplomacy creates unprecedented channels for conflict resolution. His direct correspondence with his royal cousins bypasses traditional diplomatic protocols, potentially defusing the mounting tensions that Franz Ferdinand's paranoia has inflamed."
+
+*Progress Update*: **Objective Progress: 25% - Diplomatic breakthrough counteracts earlier setback**
 
 *Player Decision: The diplomatic approach is working. Target the potential American involvement to prevent escalation.*
 
 #### Message 4: Securing Neutrality
 **Target**: Woodrow Wilson (1917)  
 *Message*: "America's entry into European war creates precedent for endless global conflict. Choose isolation and prosperity."  
-**Dice Roll**: 20 (Critical Success) → Wilson becomes a passionate advocate for permanent American neutrality  
-*Progress Update*: "Wilson's monumental conversion to absolute neutrality doctrine reshapes American foreign policy, removing a crucial factor that historically escalated the conflict. **Objective Progress: 85% - Victory within reach!**"
+**Dice Roll**: 20 (Critical Success)
+
+*Character Response*:
+- **Message**: "Your words illuminate a truth I have long sensed but not articulated. America must not become entangled in the endless quarrels of the Old World."
+- **Action**: "Experiences a profound conversion to absolute neutrality and begins drafting a new doctrine of permanent American hemispheric isolation"
+
+*Timeline Analysis*: "Wilson's dramatic policy reversal removes the crucial factor that historically transformed a European conflict into a global war. Without American intervention, any remaining European conflict would likely burn out quickly due to limited resources and lack of external support. This represents a fundamental shift in the trajectory toward your objective."
+
+*Progress Update*: **Objective Progress: 85% - Victory within reach through cascading neutrality effects**
 
 *Player Decision: So close! One more strategic message could secure victory.*
 
@@ -118,6 +152,8 @@ Success levels range from **Complete Failure** through **Narrow Victory** to **E
 ## Strategic Depth and Replayability
 
 ### Objective Categories
+AI-generated objectives span multiple categories and complexity levels:
+
 **Historical Prevention**: Stop major conflicts, disasters, or catastrophic events
 - "Prevent World War II" - Contact Hitler's art teacher, Churchill in 1935, Roosevelt in 1939
 - "Avert the Black Death" - Reach out to Byzantine traders, Mongol administrators, European physicians
@@ -137,9 +173,9 @@ Success levels range from **Complete Failure** through **Narrow Victory** to **E
 - **Contingency Planning**: Adapting when early dice rolls don't go as expected
 
 ### Replayability Factors
+- **AI-Generated Objectives**: Each game session features a unique historical goal created by the Objective Generator
 - **Infinite Figure Combinations**: Countless ways to pair historical figures across different eras
 - **Probabilistic Variation**: Identical strategies can succeed or fail based on dice outcomes
-- **Objective Diversity**: AI generates unique historical goals each playthrough
 - **Strategic Discovery**: Players uncover new synergies and interactions between figures
 - **Difficulty Emergence**: Challenge arises organically from objective complexity, historical resistance, and random outcomes
 
