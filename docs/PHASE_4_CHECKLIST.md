@@ -88,12 +88,12 @@ Add probabilistic outcomes with D20 dice mechanics and objective progress tracki
 - [x] Verify progress tracking tests pass
 
 ### 6. Progress Display Component (TDD First)
-- [ ] Write failing unit tests for ProgressTracker:
-  - [ ] Should display AI-generated objective
-  - [ ] Should display current percentage
-  - [ ] Should show visual progress bar
-  - [ ] Should indicate objective status
-- [ ] Write BDD test:
+- [x] Write failing unit tests for ProgressTracker:
+  - [x] Should display AI-generated objective
+  - [x] Should display current percentage
+  - [x] Should show visual progress bar
+  - [x] Should indicate objective status
+- [x] Write BDD test:
   ```
   // Given a user has an AI-generated objective
   // When they make progress toward the objective
@@ -101,25 +101,25 @@ Add probabilistic outcomes with D20 dice mechanics and objective progress tracki
   // And a visual progress bar
   // And the current objective clearly displayed
   ```
-- [ ] Create `components/ProgressTracker.vue`
-- [ ] Display current objective from game state
-- [ ] Use Nuxt UI progress component
-- [ ] Style with appropriate colors (red/yellow/green)
-- [ ] Verify all progress display tests pass
+- [x] Create `components/ProgressTracker.vue`
+- [x] Display current objective from game state
+- [x] Use Nuxt UI progress component
+- [x] Style with appropriate colors (red/yellow/green)
+- [x] Verify all progress display tests pass
 
 ### 7. Structured Message Display (TDD First)
-- [ ] Write failing unit tests for enhanced message display:
-  - [ ] Should show dice roll value (1-20) and outcome category
-  - [ ] Should display character message and action separately
-  - [ ] Should show timeline impact analysis
-  - [ ] Should use appropriate styling per outcome
-- [ ] Update MessageHistory to show structured AI responses
-- [ ] Display character message as conversation
-- [ ] Display character action as consequence summary
-- [ ] Show timeline impact explanation with progress change
-- [ ] Add dice icon and roll animation with result reveal
-- [ ] Style based on outcome (critical failure = red, critical success = green)
-- [ ] Verify structured message display tests pass
+- [x] Write failing unit tests for enhanced message display:
+  - [x] Should show dice roll value (1-20) and outcome category
+  - [x] Should display character message and action separately
+  - [x] Should show timeline impact analysis
+  - [x] Should use appropriate styling per outcome
+- [x] Update MessageHistory to show structured AI responses
+- [x] Display character message as conversation
+- [x] Display character action as consequence summary
+- [x] Show timeline impact explanation with progress change
+- [x] Add dice icon and roll animation with result reveal
+- [x] Style based on outcome (critical failure = red, critical success = green)
+- [x] Verify structured message display tests pass
 
 ## AI Response Enhancement
 

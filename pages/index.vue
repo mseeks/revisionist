@@ -22,11 +22,7 @@
             <div class="space-y-4">
               <MessageInput ref="messageInputRef" />
               <div class="flex justify-end">
-                <SendButton 
-                  data-testid="send-button" 
-                  :input-valid="messageInputValid"
-                  @click="handleSendMessage"
-                />
+                <SendButton data-testid="send-button" :input-valid="messageInputValid" @click="handleSendMessage" />
               </div>
             </div>
           </UCard>
@@ -38,17 +34,12 @@
             </template>
             <div class="space-y-4">
               <MessageHistory data-testid="message-history" />
-              
+
               <!-- Error display -->
-              <UAlert
-                v-if="gameStore.error"
-                data-testid="error-alert"
-                color="error"
-                variant="soft"
+              <UAlert v-if="gameStore.error" data-testid="error-alert" color="error" variant="soft"
                 :title="gameStore.error"
                 :close-button="{ icon: 'i-heroicons-x-mark-20-solid', color: 'gray', variant: 'link', padded: false, 'data-testid': 'error-close' }"
-                @close="gameStore.setError(null)"
-              />
+                @close="gameStore.setError(null)" />
             </div>
           </UCard>
         </div>
@@ -63,35 +54,27 @@
             <div class="text-center space-y-4">
               <MessagesCounter data-testid="messages-counter" />
               <!-- Dynamic mission status badge -->
-              <UBadge
-                v-if="gameStore.gameStatus === 'playing'"
-                color="success"
-                variant="soft"
-                size="lg"
-              >
+              <UBadge v-if="gameStore.gameStatus === 'playing'" color="success" variant="soft" size="lg">
                 Active Mission
               </UBadge>
-              <UBadge
-                v-else
-                color="error"
-                variant="soft"
-                size="lg"
-              >
+              <UBadge v-else color="error" variant="soft" size="lg">
                 Mission Complete
               </UBadge>
-              
+
               <!-- Reset button for testing -->
-              <UButton
-                color="neutral"
-                variant="soft"
-                size="md"
-                data-testid="reset-button"
-                icon="i-heroicons-arrow-path"
-                @click="handleResetGame"
-              >
+              <UButton color="neutral" variant="soft" size="md" data-testid="reset-button" icon="i-heroicons-arrow-path"
+                @click="handleResetGame">
                 Reset Game
               </UButton>
             </div>
+          </UCard>
+
+          <!-- Progress Tracker Panel -->
+          <UCard>
+            <template #header>
+              <h3 class="text-lg font-medium text-center">Mission Progress</h3>
+            </template>
+            <ProgressTracker />
           </UCard>
         </div>
       </div>
@@ -114,6 +97,13 @@ import { useGameStore } from '~/stores/game'
 
 // Connect to game store
 const gameStore = useGameStore()
+
+// Initialize objective if not already set
+onMounted(async () => {
+  if (!gameStore.currentObjective) {
+    await gameStore.generateObjective()
+  }
+})
 
 // Component references
 const messageInputRef = ref()
