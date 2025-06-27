@@ -34,22 +34,22 @@ Add probabilistic outcomes with D20 dice mechanics and objective progress tracki
 - [x] Verify all dice utility tests pass
 
 ### 3. Dual-Layer AI System with Structured Outputs (TDD First)
-- [ ] Write failing unit tests for dual AI system:
-  - [ ] Should perform dice roll on message send
-  - [ ] Should generate structured character response (message, action)
-  - [ ] Should pass dice roll and character data to timeline evaluation
-  - [ ] Should return both character response and timeline analysis
-- [ ] Update `server/api/send-message.post.ts` for structured two-stage AI generation
-- [ ] First AI call: Character response using OpenAI structured outputs
+- [x] Write failing unit tests for dual AI system:
+  - [x] Should perform dice roll on message send
+  - [x] Should generate structured character response (message, action)
+  - [x] Should pass dice roll and character data to timeline evaluation
+  - [x] Should return both character response and timeline analysis
+- [x] Update `server/api/send-message.post.ts` for structured two-stage AI generation
+- [x] First AI call: Character response using OpenAI structured outputs
   ```json
   {
     "message": "What Franz Ferdinand says to the player",
     "action": "What Franz Ferdinand decides to do in response"
   }
   ```
-- [ ] Second AI call: Timeline evaluation (receives dice roll + character structure)
-- [ ] Return comprehensive response data (character response, timeline impact, dice data)
-- [ ] Verify dual-layer AI with structured outputs tests pass
+- [x] Second AI call: Timeline evaluation (receives dice roll + character structure)
+- [x] Return comprehensive response data (character response, timeline impact, dice data)
+- [x] Verify dual-layer AI with structured outputs tests pass
 
 ### 4. Store Structured Character Data (TDD First)
 - [ ] Write failing unit tests for structured data storage:

@@ -180,11 +180,34 @@ export const useGameStore = defineStore('game', {
                 })
                 
                 // Handle successful response
-                if (response.success && response.data.aiResponse) {
-                    this.addAIMessage(response.data.aiResponse)
+                if (response.success && response.data) {
+                    // Check for new dual-layer AI response first
+                    if ('characterResponse' in response.data && response.data.characterResponse) {
+                        // Phase 4: Handle dual-layer AI response
+                        const data = response.data as any // Type assertion for now until we update interfaces
+                        const { characterResponse, diceRoll, diceOutcome, timelineAnalysis } = data
+
+                        // Add the character's message to history
+                        this.addAIMessage(characterResponse.message)
+
+                        // TODO: Store dice roll and timeline analysis for UI display
+                        // This will be used by progress tracking and dice animation components
+                        console.log('Dice Roll:', diceRoll, diceOutcome)
+                        console.log('Timeline Impact:', timelineAnalysis?.impact)
+                        console.log('Progress Change:', timelineAnalysis?.progressChange)
+                    } else if ('aiResponse' in response.data && response.data.aiResponse) {
+                        // Backward compatibility: Handle old single-layer AI response
+                        const data = response.data as any
+                        this.addAIMessage(data.aiResponse)
+                    } else {
+                        // Handle case where response succeeded but no AI content
+                        const data = response.data as any
+                        const errorMsg = data.error || 'No AI response received'
+                        this.setError(errorMsg)
+                    }
                 } else {
                     // Handle API errors
-                    const errorMsg = response.data.error || 'Failed to get AI response'
+                    const errorMsg = response.data?.error || 'Failed to get AI response'
                     this.setError(errorMsg)
                     // Don't restore message count on error to prevent spam
                 }

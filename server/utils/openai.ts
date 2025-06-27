@@ -1,5 +1,5 @@
 import OpenAI from 'openai'
-import { buildPrompt } from './prompt-builder'
+import { buildPrompt, buildCharacterPrompt } from './prompt-builder'
 
 let openaiClient: OpenAI | null = null
 
@@ -31,6 +31,33 @@ export interface AIResponse {
 }
 
 /**
+ * Structured Character Response Interface (Phase 4)
+ */
+export interface StructuredCharacterResponse {
+    message: string
+    action: string
+}
+
+/**
+ * Character AI Response Interface (Phase 4)
+ */
+export interface CharacterAIResponse {
+    success: boolean
+    characterResponse?: StructuredCharacterResponse
+    error?: string
+}
+
+/**
+ * Timeline Analysis Response Interface (Phase 4)
+ */
+export interface TimelineAIResponse {
+    success: boolean
+    timelineImpact?: string
+    progressChange?: number
+    error?: string
+}
+
+/**
  * Call OpenAI API with proper error handling
  * Uses game-specific prompt for Franz Ferdinand character
  * 
@@ -44,7 +71,7 @@ export async function callOpenAI(userMessage: string, conversationHistory: any[]
         const systemPrompt = buildPrompt()
 
         // Build messages array: system prompt + conversation history
-        // Note: conversationHistory already includes the current user message from the store
+        // If conversationHistory is empty, add the current user message
         const messages = [
             { role: 'system' as const, content: systemPrompt },
             ...conversationHistory.map((msg: any) => {
@@ -55,6 +82,11 @@ export async function callOpenAI(userMessage: string, conversationHistory: any[]
                 }
             })
         ]
+
+        // If no conversation history provided, add the current user message
+        if (conversationHistory.length === 0) {
+            messages.push({ role: 'user' as const, content: userMessage })
+        }
 
         const completion = await client.chat.completions.create({
             model: 'gpt-4.1',
@@ -93,6 +125,231 @@ export async function callOpenAI(userMessage: string, conversationHistory: any[]
         return {
             success: false,
             error: 'I apologize, but I cannot respond at this moment. Perhaps try again shortly.'
+        }
+    }
+}
+
+/**
+ * Call Character AI with structured outputs (Phase 4)
+ * Uses OpenAI structured outputs to get both message and action from Franz Ferdinand
+ * 
+ * @param userMessage - The player's message to send to the historical figure
+ * @param conversationHistory - Array of previous messages for context
+ * @param diceOutcome - The dice outcome to influence response magnitude
+ * @returns Promise<CharacterAIResponse> - Structured response with message and action
+ */
+export async function callCharacterAI(
+    userMessage: string,
+    conversationHistory: any[] = [],
+    diceOutcome: string
+): Promise<CharacterAIResponse> {
+    try {
+        const client = getOpenAIClient()
+        const systemPrompt = buildCharacterPrompt(diceOutcome)
+
+        // Build messages array: system prompt + conversation history + current message
+        const messages = [
+            { role: 'system' as const, content: systemPrompt },
+            ...conversationHistory.map((msg: any) => {
+                const role = msg.sender === 'user' ? 'user' as const : 'assistant' as const
+                return {
+                    role,
+                    content: msg.text
+                }
+            }),
+            { role: 'user' as const, content: userMessage }
+        ]
+
+        // Define the structured output schema
+        const responseSchema = {
+            type: 'object',
+            properties: {
+                message: {
+                    type: 'string',
+                    description: 'What Franz Ferdinand says in response to the player'
+                },
+                action: {
+                    type: 'string',
+                    description: 'What Franz Ferdinand decides to do as a result of this message'
+                }
+            },
+            required: ['message', 'action'],
+            additionalProperties: false
+        }
+
+        const completion = await client.chat.completions.create({
+            model: 'gpt-4.1',
+            messages,
+            temperature: 0.8,
+            max_tokens: 300,
+            response_format: {
+                type: 'json_schema',
+                json_schema: {
+                    name: 'character_response',
+                    schema: responseSchema
+                }
+            }
+        })
+
+        // Validate response structure
+        if (!completion.choices || completion.choices.length === 0) {
+            return {
+                success: false,
+                error: 'Character AI could not generate a response'
+            }
+        }
+
+        const aiContent = completion.choices[0].message?.content?.trim()
+
+        if (!aiContent) {
+            return {
+                success: false,
+                error: 'Character AI generated empty response'
+            }
+        }
+
+        // Parse the structured JSON response
+        const parsedResponse = JSON.parse(aiContent) as StructuredCharacterResponse
+
+        if (!parsedResponse.message || !parsedResponse.action) {
+            return {
+                success: false,
+                error: 'Character AI response missing required fields'
+            }
+        }
+
+        return {
+            success: true,
+            characterResponse: parsedResponse
+        }
+
+    } catch (error) {
+        console.error('Character AI error:', error)
+        return {
+            success: false,
+            error: 'Character AI could not process the request'
+        }
+    }
+}
+
+/**
+ * Call Timeline AI to evaluate historical impact (Phase 4)
+ * Analyzes character actions for progress toward objective
+ * 
+ * @param diceRoll - The dice roll value (1-20)
+ * @param diceOutcome - The dice outcome category
+ * @param characterResponse - The structured character response
+ * @param userMessage - The original user message
+ * @param currentObjective - The current game objective
+ * @returns Promise<TimelineAIResponse> - Timeline impact analysis
+ */
+export async function callTimelineAI(
+    diceRoll: number,
+    diceOutcome: string,
+    characterResponse: StructuredCharacterResponse,
+    userMessage: string,
+    currentObjective: string = "Prevent World War I"
+): Promise<TimelineAIResponse> {
+    try {
+        const client = getOpenAIClient()
+
+        const timelinePrompt = `You are a Timeline Evaluator AI analyzing how historical figure actions affect the objective: "${currentObjective}"
+
+Historical Figure: Franz Ferdinand, Archduke of Austria-Hungary (1914)
+Player Message: "${userMessage}"
+Dice Roll: ${diceRoll}/20 (${diceOutcome})
+
+Character's Response:
+- What Franz Ferdinand said: "${characterResponse.message}"
+- What Franz Ferdinand decided to do: "${characterResponse.action}"
+
+Your task is to analyze how Franz Ferdinand's specific action affects progress toward "${currentObjective}". Consider:
+
+1. The immediate consequences of his decision
+2. How this action might influence other European leaders
+3. The cascading effects on diplomatic relations
+4. Whether this brings us closer to or further from the objective
+5. The magnitude of impact based on the dice outcome
+
+Provide:
+1. A narrative explanation of the timeline impact (2-3 sentences)
+2. A progress change as a number between -50 and +50 (negative = setback, positive = progress)
+
+The progress change should reflect:
+- Critical Success (19-20): Major positive impact (+25 to +50)
+- Success (14-18): Good progress (+10 to +25)
+- Neutral (8-13): Minimal impact (-5 to +10)
+- Failure (3-7): Setback (-10 to -25)
+- Critical Failure (1-2): Major disaster (-25 to -50)
+
+Respond in JSON format with "timelineImpact" (string) and "progressChange" (number) fields.`
+
+        const completion = await client.chat.completions.create({
+            model: 'gpt-4.1',
+            messages: [
+                { role: 'system', content: timelinePrompt }
+            ],
+            temperature: 0.7,
+            max_tokens: 250,
+            response_format: {
+                type: 'json_schema',
+                json_schema: {
+                    name: 'timeline_analysis',
+                    schema: {
+                        type: 'object',
+                        properties: {
+                            timelineImpact: {
+                                type: 'string',
+                                description: 'Narrative explanation of how the character action affects the timeline'
+                            },
+                            progressChange: {
+                                type: 'number',
+                                description: 'Progress change toward objective (-50 to +50)'
+                            }
+                        },
+                        required: ['timelineImpact', 'progressChange'],
+                        additionalProperties: false
+                    }
+                }
+            }
+        })
+
+        if (!completion.choices || completion.choices.length === 0) {
+            return {
+                success: false,
+                error: 'Timeline AI could not generate analysis'
+            }
+        }
+
+        const aiContent = completion.choices[0].message?.content?.trim()
+
+        if (!aiContent) {
+            return {
+                success: false,
+                error: 'Timeline AI generated empty response'
+            }
+        }
+
+        const parsedResponse = JSON.parse(aiContent)
+
+        if (typeof parsedResponse.timelineImpact !== 'string' || typeof parsedResponse.progressChange !== 'number') {
+            return {
+                success: false,
+                error: 'Timeline AI response missing required fields'
+            }
+        }
+
+        return {
+            success: true,
+            timelineImpact: parsedResponse.timelineImpact,
+            progressChange: parsedResponse.progressChange
+        }
+
+    } catch (error) {
+        console.error('Timeline AI error:', error)
+        return {
+            success: false,
+            error: 'Timeline AI could not process the request'
         }
     }
 }

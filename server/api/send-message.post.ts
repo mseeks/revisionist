@@ -22,18 +22,64 @@ export default defineEventHandler(async (event) => {
     const { message, conversationHistory = [] } = body
 
     try {
-        // Call OpenAI API with the user's message and conversation history
-        const { callOpenAI } = await import('~/server/utils/openai')
-        const aiResponse = await callOpenAI(message, conversationHistory)
+        // Import dual-layer AI system and dice utility
+        const { callCharacterAI, callTimelineAI } = await import('~/server/utils/openai')
+        const { rollD20 } = await import('~/utils/dice')
 
-        // Return structured response for frontend
+        // Step 1: Roll dice to determine outcome
+        const diceResult = rollD20()
+
+        // Step 2: Get structured character response based on dice outcome
+        const characterResponse = await callCharacterAI(message, conversationHistory, diceResult.outcome)
+
+        if (!characterResponse.success || !characterResponse.characterResponse) {
+            return {
+                success: false,
+                message: 'Failed to generate character response',
+                data: {
+                    userMessage: body.message,
+                    error: characterResponse.error || 'Character AI failed'
+                }
+            }
+        }
+
+        // Step 3: Evaluate timeline impact based on character's action
+        const timelineResponse = await callTimelineAI(
+            diceResult.roll,
+            diceResult.outcome,
+            characterResponse.characterResponse,
+            message,
+            "Prevent World War I" // TODO: Get from game state in future
+        )
+
+        if (!timelineResponse.success) {
+            return {
+                success: false,
+                message: 'Failed to generate timeline analysis',
+                data: {
+                    userMessage: body.message,
+                    diceRoll: diceResult.roll,
+                    diceOutcome: diceResult.outcome,
+                    characterResponse: characterResponse.characterResponse,
+                    error: timelineResponse.error || 'Timeline AI failed'
+                }
+            }
+        }
+
+        // Return comprehensive dual-layer response
         return {
-            success: aiResponse.success,
-            message: aiResponse.success ? 'AI response generated successfully' : 'Failed to generate AI response',
+            success: true,
+            message: 'Dual-layer AI response generated successfully',
             data: {
                 userMessage: body.message,
-                aiResponse: aiResponse.aiResponse || null,
-                error: aiResponse.error || null
+                diceRoll: diceResult.roll,
+                diceOutcome: diceResult.outcome,
+                characterResponse: characterResponse.characterResponse,
+                timelineAnalysis: {
+                    impact: timelineResponse.timelineImpact,
+                    progressChange: timelineResponse.progressChange
+                },
+                error: null
             }
         }
     } catch (error) {
