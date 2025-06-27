@@ -18,12 +18,12 @@ Add probabilistic outcomes with D20 dice mechanics and objective progress tracki
 - [x] Verify objective generation tests pass
 
 ### 2. Create Dice Utility (TDD First)
-- [ ] Write failing unit tests in `tests/unit/utils/dice.spec.ts`:
-  - [ ] Should roll a number between 1-20
-  - [ ] Should categorize roll into outcome tiers
-  - [ ] Should return both roll value and outcome type
-- [ ] Create `utils/dice.ts` with D20 roll function
-- [ ] Implement outcome categorization:
+- [x] Write failing unit tests in `tests/unit/utils/dice.spec.ts`:
+  - [x] Should roll a number between 1-20
+  - [x] Should categorize roll into outcome tiers
+  - [x] Should return both roll value and outcome type
+- [x] Create `utils/dice.ts` with D20 roll function
+- [x] Implement outcome categorization:
   ```
   1-2: Critical Failure
   3-7: Failure
@@ -31,7 +31,7 @@ Add probabilistic outcomes with D20 dice mechanics and objective progress tracki
   14-18: Success
   19-20: Critical Success
   ```
-- [ ] Verify all dice utility tests pass
+- [x] Verify all dice utility tests pass
 
 ### 3. Dual-Layer AI System with Structured Outputs (TDD First)
 - [ ] Write failing unit tests for dual AI system:
