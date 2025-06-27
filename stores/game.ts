@@ -9,6 +9,11 @@ export interface Message {
     text: string
     sender: 'user' | 'ai' | 'system'
     timestamp: Date
+    diceRoll?: number
+    diceOutcome?: string
+    characterAction?: string
+    timelineImpact?: string
+    progressChange?: number
 }
 
 /**
@@ -102,6 +107,24 @@ export const useGameStore = defineStore('game', {
         },
 
         /**
+         * Adds an AI message with structured data to the message history
+         * Supports dice roll data, character action, timeline impact, and progress changes
+         */
+        addAIMessageWithData(messageData: Partial<Message> & { text: string, sender: 'ai' }) {
+            const message: Message = {
+                text: messageData.text,
+                sender: messageData.sender,
+                timestamp: messageData.timestamp || new Date(),
+                diceRoll: messageData.diceRoll,
+                diceOutcome: messageData.diceOutcome,
+                characterAction: messageData.characterAction,
+                timelineImpact: messageData.timelineImpact,
+                progressChange: messageData.progressChange
+            }
+            this.messageHistory.push(message)
+        },
+
+        /**
          * Sets the loading state
          */
         setLoading(loading: boolean) {
@@ -183,18 +206,26 @@ export const useGameStore = defineStore('game', {
                 if (response.success && response.data) {
                     // Check for new dual-layer AI response first
                     if ('characterResponse' in response.data && response.data.characterResponse) {
-                        // Phase 4: Handle dual-layer AI response
+                        // Phase 4: Handle dual-layer AI response with structured data storage
                         const data = response.data as any // Type assertion for now until we update interfaces
                         const { characterResponse, diceRoll, diceOutcome, timelineAnalysis } = data
 
-                        // Add the character's message to history
-                        this.addAIMessage(characterResponse.message)
+                        // Store structured AI response with all dice and timeline data
+                        this.addAIMessageWithData({
+                            text: characterResponse.message,
+                            sender: 'ai',
+                            timestamp: new Date(),
+                            diceRoll: diceRoll,
+                            diceOutcome: diceOutcome,
+                            characterAction: characterResponse.action,
+                            timelineImpact: timelineAnalysis?.impact,
+                            progressChange: timelineAnalysis?.progressChange
+                        })
 
-                        // TODO: Store dice roll and timeline analysis for UI display
-                        // This will be used by progress tracking and dice animation components
-                        console.log('Dice Roll:', diceRoll, diceOutcome)
-                        console.log('Timeline Impact:', timelineAnalysis?.impact)
-                        console.log('Progress Change:', timelineAnalysis?.progressChange)
+                        // Update objective progress if timeline analysis provided progress change
+                        if (timelineAnalysis?.progressChange) {
+                            this.updateObjectiveProgress(timelineAnalysis.progressChange)
+                        }
                     } else if ('aiResponse' in response.data && response.data.aiResponse) {
                         // Backward compatibility: Handle old single-layer AI response
                         const data = response.data as any

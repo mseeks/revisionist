@@ -544,4 +544,102 @@ describe('Game Store', () => {
             consoleSpy.mockRestore()
         })
     })
+
+    describe('Structured Character Data Storage', () => {
+        it('should store character message with dice roll and outcome', () => {
+            const gameStore = useGameStore()
+
+            // Create a structured AI message with dice data
+            const structuredMessage = {
+                text: "I appreciate your counsel, but I must proceed with caution.",
+                sender: 'ai' as const,
+                timestamp: new Date(),
+                diceRoll: 15,
+                diceOutcome: 'Success'
+            }
+
+            gameStore.addAIMessageWithData(structuredMessage)
+
+            const lastMessage = gameStore.messageHistory[gameStore.messageHistory.length - 1]
+            expect(lastMessage.text).toBe(structuredMessage.text)
+            expect(lastMessage.diceRoll).toBe(15)
+            expect(lastMessage.diceOutcome).toBe('Success')
+        })
+
+        it('should store character action description', () => {
+            const gameStore = useGameStore()
+
+            const structuredMessage = {
+                text: "Your advice resonates with me.",
+                sender: 'ai' as const,
+                timestamp: new Date(),
+                diceRoll: 18,
+                diceOutcome: 'Success',
+                characterAction: "Franz Ferdinand decides to increase his security detail and avoid public appearances."
+            }
+
+            gameStore.addAIMessageWithData(structuredMessage)
+
+            const lastMessage = gameStore.messageHistory[gameStore.messageHistory.length - 1]
+            expect(lastMessage.characterAction).toBe("Franz Ferdinand decides to increase his security detail and avoid public appearances.")
+        })
+
+        it('should store timeline evaluation and progress impact', () => {
+            const gameStore = useGameStore()
+
+            const structuredMessage = {
+                text: "I will consider this carefully.",
+                sender: 'ai' as const,
+                timestamp: new Date(),
+                diceRoll: 16,
+                diceOutcome: 'Success',
+                timelineImpact: "Franz Ferdinand's increased caution reduces the likelihood of assassination, moving closer to preventing WWI.",
+                progressChange: 25
+            }
+
+            gameStore.addAIMessageWithData(structuredMessage)
+
+            const lastMessage = gameStore.messageHistory[gameStore.messageHistory.length - 1]
+            expect(lastMessage.timelineImpact).toBe("Franz Ferdinand's increased caution reduces the likelihood of assassination, moving closer to preventing WWI.")
+            expect(lastMessage.progressChange).toBe(25)
+        })
+
+        it('should maintain structured message history for context', () => {
+            const gameStore = useGameStore()
+
+            // Add a user message
+            gameStore.addUserMessage("Be careful in Sarajevo on June 28, 1914")
+
+            // Add structured AI response
+            const structuredResponse = {
+                text: "Your warning is most peculiar, yet I sense truth in it.",
+                sender: 'ai' as const,
+                timestamp: new Date(),
+                diceRoll: 14,
+                diceOutcome: 'Success',
+                characterAction: "Franz Ferdinand asks his security chief to review the Sarajevo visit plans.",
+                timelineImpact: "Initial steps toward preventing the assassination are taken.",
+                progressChange: 15
+            }
+
+            gameStore.addAIMessageWithData(structuredResponse)
+
+            expect(gameStore.messageHistory).toHaveLength(2)
+
+            // Check user message remains simple
+            const userMessage = gameStore.messageHistory[0]
+            expect(userMessage.text).toBe("Be careful in Sarajevo on June 28, 1914")
+            expect(userMessage.diceRoll).toBeUndefined()
+            expect(userMessage.characterAction).toBeUndefined()
+
+            // Check AI message has all structured data
+            const aiMessage = gameStore.messageHistory[1]
+            expect(aiMessage.text).toBe(structuredResponse.text)
+            expect(aiMessage.diceRoll).toBe(14)
+            expect(aiMessage.diceOutcome).toBe('Success')
+            expect(aiMessage.characterAction).toBe(structuredResponse.characterAction)
+            expect(aiMessage.timelineImpact).toBe(structuredResponse.timelineImpact)
+            expect(aiMessage.progressChange).toBe(15)
+        })
+    })
 })

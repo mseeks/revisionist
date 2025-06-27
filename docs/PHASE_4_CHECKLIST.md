@@ -52,12 +52,12 @@ Add probabilistic outcomes with D20 dice mechanics and objective progress tracki
 - [x] Verify dual-layer AI with structured outputs tests pass
 
 ### 4. Store Structured Character Data (TDD First)
-- [ ] Write failing unit tests for structured data storage:
-  - [ ] Should store character message with dice roll and outcome
-  - [ ] Should store character action description
-  - [ ] Should store timeline evaluation and progress impact
-  - [ ] Should maintain structured message history for context
-- [ ] Update Message interface to include structured character data:
+- [x] Write failing unit tests for structured data storage:
+  - [x] Should store character message with dice roll and outcome
+  - [x] Should store character action description
+  - [x] Should store timeline evaluation and progress impact
+  - [x] Should maintain structured message history for context
+- [x] Update Message interface to include structured character data:
   ```typescript
   interface Message {
     text: string
@@ -70,8 +70,8 @@ Add probabilistic outcomes with D20 dice mechanics and objective progress tracki
     progressChange?: number
   }
   ```
-- [ ] Update game store to save structured response data
-- [ ] Verify structured data storage tests pass
+- [x] Update game store to save structured response data
+- [x] Verify structured data storage tests pass
 
 ## Progress Tracking System
 
