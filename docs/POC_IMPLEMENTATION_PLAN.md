@@ -53,56 +53,58 @@ A lean, iterative plan to build a working prototype of Revisionist that demonstr
 **Architecture Note**: Phase 3 implements **per-figure conversation history**. Franz Ferdinand remembers previous exchanges within a single game session. Phase 4 will explore **global timeline context** where figures can reference actions by other historical figures and timeline changes.
 
 ## Phase 4: Dice System & Outcomes
-**Goal**: Add probabilistic outcomes and progression tracking
+**Goal**: Add probabilistic outcomes and progression tracking with dual-layer AI architecture
+
+**Status**: 🚧 **NEXT PHASE** - Ready to begin dice system implementation
+
+**Detailed Implementation**: See [PHASE_4_CHECKLIST.md](./PHASE_4_CHECKLIST.md) for complete TDD/BDD implementation steps.
+
+**Key Architecture**: 
+- **Character Layer**: Franz Ferdinand responds authentically based on dice outcomes, unaware of "Prevent WWI" goal
+- **Timeline Layer**: Separate AI evaluates character actions for historical impact and progress calculation
+- **Structured Outputs**: Character AI returns `{message, action}` in natural language for timeline analysis
+
+**Result**: Complete core gameplay loop with D20 dice mechanics, dual-layer AI responses, progress tracking, and win/lose conditions
+
+## Phase 5: Polish & Expansion
+**Goal**: Enhance game experience and prepare for production
 
 ### Tasks:
-1. Implement D20 dice rolling on backend
-2. Create outcome interpretation system:
-   - 1-2: Critical Failure
-   - 3-7: Failure  
-   - 8-13: Neutral
-   - 14-18: Success
-   - 19-20: Critical Success
-3. Add progress tracking (percentage toward objective)
-4. Display dice roll results to player
-5. Integrate dice outcomes into AI responses
+1. Expand Objective Generator AI for diverse historical scenarios
+2. Add multiple historical figures beyond Franz Ferdinand
+3. Create figure selection interface
+4. Enhanced end-game screens with detailed summaries:
+   - Victory analysis with key decision points
+   - Defeat post-mortem with alternative strategies
+   - Historical context explanations
+5. Polish UI animations and transitions
+6. Add sound effects and music
+7. Implement achievement system
 
-**Result**: Complete core gameplay loop with randomness and progression
-
-## Phase 5: Win/Lose Conditions
-**Goal**: Implement game completion logic
-
-### Tasks:
-1. Add win condition detection (progress reaches 100%)
-2. Add lose condition (5 messages used, objective not achieved)
-3. Create simple end-game screens:
-   - Victory message with summary
-   - Defeat message with what went wrong
-   - "Play Again" button that resets game state
-4. Prevent further messaging after game ends
-
-**Result**: Complete playable game with proper endings
+**Result**: Production-ready game with diverse AI-generated scenarios and polished experience
 
 ## POC Validation Criteria
 
 **Technical Validation**:
-- [ ] AI integration works reliably with OpenAI API
-- [ ] Dice system creates varied, contextual outcomes
-- [ ] Game state management handles the iterative message cycle
-- [ ] Progress tracking accurately reflects player actions
+- [ ] Dual-layer AI integration works reliably with character + timeline evaluation
+- [ ] Dice system creates varied, contextual outcomes with structured responses
+- [ ] Character authenticity maintained while achieving strategic objectives
+- [ ] Timeline analysis provides meaningful progress feedback
+- [ ] Game state management handles complete dual-AI message cycle
 
 **Gameplay Validation**:
 - [ ] 160-character constraint creates interesting strategic decisions
 - [ ] Players can achieve early victory through good strategy/luck
-- [ ] Setbacks force meaningful adaptation of approach
-- [ ] AI responses feel authentic to historical figures
+- [ ] Character responses feel authentic while serving game objectives
+- [ ] Timeline feedback helps players understand their impact
+- [ ] Dual-layer system creates rich, coherent narratives
 - [ ] Overall experience is engaging for 5-10 minute sessions
 
 ## Key Implementation Decisions
 
 ### Simplified Scope for POC
-- **Single Objective**: "Prevent World War I" (proven engaging from game design)
-- **No Scenario Selection**: Jump directly into gameplay
+- **AI-Generated Objective**: Start each game with AI creating a unique historical goal (initially "Prevent World War I" for consistency)
+- **Single Figure**: Franz Ferdinand as primary contact for Phase 4 implementation
 - **Desktop Only**: No responsive design needed
 - **Basic Error Handling**: Simple user feedback, no complex retry logic
 - **Minimal Polish**: Focus on functionality over animations/effects
@@ -166,25 +168,38 @@ Figure-Specific Context:
 - Direct History: [Recent exchanges with this specific figure]
 ```
 
-**Example Implementation**:
-*Message to Franz Ferdinand after successful intervention with Bismarck:*
+#### Phase 4 (Implemented): Dual-Layer Context  
 ```
-System Context: "You are Franz Ferdinand in 1914. Recent timeline changes: Bismarck's alliance system has shifted toward economic cooperation rather than military pacts, creating a different European political landscape. You've been contacted by an mysterious advisor who demonstrated uncanny foresight about European affairs."
+Character Layer (Franz Ferdinand):
+- System: "You are Franz Ferdinand in 1914. A mysterious advisor contacts you..."
+- Conversation History: [Previous exchanges with Franz Ferdinand]
+- Dice Outcome: [Success] - affects response magnitude and conviction
+- Output: {message: "...", action: "..."}
 
-Conversation History: [Previous exchanges with Franz Ferdinand]
-Current Message: "Given the changing alliance structures, perhaps your Sarajevo visit timing should be reconsidered?"
+Timeline Layer (Objective Evaluator):
+- Input: Dice roll + Franz Ferdinand's message + Franz Ferdinand's action
+- Analysis: How character's decision affects "Prevent WWI" objective
+- Output: Timeline impact explanation + progress calculation
 ```
 
-**Benefits**: 
-- Figures can reference broader timeline changes
-- More sophisticated narrative continuity
-- Supports "cascading effects" from game design
-- Enables cross-figure strategic gameplay
+**Current Benefits**:
+- Character authenticity maintained (Franz Ferdinand unaware of objective)
+- Strategic feedback through timeline analysis
+- Natural language structured outputs for LLM-to-LLM communication
+- Dice outcomes create meaningful variance in character responses
 
-**Questions for Future Phases**:
-1. Should figures be explicitly aware they're in an "altered timeline"?
-2. How much should they remember about messages from other figures?
-3. Should there be limits to their "future knowledge" to maintain historical authenticity?
+#### Phase 5+ (Proposed): Global Timeline Context  
+```
+Multiple Characters with Shared Timeline:
+- Franz Ferdinand: [Character context] + [Relevant timeline changes]
+- Kaiser Wilhelm: [Character context] + [Timeline changes from Franz Ferdinand's actions]
+- Timeline Synthesis: [Cross-figure effects and cascading consequences]
+```
+
+**Future Benefits**: 
+- Cross-figure awareness and strategic coordination
+- Complex cascading effects across multiple historical periods
+- Richer narrative continuity spanning different characters
 
 ## Simplified File Structure for POC
 
