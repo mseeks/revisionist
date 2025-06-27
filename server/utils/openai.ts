@@ -43,7 +43,8 @@ export async function callOpenAI(userMessage: string, conversationHistory: any[]
         const client = getOpenAIClient()
         const systemPrompt = buildPrompt()
 
-        // Build messages array: system prompt + conversation history + current user message
+        // Build messages array: system prompt + conversation history
+        // Note: conversationHistory already includes the current user message from the store
         const messages = [
             { role: 'system' as const, content: systemPrompt },
             ...conversationHistory.map((msg: any) => {
@@ -52,8 +53,7 @@ export async function callOpenAI(userMessage: string, conversationHistory: any[]
                     role,
                     content: msg.text
                 }
-            }),
-            { role: 'user' as const, content: userMessage }
+            })
         ]
 
         const completion = await client.chat.completions.create({

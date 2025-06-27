@@ -6,16 +6,16 @@ Add probabilistic outcomes with D20 dice mechanics and objective progress tracki
 ## Dice System Foundation
 
 ### 1. Objective Generation System (TDD First)
-- [ ] Write failing unit tests for objective generation:
-  - [ ] Should generate unique historical objectives
-  - [ ] Should include clear success criteria
-  - [ ] Should provide historical context
-  - [ ] Should return structured objective data
-- [ ] Create `server/utils/objective-generator.ts` with AI integration
-- [ ] Implement objective generation prompt system
-- [ ] For POC: Generate "Prevent World War I" consistently for testing
-- [ ] Store objective in game state for reference throughout game
-- [ ] Verify objective generation tests pass
+- [x] Write failing unit tests for objective generation:
+  - [x] Should generate unique historical objectives
+  - [x] Should include clear success criteria
+  - [x] Should provide historical context
+  - [x] Should return structured objective data
+- [x] Create `server/utils/objective-generator.ts` with AI integration
+- [x] Implement objective generation prompt system
+- [x] For POC: Generate "Prevent World War I" consistently for testing
+- [x] Store objective in game state for reference throughout game
+- [x] Verify objective generation tests pass
 
 ### 2. Create Dice Utility (TDD First)
 - [ ] Write failing unit tests in `tests/unit/utils/dice.spec.ts`:

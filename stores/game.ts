@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import type { GameObjective } from '~/server/utils/objective-generator'
 
 /**
  * Message Interface
@@ -28,7 +29,9 @@ export const useGameStore = defineStore('game', {
         isLoading: false,
         error: null as string | null,
         lastMessageTime: null as number | null,
-        isRateLimited: false
+        isRateLimited: false,
+        currentObjective: null as GameObjective | null,
+        objectiveProgress: 0
     }),
 
     getters: {
@@ -200,6 +203,42 @@ export const useGameStore = defineStore('game', {
         },
 
         /**
+         * Generates and sets a new objective for the game
+         */
+        async generateObjective(): Promise<void> {
+            try {
+                this.setLoading(true)
+                this.setError(null)
+
+                const { generateObjective } = await import('~/server/utils/objective-generator')
+                const objective = await generateObjective()
+
+                this.currentObjective = objective
+                this.objectiveProgress = 0
+
+            } catch (error) {
+                console.error('Error generating objective:', error)
+                this.setError('Failed to generate game objective')
+            } finally {
+                this.setLoading(false)
+            }
+        },
+
+        /**
+         * Updates progress toward the current objective
+         */
+        updateObjectiveProgress(progressChange: number) {
+            if (this.currentObjective) {
+                this.objectiveProgress = Math.max(0, Math.min(100, this.objectiveProgress + progressChange))
+
+                // Check for victory condition
+                if (this.objectiveProgress >= 100) {
+                    this.gameStatus = 'gameOver'
+                }
+            }
+        },
+
+        /**
          * Resets the game to initial state
          * Clears message history and resets message count
          */
@@ -211,6 +250,8 @@ export const useGameStore = defineStore('game', {
             this.error = null
             this.lastMessageTime = null
             this.isRateLimited = false
+            this.currentObjective = null
+            this.objectiveProgress = 0
         }
     }
 })

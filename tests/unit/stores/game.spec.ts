@@ -434,4 +434,114 @@ describe('Game Store', () => {
             expect(gameStore.lastMessageTime).toBe(null)
         })
     })
+
+    describe('Objective Management', () => {
+        it('should start with no objective', () => {
+            const gameStore = useGameStore()
+            expect(gameStore.currentObjective).toBeNull()
+            expect(gameStore.objectiveProgress).toBe(0)
+        })
+
+        it('should generate and store objective', async () => {
+            const gameStore = useGameStore()
+
+            await gameStore.generateObjective()
+
+            expect(gameStore.currentObjective).not.toBeNull()
+            expect(gameStore.currentObjective?.title).toBe('Prevent World War I')
+            expect(gameStore.currentObjective?.successCriteria).toBeDefined()
+            expect(gameStore.currentObjective?.historicalContext).toBeDefined()
+            expect(gameStore.objectiveProgress).toBe(0)
+        })
+
+        it('should update objective progress', () => {
+            const gameStore = useGameStore()
+            // Set a mock objective first
+            gameStore.currentObjective = {
+                title: 'Test Objective',
+                successCriteria: 'Test criteria',
+                historicalContext: 'Test context',
+                targetProgress: 100,
+                difficulty: 'medium'
+            }
+
+            gameStore.updateObjectiveProgress(25)
+            expect(gameStore.objectiveProgress).toBe(25)
+
+            gameStore.updateObjectiveProgress(30)
+            expect(gameStore.objectiveProgress).toBe(55)
+        })
+
+        it('should not allow progress below 0 or above 100', () => {
+            const gameStore = useGameStore()
+            gameStore.currentObjective = {
+                title: 'Test Objective',
+                successCriteria: 'Test criteria',
+                historicalContext: 'Test context',
+                targetProgress: 100,
+                difficulty: 'medium'
+            }
+
+            // Test negative progress
+            gameStore.updateObjectiveProgress(-50)
+            expect(gameStore.objectiveProgress).toBe(0)
+
+            // Test progress over 100
+            gameStore.updateObjectiveProgress(150)
+            expect(gameStore.objectiveProgress).toBe(100)
+        })
+
+        it('should trigger game over when progress reaches 100%', () => {
+            const gameStore = useGameStore()
+            gameStore.currentObjective = {
+                title: 'Test Objective',
+                successCriteria: 'Test criteria',
+                historicalContext: 'Test context',
+                targetProgress: 100,
+                difficulty: 'medium'
+            }
+
+            gameStore.updateObjectiveProgress(100)
+
+            expect(gameStore.objectiveProgress).toBe(100)
+            expect(gameStore.gameStatus).toBe('gameOver')
+        })
+
+        it('should reset objective state when game resets', () => {
+            const gameStore = useGameStore()
+
+            // Set some objective state
+            gameStore.currentObjective = {
+                title: 'Test Objective',
+                successCriteria: 'Test criteria',
+                historicalContext: 'Test context',
+                targetProgress: 100,
+                difficulty: 'medium'
+            }
+            gameStore.objectiveProgress = 50
+
+            gameStore.resetGame()
+
+            expect(gameStore.currentObjective).toBeNull()
+            expect(gameStore.objectiveProgress).toBe(0)
+        })
+
+        it('should handle objective generation errors gracefully', async () => {
+            const gameStore = useGameStore()
+
+            // This test verifies error handling when objective generation fails
+            // In practice, generateObjective uses the POC version which shouldn't fail
+            // But this tests the error handling structure for future AI implementation
+            const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { })
+
+            // For now, test that the function works correctly
+            // Future: Mock the import to test actual error handling
+            await gameStore.generateObjective()
+
+            // Should have generated successfully for POC
+            expect(gameStore.currentObjective).not.toBeNull()
+
+            consoleSpy.mockRestore()
+        })
+    })
 })
