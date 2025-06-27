@@ -2,6 +2,16 @@ import { defineStore } from 'pinia'
 import type { GameObjective } from '~/server/utils/objective-generator'
 
 /**
+ * Timeline Event Interface
+ * Represents a single timeline change with impact description and progress change
+ */
+export interface TimelineEvent {
+    impact: string
+    progressChange: number
+    timestamp: Date
+}
+
+/**
  * Message Interface
  * Defines the structure of messages in the game
  */
@@ -36,7 +46,8 @@ export const useGameStore = defineStore('game', {
         lastMessageTime: null as number | null,
         isRateLimited: false,
         currentObjective: null as GameObjective | null,
-        objectiveProgress: 0
+        objectiveProgress: 0,
+        timelineEvents: [] as TimelineEvent[]
     }),
 
     getters: {
@@ -293,6 +304,25 @@ export const useGameStore = defineStore('game', {
         },
 
         /**
+         * Updates progress from timeline evaluation results
+         * Stores timeline event and updates objective progress
+         */
+        updateProgressFromTimeline(timelineData: { impact: string; progressChange: number; timestamp: Date }) {
+            if (this.currentObjective) {
+                // Store the timeline event
+                const timelineEvent: TimelineEvent = {
+                    impact: timelineData.impact,
+                    progressChange: timelineData.progressChange,
+                    timestamp: timelineData.timestamp
+                }
+                this.timelineEvents.push(timelineEvent)
+
+                // Update progress using existing method
+                this.updateObjectiveProgress(timelineData.progressChange)
+            }
+        },
+
+        /**
          * Resets the game to initial state
          * Clears message history and resets message count
          */
@@ -306,6 +336,7 @@ export const useGameStore = defineStore('game', {
             this.isRateLimited = false
             this.currentObjective = null
             this.objectiveProgress = 0
+            this.timelineEvents = []
         }
     }
 })

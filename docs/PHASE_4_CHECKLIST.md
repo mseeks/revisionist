@@ -76,16 +76,16 @@ Add probabilistic outcomes with D20 dice mechanics and objective progress tracki
 ## Progress Tracking System
 
 ### 5. Progress State Management (TDD First)
-- [ ] Write failing unit tests for progress tracking:
-  - [ ] Should start at 0% progress toward AI-generated objective
-  - [ ] Should update based on timeline evaluation results
-  - [ ] Should calculate cumulative progress from timeline impacts
-  - [ ] Should store timeline evaluation explanations
-- [ ] Add `objectiveProgress`, `currentObjective`, and `timelineEvents` to game store
-- [ ] Create `updateProgressFromTimeline()` action
-- [ ] Implement progress calculation from timeline AI evaluation
-- [ ] Store narrative explanations of progress changes
-- [ ] Verify progress tracking tests pass
+- [x] Write failing unit tests for progress tracking:
+  - [x] Should start at 0% progress toward AI-generated objective
+  - [x] Should update based on timeline evaluation results
+  - [x] Should calculate cumulative progress from timeline impacts
+  - [x] Should store timeline evaluation explanations
+- [x] Add `objectiveProgress`, `currentObjective`, and `timelineEvents` to game store
+- [x] Create `updateProgressFromTimeline()` action
+- [x] Implement progress calculation from timeline AI evaluation
+- [x] Store narrative explanations of progress changes
+- [x] Verify progress tracking tests pass
 
 ### 6. Progress Display Component (TDD First)
 - [ ] Write failing unit tests for ProgressTracker:

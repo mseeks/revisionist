@@ -642,4 +642,129 @@ describe('Game Store', () => {
             expect(aiMessage.progressChange).toBe(15)
         })
     })
+
+    describe('Timeline Progress Tracking', () => {
+        it('should start at 0% progress toward AI-generated objective', () => {
+            const gameStore = useGameStore()
+            expect(gameStore.objectiveProgress).toBe(0)
+            expect(gameStore.timelineEvents).toEqual([])
+        })
+
+        it('should update based on timeline evaluation results', () => {
+            const gameStore = useGameStore()
+            // Set up an objective
+            gameStore.currentObjective = {
+                title: 'Prevent World War I',
+                successCriteria: 'Prevent the assassination of Franz Ferdinand and subsequent war',
+                historicalContext: 'June 1914',
+                targetProgress: 100,
+                difficulty: 'hard'
+            }
+
+            const timelineData = {
+                impact: "Franz Ferdinand's increased security reduces assassination risk.",
+                progressChange: 25,
+                timestamp: new Date()
+            }
+
+            gameStore.updateProgressFromTimeline(timelineData)
+
+            expect(gameStore.objectiveProgress).toBe(25)
+            expect(gameStore.timelineEvents).toHaveLength(1)
+            expect(gameStore.timelineEvents[0].impact).toBe(timelineData.impact)
+            expect(gameStore.timelineEvents[0].progressChange).toBe(25)
+        })
+
+        it('should calculate cumulative progress from timeline impacts', () => {
+            const gameStore = useGameStore()
+            // Set up an objective
+            gameStore.currentObjective = {
+                title: 'Prevent World War I',
+                successCriteria: 'Prevent the assassination of Franz Ferdinand and subsequent war',
+                historicalContext: 'June 1914',
+                targetProgress: 100,
+                difficulty: 'hard'
+            }
+
+            // Add first timeline impact
+            gameStore.updateProgressFromTimeline({
+                impact: "Franz Ferdinand increases security detail.",
+                progressChange: 20,
+                timestamp: new Date()
+            })
+
+            expect(gameStore.objectiveProgress).toBe(20)
+
+            // Add second timeline impact
+            gameStore.updateProgressFromTimeline({
+                impact: "Austrian military tensions decrease due to diplomatic intervention.",
+                progressChange: 15,
+                timestamp: new Date()
+            })
+
+            expect(gameStore.objectiveProgress).toBe(35)
+
+            // Add negative timeline impact
+            gameStore.updateProgressFromTimeline({
+                impact: "Serbian nationalism increases due to misunderstood message.",
+                progressChange: -10,
+                timestamp: new Date()
+            })
+
+            expect(gameStore.objectiveProgress).toBe(25)
+            expect(gameStore.timelineEvents).toHaveLength(3)
+        })
+
+        it('should store timeline evaluation explanations', () => {
+            const gameStore = useGameStore()
+            gameStore.currentObjective = {
+                title: 'Prevent World War I',
+                successCriteria: 'Prevent the assassination of Franz Ferdinand and subsequent war',
+                historicalContext: 'June 1914',
+                targetProgress: 100,
+                difficulty: 'hard'
+            }
+
+            const timelineData = {
+                impact: "Franz Ferdinand's decision to avoid Sarajevo completely disrupts the assassination plot. The Black Hand's plans are rendered useless, and the spark that would ignite WWI is eliminated.",
+                progressChange: 75,
+                timestamp: new Date()
+            }
+
+            gameStore.updateProgressFromTimeline(timelineData)
+
+            expect(gameStore.timelineEvents).toHaveLength(1)
+            const storedEvent = gameStore.timelineEvents[0]
+            expect(storedEvent.impact).toBe(timelineData.impact)
+            expect(storedEvent.progressChange).toBe(75)
+            expect(storedEvent.timestamp).toBeInstanceOf(Date)
+        })
+
+        it('should reset timeline events when game resets', () => {
+            const gameStore = useGameStore()
+
+            // Set up an objective first
+            gameStore.currentObjective = {
+                title: 'Test Objective',
+                successCriteria: 'Test criteria',
+                historicalContext: 'Test context',
+                targetProgress: 100,
+                difficulty: 'medium'
+            }
+
+            // Add some timeline events
+            gameStore.updateProgressFromTimeline({
+                impact: "Test impact",
+                progressChange: 30,
+                timestamp: new Date()
+            })
+
+            expect(gameStore.timelineEvents).toHaveLength(1)
+
+            gameStore.resetGame()
+
+            expect(gameStore.timelineEvents).toEqual([])
+            expect(gameStore.objectiveProgress).toBe(0)
+        })
+    })
 })
