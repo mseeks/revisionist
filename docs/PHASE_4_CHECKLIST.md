@@ -137,16 +137,16 @@ Add probabilistic outcomes with D20 dice mechanics and objective progress tracki
 - [x] Verify dual prompt system with structured outputs tests pass
 
 ### 9. Timeline Impact Analysis with Action Evaluation (TDD First)
-- [ ] Write failing integration tests for timeline analysis:
-  - [ ] Should evaluate character actions against current AI-generated objective
-  - [ ] Should consider dice roll magnitude in progress calculation
-  - [ ] Should analyze specific character decisions for cascading effects
-  - [ ] Should generate meaningful progress changes from character actions
-- [ ] Implement timeline analysis AI call with enriched input data
-- [ ] Generate progress updates based on character actions and dice magnitude
-- [ ] Create narrative explanations linking character decisions to objective achievement
-- [ ] Test timeline analysis provides actionable feedback on character choices
-- [ ] Verify timeline impact analysis with structured inputs tests pass
+- [x] Write failing integration tests for timeline analysis:
+  - [x] Should evaluate character actions against current AI-generated objective
+  - [x] Should consider dice roll magnitude in progress calculation
+  - [x] Should analyze specific character decisions for cascading effects
+  - [x] Should generate meaningful progress changes from character actions
+- [x] Implement timeline analysis AI call with enriched input data
+- [x] Generate progress updates based on character actions and dice magnitude
+- [x] Create narrative explanations linking character decisions to objective achievement
+- [x] Test timeline analysis provides actionable feedback on character choices
+- [x] Verify timeline impact analysis with structured inputs tests pass
 
 ## Win/Lose Conditions
 
