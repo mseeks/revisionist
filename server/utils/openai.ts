@@ -1,5 +1,5 @@
 import OpenAI from 'openai'
-import { buildPrompt, buildCharacterPrompt } from './prompt-builder'
+import { buildPrompt, buildCharacterPrompt, buildCharacterPromptWithSchema, buildTimelineEvaluationPrompt } from './prompt-builder'
 
 let openaiClient: OpenAI | null = null
 
@@ -145,7 +145,7 @@ export async function callCharacterAI(
 ): Promise<CharacterAIResponse> {
     try {
         const client = getOpenAIClient()
-        const systemPrompt = buildCharacterPrompt(diceOutcome)
+        const systemPrompt = buildCharacterPromptWithSchema(diceOutcome)
 
         // Build messages array: system prompt + conversation history + current message
         const messages = [
@@ -253,36 +253,13 @@ export async function callTimelineAI(
     try {
         const client = getOpenAIClient()
 
-        const timelinePrompt = `You are a Timeline Evaluator AI analyzing how historical figure actions affect the objective: "${currentObjective}"
-
-Historical Figure: Franz Ferdinand, Archduke of Austria-Hungary (1914)
-Player Message: "${userMessage}"
-Dice Roll: ${diceRoll}/20 (${diceOutcome})
-
-Character's Response:
-- What Franz Ferdinand said: "${characterResponse.message}"
-- What Franz Ferdinand decided to do: "${characterResponse.action}"
-
-Your task is to analyze how Franz Ferdinand's specific action affects progress toward "${currentObjective}". Consider:
-
-1. The immediate consequences of his decision
-2. How this action might influence other European leaders
-3. The cascading effects on diplomatic relations
-4. Whether this brings us closer to or further from the objective
-5. The magnitude of impact based on the dice outcome
-
-Provide:
-1. A narrative explanation of the timeline impact (2-3 sentences)
-2. A progress change as a number between -50 and +50 (negative = setback, positive = progress)
-
-The progress change should reflect:
-- Critical Success (19-20): Major positive impact (+25 to +50)
-- Success (14-18): Good progress (+10 to +25)
-- Neutral (8-13): Minimal impact (-5 to +10)
-- Failure (3-7): Setback (-10 to -25)
-- Critical Failure (1-2): Major disaster (-25 to -50)
-
-Respond in JSON format with "timelineImpact" (string) and "progressChange" (number) fields.`
+        const timelinePrompt = buildTimelineEvaluationPrompt(
+            diceRoll,
+            diceOutcome,
+            characterResponse,
+            userMessage,
+            currentObjective
+        )
 
         const completion = await client.chat.completions.create({
             model: 'gpt-4.1',

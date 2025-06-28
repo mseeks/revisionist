@@ -124,17 +124,17 @@ Add probabilistic outcomes with D20 dice mechanics and objective progress tracki
 ## AI Response Enhancement
 
 ### 8. Dual-Prompt System with Structured Outputs (TDD First)
-- [ ] Write failing unit tests for dual prompt system:
-  - [ ] Should create character-specific prompt with structured output schema
-  - [ ] Should create timeline evaluation prompt (dice + character data aware)
-  - [ ] Should include dice outcome in character prompt for response magnitude
-  - [ ] Should pass character message and action to timeline evaluator
-- [ ] Create character prompt builder with JSON schema definition
-- [ ] Define character response schema (message, action in natural language)
-- [ ] Create timeline evaluation prompt builder (receives dice roll + character structure)
-- [ ] Character prompts exclude knowledge of AI-generated objective but include outcome guidance
-- [ ] Timeline prompts analyze character actions for historical impact toward current objective
-- [ ] Verify dual prompt system with structured outputs tests pass
+- [x] Write failing unit tests for dual prompt system:
+  - [x] Should create character-specific prompt with structured output schema
+  - [x] Should create timeline evaluation prompt (dice + character data aware)
+  - [x] Should include dice outcome in character prompt for response magnitude
+  - [x] Should pass character message and action to timeline evaluator
+- [x] Create character prompt builder with JSON schema definition
+- [x] Define character response schema (message, action in natural language)
+- [x] Create timeline evaluation prompt builder (receives dice roll + character structure)
+- [x] Character prompts exclude knowledge of AI-generated objective but include outcome guidance
+- [x] Timeline prompts analyze character actions for historical impact toward current objective
+- [x] Verify dual prompt system with structured outputs tests pass
 
 ### 9. Timeline Impact Analysis with Action Evaluation (TDD First)
 - [ ] Write failing integration tests for timeline analysis:
