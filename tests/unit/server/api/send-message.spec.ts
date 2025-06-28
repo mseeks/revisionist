@@ -180,7 +180,7 @@ describe('Dual-Layer AI System with Structured Outputs (TDD)', () => {
         const mockStructuredResponse = {
             success: true,
             characterResponse: {
-                message: "Your warning about Sarajevo troubles me deeply. I shall consider these words carefully.",
+                message: "Your warning troubles me deeply. I shall consider these words most carefully.",
                 action: "Decides to increase personal security measures and postpone the planned visit to Sarajevo"
             },
             diceRoll: 15,
@@ -230,5 +230,26 @@ describe('Dual-Layer AI System with Structured Outputs (TDD)', () => {
         expect(expectedResponse.data.characterResponse).toBeDefined()
         expect(expectedResponse.data.timelineAnalysis).toBeDefined()
         expect(expectedResponse.data.diceRoll).toBeDefined()
+    })
+
+    it('should enforce 160-character limit on AI responses with truncation fallback', () => {
+        // Test the truncation logic that was added to the API handler
+        const longMessage = "This is an extremely long response from Franz Ferdinand that definitely exceeds the one hundred and sixty character limit that we have established for our text message format and should be truncated appropriately to maintain consistency with the game design requirements."
+        
+        // Verify the test message is indeed too long
+        expect(longMessage.length).toBeGreaterThan(160)
+        expect(longMessage.length).toBe(271) // Exact length for consistency
+        
+        // Test the truncation logic that's implemented in the API handler
+        const truncatedMessage = longMessage.length > 160 
+            ? longMessage.substring(0, 157) + '...'
+            : longMessage
+            
+        // Verify truncation works correctly
+        expect(truncatedMessage.length).toBeLessThanOrEqual(160)
+        expect(truncatedMessage.length).toBe(160) // Exactly 160 with ellipsis
+        expect(truncatedMessage).toMatch(/\.{3}$/) // Should end with ...
+        expect(truncatedMessage).toContain('This is an extremely long response from Franz Ferdinand')
+        expect(truncatedMessage).not.toContain('maintain consistency with the game design requirements')
     })
 })

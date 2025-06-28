@@ -43,6 +43,12 @@ export default defineEventHandler(async (event) => {
             }
         }
 
+        // Validate and enforce 160-character limit on AI message response
+        if (characterResponse.characterResponse.message && characterResponse.characterResponse.message.length > 160) {
+            console.warn(`AI response exceeded 160 characters (${characterResponse.characterResponse.message.length}), truncating...`)
+            characterResponse.characterResponse.message = characterResponse.characterResponse.message.substring(0, 157) + '...'
+        }
+
         // Step 3: Evaluate timeline impact based on character's action
         const timelineResponse = await callTimelineAI(
             diceResult.roll,
