@@ -115,7 +115,7 @@ describe('Game Store', () => {
             }
 
             expect(gameStore.remainingMessages).toBe(0)
-            expect(gameStore.gameStatus).toBe('gameOver')
+            expect(gameStore.gameStatus).toBe('defeat') // No objective = defeat
         })
 
         it('should prevent further message sending', () => {
@@ -128,7 +128,7 @@ describe('Game Store', () => {
             }
 
             // Should be in game over state
-            expect(gameStore.gameStatus).toBe('gameOver')
+            expect(gameStore.gameStatus).toBe('defeat') // No objective = defeat
             expect(gameStore.canSendMessage).toBe(false)
 
             // Try to send another message - should be prevented
@@ -177,7 +177,7 @@ describe('Game Store', () => {
                 gameStore.addUserMessage(`Message ${i + 1}`)
                 gameStore.decrementMessages()
             }
-            expect(gameStore.gameStatus).toBe('gameOver')
+            expect(gameStore.gameStatus).toBe('defeat') // No objective = defeat
 
             // Reset the game
             gameStore.resetGame()
@@ -397,7 +397,7 @@ describe('Game Store', () => {
             // Send first message
             await gameStore.sendMessage('First message')
             
-            // Advance time by 1 second
+            // Advance time to 1 second later
             mockTime += 1000
             
             // Should be able to send now
@@ -491,7 +491,7 @@ describe('Game Store', () => {
             expect(gameStore.objectiveProgress).toBe(100)
         })
 
-        it('should trigger game over when progress reaches 100%', () => {
+        it('should trigger victory when progress reaches 100%', () => {
             const gameStore = useGameStore()
             gameStore.currentObjective = {
                 title: 'Test Objective',
@@ -504,7 +504,7 @@ describe('Game Store', () => {
             gameStore.updateObjectiveProgress(100)
 
             expect(gameStore.objectiveProgress).toBe(100)
-            expect(gameStore.gameStatus).toBe('gameOver')
+            expect(gameStore.gameStatus).toBe('victory')
         })
 
         it('should reset objective state when game resets', () => {
@@ -765,6 +765,244 @@ describe('Game Store', () => {
 
             expect(gameStore.timelineEvents).toEqual([])
             expect(gameStore.objectiveProgress).toBe(0)
+        })
+    })
+
+    describe('Victory Detection', () => {
+        it('should detect when progress >= 100%', () => {
+            const gameStore = useGameStore()
+
+            // Set up objective
+            gameStore.currentObjective = {
+                title: "Test Objective",
+                successCriteria: "Test success criteria",
+                historicalContext: 'Test context',
+                targetProgress: 100,
+                difficulty: 'medium'
+            }
+
+            // Update progress to 100%
+            gameStore.updateObjectiveProgress(100)
+
+            expect(gameStore.gameStatus).toBe('victory')
+        })
+
+        it('should set game status to victory when progress reaches 100%', () => {
+            const gameStore = useGameStore()
+
+            // Set up objective
+            gameStore.currentObjective = {
+                title: "Test Objective",
+                successCriteria: "Test success criteria",
+                historicalContext: 'Test context',
+                targetProgress: 100,
+                difficulty: 'medium'
+            }
+
+            expect(gameStore.gameStatus).toBe('playing')
+
+            // Reach exactly 100%
+            gameStore.updateObjectiveProgress(100)
+
+            expect(gameStore.gameStatus).toBe('victory')
+        })
+
+        it('should prevent further messages when victory is achieved', () => {
+            const gameStore = useGameStore()
+
+            // Set up objective
+            gameStore.currentObjective = {
+                title: "Test Objective",
+                successCriteria: "Test success criteria",
+                historicalContext: 'Test context',
+                targetProgress: 100,
+                difficulty: 'medium'
+            }
+
+            // Achieve victory
+            gameStore.updateObjectiveProgress(100)
+
+            expect(gameStore.canSendMessage).toBe(false)
+        })
+    })
+
+    describe('Defeat Detection', () => {
+        it('should detect when messages = 0 and progress < 100%', () => {
+            const gameStore = useGameStore()
+
+            // Set up objective and some progress but not enough
+            gameStore.currentObjective = {
+                title: "Test Objective",
+                successCriteria: "Test success criteria",
+                historicalContext: 'Test context',
+                targetProgress: 100,
+                difficulty: 'medium'
+            }
+
+            gameStore.updateObjectiveProgress(75) // Not enough progress
+            gameStore.remainingMessages = 0 // No messages left
+
+            gameStore.checkGameOver()
+
+            expect(gameStore.gameStatus).toBe('defeat')
+        })
+
+        it('should set game status to defeat when all messages used without victory', () => {
+            const gameStore = useGameStore()
+
+            // Set up objective with partial progress  
+            gameStore.currentObjective = {
+                title: "Test Objective",
+                successCriteria: "Test success criteria",
+                historicalContext: 'Test context',
+                targetProgress: 100,
+                difficulty: 'medium'
+            }
+
+            gameStore.updateObjectiveProgress(50)
+            expect(gameStore.gameStatus).toBe('playing')
+
+            // Use all messages without achieving victory
+            gameStore.remainingMessages = 0
+            gameStore.checkGameOver()
+
+            expect(gameStore.gameStatus).toBe('defeat')
+        })
+
+        it('should show what went wrong when defeat occurs', () => {
+            const gameStore = useGameStore()
+
+            // Set up objective with minimal progress
+            gameStore.currentObjective = {
+                title: "Prevent World War I",
+                successCriteria: "Stop the assassination",
+                historicalContext: 'Test context',
+                targetProgress: 100,
+                difficulty: 'medium'
+            }
+
+            gameStore.updateObjectiveProgress(25)
+            gameStore.remainingMessages = 0
+
+            gameStore.checkGameOver()
+
+            expect(gameStore.gameStatus).toBe('defeat')
+            expect(gameStore.objectiveProgress).toBe(25) // Can check progress was insufficient
+        })
+    })
+
+    describe('Early Victory System', () => {
+        it('should allow victory with messages remaining', () => {
+            const gameStore = useGameStore()
+
+            // Set up objective
+            gameStore.currentObjective = {
+                title: "Test Objective",
+                successCriteria: "Test success criteria",
+                historicalContext: 'Test context',
+                targetProgress: 100,
+                difficulty: 'medium'
+            }
+
+            // Start with full messages
+            expect(gameStore.remainingMessages).toBe(5)
+
+            // Achieve victory while still having messages
+            gameStore.updateObjectiveProgress(100)
+
+            expect(gameStore.gameStatus).toBe('victory')
+            expect(gameStore.remainingMessages).toBe(5) // Messages saved!
+        })
+
+        it('should celebrate efficient success', () => {
+            const gameStore = useGameStore()
+
+            // Set up objective
+            gameStore.currentObjective = {
+                title: "Test Objective",
+                successCriteria: "Test success criteria",
+                historicalContext: 'Test context',
+                targetProgress: 100,
+                difficulty: 'medium'
+            }
+
+            // Use only 2 messages, then achieve victory
+            gameStore.decrementMessages()
+            gameStore.decrementMessages()
+            expect(gameStore.remainingMessages).toBe(3)
+
+            gameStore.updateObjectiveProgress(100)
+
+            expect(gameStore.gameStatus).toBe('victory')
+            expect(gameStore.remainingMessages).toBe(3) // 3 messages saved
+        })
+
+        it('should show messages saved when achieving early victory', () => {
+            const gameStore = useGameStore()
+
+            // Set up objective  
+            gameStore.currentObjective = {
+                title: "Prevent World War I",
+                successCriteria: "Stop the assassination",
+                historicalContext: 'Test context',
+                targetProgress: 100,
+                difficulty: 'hard'
+            }
+
+            // Use only 1 message
+            gameStore.decrementMessages()
+            expect(gameStore.remainingMessages).toBe(4)
+
+            // Achieve perfect victory
+            gameStore.updateObjectiveProgress(100)
+
+            expect(gameStore.gameStatus).toBe('victory')
+            expect(gameStore.remainingMessages).toBe(4) // 4 messages saved - very efficient!
+        })
+
+        it('should calculate efficiency bonuses for early victory', () => {
+            const gameStore = useGameStore()
+
+            // Set up objective
+            gameStore.currentObjective = {
+                title: "Test Objective",
+                successCriteria: "Test success criteria",
+                historicalContext: 'Test context',
+                targetProgress: 100,
+                difficulty: 'medium'
+            }
+
+            // Use 2 messages, achieve victory with 3 remaining
+            gameStore.decrementMessages()
+            gameStore.decrementMessages()
+            gameStore.updateObjectiveProgress(100)
+
+            const efficiency = gameStore.getVictoryEfficiency()
+
+            expect(efficiency).toBeTruthy()
+            expect(efficiency!.messagesSaved).toBe(3)
+            expect(efficiency!.messagesUsed).toBe(2)
+            expect(efficiency!.efficiencyPercentage).toBe(60)
+            expect(efficiency!.efficiencyRating).toBe('Excellent')
+            expect(efficiency!.isEarlyVictory).toBe(true)
+        })
+
+        it('should return null efficiency for non-victory states', () => {
+            const gameStore = useGameStore()
+
+            expect(gameStore.getVictoryEfficiency()).toBeNull()
+
+            // Even with progress, no victory yet
+            gameStore.currentObjective = {
+                title: "Test Objective",
+                successCriteria: "Test success criteria",
+                historicalContext: 'Test context',
+                targetProgress: 100,
+                difficulty: 'medium'
+            }
+            gameStore.updateObjectiveProgress(50)
+
+            expect(gameStore.getVictoryEfficiency()).toBeNull()
         })
     })
 })

@@ -151,45 +151,45 @@ Add probabilistic outcomes with D20 dice mechanics and objective progress tracki
 ## Win/Lose Conditions
 
 ### 10. Victory Detection (TDD First)
-- [ ] Write failing unit tests for win condition:
-  - [ ] Should detect when progress >= 100%
-  - [ ] Should set game status to 'victory'
-  - [ ] Should prevent further messages
-- [ ] Write BDD test:
+- [x] Write failing unit tests for win condition:
+  - [x] Should detect when progress >= 100%
+  - [x] Should set game status to 'victory'
+  - [x] Should prevent further messages
+- [x] Write BDD test:
   ```
   // Given a user's progress reaches 100%
   // When the game evaluates the state
   // Then they should see a victory screen
   // And cannot send more messages
   ```
-- [ ] Implement victory detection in store
-- [ ] Update game status appropriately
-- [ ] Verify victory detection tests pass
+- [x] Implement victory detection in store
+- [x] Update game status appropriately
+- [x] Verify victory detection tests pass
 
 ### 11. Defeat Detection (TDD First)
-- [ ] Write failing unit tests for lose condition:
-  - [ ] Should detect when messages = 0 and progress < 100%
-  - [ ] Should set game status to 'defeat'
-  - [ ] Should show what went wrong
-- [ ] Write BDD test:
+- [x] Write failing unit tests for lose condition:
+  - [x] Should detect when messages = 0 and progress < 100%
+  - [x] Should set game status to 'defeat'
+  - [x] Should show what went wrong
+- [x] Write BDD test:
   ```
   // Given a user has used all 5 messages
   // When their progress is below 100%
   // Then they should see a defeat screen
   // And understand why they failed
   ```
-- [ ] Implement defeat detection logic
-- [ ] Track reason for failure
-- [ ] Verify defeat detection tests pass
+- [x] Implement defeat detection logic
+- [x] Track reason for failure
+- [x] Verify defeat detection tests pass
 
 ### 12. Early Victory System (TDD First)
-- [ ] Write failing unit tests for early victory:
-  - [ ] Should allow victory with messages remaining
-  - [ ] Should celebrate efficient success
-  - [ ] Should show messages saved
-- [ ] Implement early victory detection
-- [ ] Add bonus recognition for efficiency
-- [ ] Verify early victory tests pass
+- [x] Write failing unit tests for early victory:
+  - [x] Should allow victory with messages remaining
+  - [x] Should celebrate efficient success
+  - [x] Should show messages saved
+- [x] Implement early victory detection
+- [x] Add bonus recognition for efficiency
+- [x] Verify early victory tests pass
 
 ## End Game Experience
 

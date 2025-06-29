@@ -30,7 +30,7 @@ export interface Message {
  * Game Status Type
  * Represents the current state of the game
  */
-export type GameStatus = 'playing' | 'gameOver'
+export type GameStatus = 'playing' | 'victory' | 'defeat' | 'gameOver'
 
 /**
  * Game Store
@@ -66,11 +66,16 @@ export const useGameStore = defineStore('game', {
     actions: {
         /**
          * Checks if game should be over and updates status
-         * Game ends when all 5 messages are used
+         * Game ends when all 5 messages are used - determines victory vs defeat
          */
         checkGameOver() {
             if (this.remainingMessages === 0) {
-                this.gameStatus = 'gameOver'
+                // Check if objective was achieved
+                if (this.currentObjective && this.objectiveProgress >= 100) {
+                    this.gameStatus = 'victory'
+                } else {
+                    this.gameStatus = 'defeat'
+                }
             }
         },
 
@@ -88,11 +93,11 @@ export const useGameStore = defineStore('game', {
         /**
          * Adds a user message to the message history
          * Creates a new message with current timestamp
-         * Will not add message if game is over
+         * Will not add message if game is over (victory, defeat, or gameOver)
          */
         addUserMessage(text: string) {
-            // Prevent adding messages when game is over
-            if (this.gameStatus === 'gameOver') {
+            // Prevent adding messages when game is not in playing state
+            if (this.gameStatus !== 'playing') {
                 return
             }
 
@@ -298,7 +303,7 @@ export const useGameStore = defineStore('game', {
 
                 // Check for victory condition
                 if (this.objectiveProgress >= 100) {
-                    this.gameStatus = 'gameOver'
+                    this.gameStatus = 'victory'
                 }
             }
         },
@@ -320,6 +325,33 @@ export const useGameStore = defineStore('game', {
                 // Update progress using existing method
                 this.updateObjectiveProgress(timelineData.progressChange)
             }
+        },
+
+        /**
+         * Gets efficiency information for early victory celebration
+         * Returns data about messages saved and efficiency rating
+         */
+        getVictoryEfficiency() {
+            if (this.gameStatus === 'victory') {
+                const messagesSaved = this.remainingMessages
+                const messagesUsed = 5 - this.remainingMessages
+                const efficiencyPercentage = Math.round((messagesSaved / 5) * 100)
+
+                let efficiencyRating = 'Standard'
+                if (messagesSaved >= 4) efficiencyRating = 'Legendary'
+                else if (messagesSaved >= 3) efficiencyRating = 'Excellent'
+                else if (messagesSaved >= 2) efficiencyRating = 'Great'
+                else if (messagesSaved >= 1) efficiencyRating = 'Good'
+
+                return {
+                    messagesSaved,
+                    messagesUsed,
+                    efficiencyPercentage,
+                    efficiencyRating,
+                    isEarlyVictory: messagesSaved > 0
+                }
+            }
+            return null
         },
 
         /**

@@ -57,9 +57,43 @@
               <UBadge v-if="gameStore.gameStatus === 'playing'" color="success" variant="soft" size="lg">
                 Active Mission
               </UBadge>
-              <UBadge v-else color="error" variant="soft" size="lg">
+              <UBadge v-else-if="gameStore.gameStatus === 'victory'" color="success" variant="solid" size="lg">
+                🎉 VICTORY! 🎉
+              </UBadge>
+              <UBadge v-else-if="gameStore.gameStatus === 'defeat'" color="error" variant="solid" size="lg">
+                💥 DEFEAT 💥
+              </UBadge>
+              <UBadge v-else color="neutral" variant="soft" size="lg">
                 Mission Complete
               </UBadge>
+
+              <!-- Victory Efficiency Display -->
+              <div v-if="gameStore.gameStatus === 'victory' && gameStore.getVictoryEfficiency()"
+                class="space-y-2 p-4 bg-green-50 dark:bg-green-900 rounded-lg border border-green-200 dark:border-green-700">
+                <p class="text-sm font-semibold text-green-800 dark:text-green-200">
+                  Efficiency: {{ gameStore.getVictoryEfficiency()?.efficiencyRating }}
+                </p>
+                <p class="text-xs text-green-700 dark:text-green-300">
+                  {{ gameStore.getVictoryEfficiency()?.messagesSaved }} messages saved!
+                </p>
+                <p class="text-xs text-green-600 dark:text-green-400">
+                  {{ gameStore.getVictoryEfficiency()?.efficiencyPercentage }}% efficiency
+                </p>
+              </div>
+
+              <!-- Defeat Information -->
+              <div v-if="gameStore.gameStatus === 'defeat'"
+                class="space-y-2 p-4 bg-red-50 dark:bg-red-900 rounded-lg border border-red-200 dark:border-red-700">
+                <p class="text-sm font-semibold text-red-800 dark:text-red-200">
+                  Mission Failed
+                </p>
+                <p class="text-xs text-red-700 dark:text-red-300">
+                  Progress: {{ gameStore.objectiveProgress }}%
+                </p>
+                <p class="text-xs text-red-600 dark:text-red-400">
+                  Try a different strategy next time!
+                </p>
+              </div>
 
               <!-- Reset button for testing -->
               <UButton color="neutral" variant="soft" size="md" data-testid="reset-button" icon="i-heroicons-arrow-path"
