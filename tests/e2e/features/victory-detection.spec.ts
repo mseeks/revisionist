@@ -32,7 +32,7 @@ test.describe('Victory Detection', () => {
         })
 
         // When they send a message that achieves the objective
-        await page.fill('[data-testid="message-input"]', 'Cancel your trip to Sarajevo!')
+        await page.fill('[data-testid="message-input"] textarea', 'Cancel your trip to Sarajevo!')
         await page.click('[data-testid="send-button"]')
 
         // Wait for response

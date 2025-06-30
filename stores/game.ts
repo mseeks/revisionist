@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import type { GameObjective } from '~/server/utils/objective-generator'
+import { generateGameSummary } from '~/utils/game-summary'
 
 /**
  * Timeline Event Interface
@@ -60,6 +61,14 @@ export const useGameStore = defineStore('game', {
                    this.gameStatus === 'playing' && 
                    !this.isLoading &&
                    !this.isRateLimited
+        },
+
+        /**
+         * Computed property to generate game summary when game is over
+         * Returns comprehensive summary including turning points, best/worst rolls, efficiency
+         */
+        gameSummary() {
+            return generateGameSummary(this)
         }
     },
 

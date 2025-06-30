@@ -33,16 +33,17 @@ test.describe('Defeat Detection', () => {
 
         // When they use all 5 messages with insufficient progress
         for (let i = 0; i < 5; i++) {
-            await page.fill('[data-testid="message-input"]', `Message ${i + 1}`)
+            await page.fill('[data-testid="message-input"] textarea', `Message ${i + 1}`)
             await page.click('[data-testid="send-button"]')
             await page.waitForSelector('[data-testid="ai-message"]')
         }
 
         // Then they should see a defeat screen
-        await expect(page.locator('[data-testid="defeat-screen"]')).toBeVisible()
+        await expect(page.locator('[data-testid="end-game-screen"]')).toBeVisible()
+        await expect(page.locator('[data-testid="defeat-message"]')).toBeVisible()
 
         // And understand why they failed
-        await expect(page.locator('[data-testid="defeat-reason"]')).toContainText('progress')
+        await expect(page.locator('[data-testid="defeat-explanation"]')).toContainText('objective')
 
         // And cannot send more messages
         await expect(page.locator('[data-testid="send-button"]')).toBeDisabled()

@@ -194,32 +194,32 @@ Add probabilistic outcomes with D20 dice mechanics and objective progress tracki
 ## End Game Experience
 
 ### 13. End Game Screen Component (TDD First)
-- [ ] Write failing unit tests for EndGameScreen:
-  - [ ] Should display victory or defeat message
-  - [ ] Should show final progress percentage
-  - [ ] Should summarize key moments
-  - [ ] Should offer "Play Again" option
-- [ ] Write BDD tests:
+- [x] Write failing unit tests for EndGameScreen:
+  - [x] Should display victory or defeat message
+  - [x] Should show final progress percentage
+  - [x] Should summarize key moments
+  - [x] Should offer "Play Again" option
+- [x] Write BDD tests:
   ```
   // Given a game has ended in victory
   // When the end screen appears
   // Then the player sees their achievement
   // And can start a new game
   ```
-- [ ] Create `components/EndGameScreen.vue`
-- [ ] Design compelling victory/defeat UI
-- [ ] Include game summary statistics
-- [ ] Verify end screen tests pass
+- [x] Create `components/EndGameScreen.vue`
+- [x] Design compelling victory/defeat UI
+- [x] Include game summary statistics
+- [x] Verify end screen tests pass
 
 ### 14. Game Summary Generation (TDD First)
-- [ ] Write failing unit tests for game summary:
-  - [ ] Should list critical turning points
-  - [ ] Should highlight best/worst rolls
-  - [ ] Should show message efficiency
-- [ ] Create summary generation logic
-- [ ] Track key game moments in store
-- [ ] Display in end game screen
-- [ ] Verify summary generation tests pass
+- [x] Write failing unit tests for game summary:
+  - [x] Should list critical turning points
+  - [x] Should highlight best/worst rolls
+  - [x] Should show message efficiency
+- [x] Create summary generation logic
+- [x] Track key game moments in store
+- [x] Display in end game screen
+- [x] Verify summary generation tests pass
 
 ## Dice Animation & Polish
 

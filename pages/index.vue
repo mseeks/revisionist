@@ -113,6 +113,9 @@
         </div>
       </div>
     </main>
+
+    <!-- End Game Screen Modal -->
+    <EndGameScreen />
   </div>
 </template>
 
