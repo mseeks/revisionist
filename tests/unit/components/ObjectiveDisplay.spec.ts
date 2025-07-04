@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import ObjectiveDisplay from '~/components/ObjectiveDisplay.vue'
+import ObjectiveDisplay from '../../../components/ObjectiveDisplay.vue'
 
 describe('ObjectiveDisplay', () => {
     it('should render hardcoded objective text', () => {

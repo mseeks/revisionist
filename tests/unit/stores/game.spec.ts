@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
-import { useGameStore } from '~/stores/game'
+import { useGameStore } from '../../../stores/game'
 
 // Mock $fetch globally
 const mockFetch = vi.fn()

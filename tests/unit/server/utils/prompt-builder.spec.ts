@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { buildPrompt, buildCharacterPromptWithSchema, buildTimelineEvaluationPrompt } from '~/server/utils/prompt-builder'
+import { buildPrompt, buildCharacterPromptWithSchema, buildTimelineEvaluationPrompt } from '../../../../server/utils/prompt-builder'
 
 describe('Prompt Builder', () => {
     describe('basic system prompt', () => {

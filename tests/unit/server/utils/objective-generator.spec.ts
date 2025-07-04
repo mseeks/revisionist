@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { generateObjective } from '~/server/utils/objective-generator'
+import { generateObjective } from '../../../../server/utils/objective-generator'
 
 // Mock OpenAI
-vi.mock('~/server/utils/openai', () => ({
+vi.mock('../../../../server/utils/openai', () => ({
     getOpenAIClient: vi.fn(() => ({
         chat: {
             completions: {

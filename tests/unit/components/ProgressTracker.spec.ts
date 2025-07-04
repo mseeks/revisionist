@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { setActivePinia, createPinia } from 'pinia'
-import ProgressTracker from '~/components/ProgressTracker.vue'
-import { useGameStore } from '~/stores/game'
-import type { GameObjective } from '~/server/utils/objective-generator'
+import ProgressTracker from '../../../components/ProgressTracker.vue'
+import { useGameStore } from '../../../stores/game'
+import type { GameObjective } from '../../../server/utils/objective-generator'
 
 describe('ProgressTracker', () => {
     beforeEach(() => {

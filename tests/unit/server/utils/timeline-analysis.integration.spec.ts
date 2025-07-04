@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { callTimelineAI } from '~/server/utils/openai'
-import type { StructuredCharacterResponse } from '~/server/utils/openai'
+import { callTimelineAI } from '../../../../server/utils/openai'
+import type { StructuredCharacterResponse } from '../../../../server/utils/openai'
 
 // Mock the OpenAI client for testing
 const mockOpenAI = {

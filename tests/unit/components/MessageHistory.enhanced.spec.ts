@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { setActivePinia, createPinia } from 'pinia'
-import MessageHistory from '~/components/MessageHistory.vue'
-import { useGameStore } from '~/stores/game'
-import type { Message } from '~/stores/game'
+import MessageHistory from '../../../components/MessageHistory.vue'
+import { useGameStore } from '../../../stores/game'
+import type { Message } from '../../../stores/game'
 
 const mockMessages: Message[] = [
     {
